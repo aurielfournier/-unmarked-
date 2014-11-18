@@ -39,9 +39,9 @@ cov12r2 <- cov12r2[cov12r2$impound!="pool2",]
 
 sora12r2 <- sora12r2[order(sora12r2$impound),]
 cov12r2 <- cov12r2[order(cov12r2$impound),]
-sora12r2 <- sora12r2[,3:38]
+sora12r2 <- sora12r2[,3:41]
 
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) #the fartherest distance is 12
 
 #Unmarked Data Frame
 umf12r2 = unmarkedFrameGDS(y=sora12r2, 
@@ -98,9 +98,9 @@ model12r2 = modSel(list12r2)
 # 
 # sora12r3 <- sora12r3[order(sora12r3$impound),]
 # cov12r3 <- cov12r3[order(cov12r3$impound),]
-# sora12r3 <- sora12r3[,2:37]
+# sora12r3 <- sora12r3[,2:40]
 # #the distance bins
-# cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+# cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) #the fartherest distance is 12
 # #Unmarked Data Frame
 # umf12r3 = unmarkedFrameGDS(y=sora12r3, 
 #                            numPrimary=3,
@@ -115,7 +115,7 @@ model12r2 = modSel(list12r2)
 #                      phiformula = ~1, 
 #                      pformula = ~ 1, 
 #                      data = umf12r3, keyfun = "hazard", mixture="NB",se = T)
-
+# 
 # global12r3 = gdistsamp(lambdaformula = ~averagewater_3+region-1, 
 #                        phiformula = ~1,
 #                        pformula = ~ 1, 
@@ -147,16 +147,20 @@ cov13r1 <- read.csv('2013r1_cov.csv', header=T)
 cov13r1 <- cov13r1[,c("region","length_1","averagewater_1","impound")]
 
 sora13r1 <- sora13r1[sora13r1$impound!="pool2w",]
+sora13r1 <- sora13r1[sora13r1$impound!="ditch",]
+sora13r1 <- sora13r1[sora13r1$impound!="dc14",]
+
 cov13r1 <- cov13r1[cov13r1$impound!="pool2w",]
+cov13r1 <- cov13r1[cov13r1$impound!="ditch",]
+cov13r1 <- cov13r1[cov13r1$impound!="dc14",]
 
 sora13r1 <- sora13r1[order(sora13r1$impound),]
 cov13r1 <- cov13r1[order(cov13r1$impound),]
 
-sora13r1 <- sora13r1[,2:73]
-
+sora13r1 <- sora13r1[,2:79] #we're cutting out night 4.1 and 4.2 because it only happened once
 
 #the distance bins
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) #the fartherest distance is 12
 #Unmarked Data Frame
 umf13r1 = unmarkedFrameGDS(y=sora13r1, 
                            numPrimary=6,
@@ -203,15 +207,15 @@ cov13r2 <- cov13r2[,c("region","length_2","averagewater_2","impound")]
 
 sora13r2 <- sora13r2[sora13r2$impound!="kt2",]
 sora13r2 <- sora13r2[sora13r2$impound!="pool2w",]
-sora13r2 <- sora13r2[sora13r2$impound!="m3",]
 cov13r2 <- cov13r2[cov13r2$impound!="kt2",]
 cov13r2 <- cov13r2[cov13r2$impound!="pool2w",]
-cov13r2 <- cov13r2[cov13r2$impound!="m3",]
+
+
 sora13r2 <- sora13r2[order(sora13r2$impound),]
 cov13r2 <- cov13r2[order(cov13r2$impound),]
 
-sora13r2 <- sora13r2[,2:73]
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+sora13r2 <- sora13r2[,2:79] #we're cutting out night 4.1 and 4.2 because it only happened once
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
 umf13r2 = unmarkedFrameGDS(y=sora13r2, 
                            numPrimary=6,
@@ -270,9 +274,9 @@ cov13r3 <- cov13r3[cov13r3$impound!="dc16",]
 cov13r3 <- cov13r3[cov13r3$impound!="r7",]
 sora13r3 <- sora13r3[order(sora13r3$impound),]
 cov13r3 <- cov13r3[order(cov13r3$impound),]
-sora13r3 <- sora13r3[,2:73]
+sora13r3 <- sora13r3[,2:79] #we're cutting out night 4.1 and 4.2 because it only happened once
 
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12))
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13))
 #Unmarked Data Frame
 umf13r3 = unmarkedFrameGDS(y=sora13r3, 
                            numPrimary=6,
@@ -318,14 +322,12 @@ cov13r4 <- read.csv('2013r4_cov.csv', header=T)
 cov13r4 <- cov13r4[,c("region","length_4","averagewater_4","impound")]
 # the distance bins
 
-sora13r4 <- sora13r4[sora13r4$impound!="m3",]
-cov13r4 <- cov13r4[cov13r4$impound!="m3",]
 
 sora13r4 <- sora13r4[order(sora13r4$impound),]
 cov13r4 <- cov13r4[order(cov13r4$impound),]
-sora13r4 <- sora13r4[,2:73]
+sora13r4 <- sora13r4[,2:79] #we're cutting out night 4.1 and 4.2 because it only happened once
 
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
 umf13r4 = unmarkedFrameGDS(y=sora13r4, 
                            numPrimary=6,
@@ -372,14 +374,18 @@ cov14r1 <- read.csv('2014r1_cov.csv', header=T)
 #subset the covariates we need
 cov14r1 <- cov14r1[,c("region","length_1","averagewater_1","impound","treat")]
 
+sora14r1 <- sora14r1[sora14r1$impound!="dc18",]
+cov14r1 <- cov14r1[cov14r1$impound!="dc18",]
+
 sora14r1 <- sora14r1[order(sora14r1$impound),]
 cov14r1 <- cov14r1[order(cov14r1$impound),]
 
-sora14r1 <- sora14r1[,2:73]
+
+sora14r1 <- sora14r1[,2:79] 
 
 
 #the distance bins
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) #the fartherest distance is 12
 #Unmarked Data Frame
 umf14r1 = unmarkedFrameGDS(y=sora14r1, 
                            numPrimary=6,
@@ -442,8 +448,8 @@ cov14r2 <- cov14r2[,c("region","length_2","averagewater_2","impound","treat")]
 sora14r2 <- sora14r2[order(sora14r2$impound),]
 cov14r2 <- cov14r2[order(cov14r2$impound),]
 
-sora14r2 <- sora14r2[,2:73]
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+sora14r2 <- sora14r2[,2:79]
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
 umf14r2 = unmarkedFrameGDS(y=sora14r2, 
                            numPrimary=6,
@@ -505,9 +511,9 @@ cov14r3 <- cov14r3[,c("region","length_3","averagewater_3","impound","treat")]
 
 sora14r3 <- sora14r3[order(sora14r3$impound),]
 cov14r3 <- cov14r3[order(cov14r3$impound),]
-sora14r3 <- sora14r3[,2:73]
+sora14r3 <- sora14r3[,2:79]
 
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12))
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13))
 #Unmarked Data Frame
 umf14r3 = unmarkedFrameGDS(y=sora14r3, 
                            numPrimary=6,
@@ -569,9 +575,9 @@ cov14r4 <- cov14r4[,c("region","length_4","averagewater_4","impound","treat")]
 
 sora14r4 <- sora14r4[order(sora14r4$impound),]
 cov14r4 <- cov14r4[order(cov14r4$impound),]
-sora14r4 <- sora14r4[,2:73]
+sora14r4 <- sora14r4[,2:79]
 
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
 umf14r4 = unmarkedFrameGDS(y=sora14r4, 
                            numPrimary=6,
@@ -630,7 +636,7 @@ model14r4 =modSel(list14r4)
 
 model12r2
 
-#model12r3
+model12r3
 
 model13r1
 

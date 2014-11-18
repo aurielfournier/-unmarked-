@@ -135,29 +135,27 @@ df14r1 <- data.frame(region = cov14r1$region,
 
 pred14r1 <- predict(reg14r1, type="lambda", newdata=df14r1, appendData=T)
 
-library(ggplot2)
-
-# ggplot() +
-#   geom_boxplot(data=pred14r1, aes(x=region, y=Predicted))+
-#   xlab("Interspersion (%)") +
-#   ylab("Sora per Hectare") +
-#   scale_y_continuous(limits=c(0,100))+
-#   #ggtitle("The Impact of Interspersion\n on Sora Density in 2012 Round 2") +
-#   #scale_colour_manual(values=cbPalette)+
-#   theme(plot.title = element_text(colour="black",size=40), #plot title
-#         axis.text.x = element_text(colour="black", size=20), #x axis labels
-#         axis.text.y = element_text(colour="black",size=20), #y axis labels
-#         axis.title.x = element_text(colour="black", size=30, vjust=-.5), #x axis title
-#         axis.title.y = element_text(colour="black",size=30), #y axis title
-#         legend.text = element_text(colour="black", size=20), #legend text
-#         legend.title = element_blank(),#legend title
-#         legend.background = element_rect(fill="white"), #legend background color
-#         legend.position = "top",
-#         legend.direction= "horizontal",
-#         legend.key = element_blank(),
-#         plot.background = element_rect(fill = "white" ), #plot background color
-#         panel.background = element_rect(fill = "white"), #panel background color
-#         panel.grid.major.y= element_line(colour="black"), #y axis grid line color
-#         panel.grid.major.x = element_line(colour=NA),
-#         panel.grid.minor = element_line(colour=NA),
-#         plot.margin = unit(c(3,3,3,3), "line"))
+ggplot() +
+  geom_boxplot(data=pred14r1, aes(x=region, y=Predicted))+
+  xlab("Interspersion (%)") +
+  ylab("Sora per Hectare") +
+  scale_y_continuous(limits=c(0,100))+
+  #ggtitle("The Impact of Interspersion\n on Sora Density in 2012 Round 2") +
+  #scale_colour_manual(values=cbPalette)+
+  theme(plot.title = element_text(colour="black",size=40), #plot title
+        axis.text.x = element_text(colour="black", size=20), #x axis labels
+        axis.text.y = element_text(colour="black",size=20), #y axis labels
+        axis.title.x = element_text(colour="black", size=30, vjust=-.5), #x axis title
+        axis.title.y = element_text(colour="black",size=30), #y axis title
+        legend.text = element_text(colour="black", size=20), #legend text
+        legend.title = element_blank(),#legend title
+        legend.background = element_rect(fill="white"), #legend background color
+        legend.position = "top",
+        legend.direction= "horizontal",
+        legend.key = element_blank(),
+        plot.background = element_rect(fill = "white" ), #plot background color
+        panel.background = element_rect(fill = "white"), #panel background color
+        panel.grid.major.y= element_line(colour="black"), #y axis grid line color
+        panel.grid.major.x = element_line(colour=NA),
+        panel.grid.minor = element_line(colour=NA),
+        plot.margin = unit(c(3,3,3,3), "line"))
