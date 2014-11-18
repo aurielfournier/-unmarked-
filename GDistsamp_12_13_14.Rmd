@@ -61,13 +61,16 @@ null12r2 = gdistsamp(lambdaformula = ~1,
                      mixture="NB",
                      se = T)
 
+
 global12r2 = gdistsamp(lambdaformula = ~averagewater_2+region-1, 
                        phiformula = ~1,
                        pformula = ~  1, 
                        data = umf12r2, 
                        keyfun = "hazard", 
                        mixture="NB",
-                       se = T)
+                       output="density",
+                       unitsOut="kmsq",
+                       se = F)
 
 a12r2 = gdistsamp(lambdaformula = ~waterp-1, 
                   phiformula = ~1, 
@@ -82,7 +85,7 @@ b12r2 = gdistsamp(lambdaformula = ~averagewater_2-1,
 c12r2 = gdistsamp(lambdaformula = ~region-1, 
                    phiformula = ~1, 
                    pformula = ~  1,
-                   data = umf12r2, keyfun = "hazard", mixture="NB",se = T)
+                   data = umf12r2, keyfun = "hazard", mixture="NB",se = F)
 
 list12r2 = fitList(null12r2, global12r2, a12r2, b12r2, c12r2)
 model12r2 = modSel(list12r2)
@@ -139,6 +142,8 @@ model12r2 = modSel(list12r2)
 ```
 # 2013 Round 1
 ```{r, warning=FALSE, message=FALSE}
+
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #read in sora data
 sora13r1 <- read.csv('2013r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
@@ -197,6 +202,7 @@ model13r1 =modSel(list13r1)
 ```
 # 2013 Round 2
 ```{r, warning=FALSE, message=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #read in the sora observations
 sora13r2 <- read.csv('2013r2_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
@@ -254,6 +260,7 @@ model13r2 = modSel(list13r2)
 ```
 # 2013 Round 3
 ```{r, message=FALSE, warning=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #read in the sora observations
 sora13r3 <- read.csv("2013r3_sora.csv", header=T)
 #read in the covariate data #organized by impoundment.
@@ -314,6 +321,7 @@ model13r3 = modSel(list13r3)
 ```
 # 2013 Round 4
 ```{r, warning=FALSE, message=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #sora 
 sora13r4 <- read.csv('2013r4_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
@@ -366,6 +374,7 @@ model13r4 = modSel(list13r4)
 
 # 2014 Round 1
 ```{r, warning=FALSE, message=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #read in sora data
 setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 sora14r1 <- read.csv('2014r1_sora.csv', header=T)
@@ -437,6 +446,7 @@ model14r1 =modSel(list14r1)
 ```
 # 2014 Round 2
 ```{r, warning=FALSE, message=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #read in the sora observations
 sora14r2 <- read.csv('2014r2_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
@@ -501,6 +511,7 @@ model14r2 =modSel(list14r2)
 ```
 # 2014 Round 3
 ```{r, message=FALSE, warning=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #read in the sora observations
 sora14r3 <- read.csv("2014r3_sora.csv", header=T)
 #read in the covariate data #organized by impoundment.
@@ -565,6 +576,7 @@ model14r3 =modSel(list14r3)
 ```
 # 2014 Round 4
 ```{r, warning=FALSE, message=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 #sora 
 sora14r4 <- read.csv('2014r4_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
