@@ -230,33 +230,43 @@ id14r4 = intersect(b14r4$V1,v144$impound)
 #create sora files
 setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 mmerge12r2 <- b12r2[(b12r2$V1 %in% id12r2),]
+colnames(mmerge12r2)[1] <- "impound"
 write.csv(mmerge12r2, "2012r2_sora.csv")
 
 mmerge12r3 <- b12r3[(b12r3$V1 %in% id12r3),]
+colnames(mmerge12r3)[1] <- "impound"
 write.csv(mmerge12r3, "2012r3_sora.csv", row.names=F)
 
 mmerge13r1 <- b13r1[(b13r1$V1 %in% id13r1),]
+colnames(mmerge13r1)[1] <- "impound"
 write.csv(mmerge13r1, "2013r1_sora.csv", row.names=F)
 
 mmerge13r2 <- b13r2[(b13r2$V1 %in% id13r2),]
+colnames(mmerge13r2)[1] <- "impound"
 write.csv(mmerge13r2, "2013r2_sora.csv", row.names=F)
 
 mmerge13r3 <- b13r3[(b13r3$V1 %in% id13r3),]
+colnames(mmerge13r3)[1] <- "impound"
 write.csv(mmerge13r3, "2013r3_sora.csv", row.names=F)
 
 mmerge13r4 <- b13r4[(b13r4$V1 %in% id13r4),]
+colnames(mmerge13r4)[1] <- "impound"
 write.csv(mmerge13r4, "2013r4_sora.csv", row.names=F)
 
 mmerge14r1 <- b14r1[(b14r1$V1 %in% id14r1),]
+colnames(mmerge14r1)[1] <- "impound"
 write.csv(mmerge14r1, "2014r1_sora.csv", row.names=F)
 
 mmerge14r2 <- b14r2[(b14r2$V1 %in% id14r2),]
+colnames(mmerge14r2)[1] <- "impound"
 write.csv(mmerge14r2, "2014r2_sora.csv", row.names=F)
 
 mmerge14r3 <- b14r3[(b14r3$V1 %in% id14r3),]
+colnames(mmerge14r3)[1] <- "impound"
 write.csv(mmerge14r3, "2014r3_sora.csv", row.names=F)
 
 mmerge14r4 <- b14r4[(b14r4$V1 %in% id14r4),]
+colnames(mmerge14r4)[1] <- "impound"
 write.csv(mmerge14r4, "2014r4_sora.csv", row.names=F)
 
 

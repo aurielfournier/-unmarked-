@@ -23,66 +23,6 @@ birds14 <- birds[birds$year==2014,]
 ```
 
 ```{r}
-#first the data has to be binned. We use 12 bins 0-1, 1-2, etc etc since our farthest observation is a 12
-birds12$bin1 = ifelse(birds12$distance<1,1,0)
-birds12$bin2 = ifelse(birds12$distance<2,ifelse(birds12$distance>.9,1,0),0)
-birds12$bin3 = ifelse(birds12$distance<3,ifelse(birds12$distance>1.9,1,0),0)
-birds12$bin4 = ifelse(birds12$distance<4,ifelse(birds12$distance>2.9,1,0),0)
-birds12$bin5 = ifelse(birds12$distance<5,ifelse(birds12$distance>3.9,1,0),0)
-birds12$bin6 = ifelse(birds12$distance<6,ifelse(birds12$distance>4.9,1,0),0)
-birds12$bin7 = ifelse(birds12$distance<7,ifelse(birds12$distance>5.9,1,0),0)
-birds12$bin8 = ifelse(birds12$distance<8,ifelse(birds12$distance>6.9,1,0),0)
-birds12$bin9 = ifelse(birds12$distance<9,ifelse(birds12$distance>7.9,1,0),0)
-birds12$bin10 = ifelse(birds12$distance<10,ifelse(birds12$distance>8.9,1,0),0)
-birds12$bin11 = ifelse(birds12$distance<11,ifelse(birds12$distance>9.9,1,0),0)
-birds12$bin12 = ifelse(birds12$distance<12,ifelse(birds12$distance>10.9,1,0),0)
-
-birds13$bin1 = ifelse(birds13$distance<1,1,0)
-birds13$bin2 = ifelse(birds13$distance<2,ifelse(birds13$distance>.9,1,0),0)
-birds13$bin3 = ifelse(birds13$distance<3,ifelse(birds13$distance>1.9,1,0),0)
-birds13$bin4 = ifelse(birds13$distance<4,ifelse(birds13$distance>2.9,1,0),0)
-birds13$bin5 = ifelse(birds13$distance<5,ifelse(birds13$distance>3.9,1,0),0)
-birds13$bin6 = ifelse(birds13$distance<6,ifelse(birds13$distance>4.9,1,0),0)
-birds13$bin7 = ifelse(birds13$distance<7,ifelse(birds13$distance>5.9,1,0),0)
-birds13$bin8 = ifelse(birds13$distance<8,ifelse(birds13$distance>6.9,1,0),0)
-birds13$bin9 = ifelse(birds13$distance<9,ifelse(birds13$distance>7.9,1,0),0)
-birds13$bin10 = ifelse(birds13$distance<10,ifelse(birds13$distance>8.9,1,0),0)
-birds13$bin11 = ifelse(birds13$distance<11,ifelse(birds13$distance>9.9,1,0),0)
-birds13$bin12 = ifelse(birds13$distance<12,ifelse(birds13$distance>10.9,1,0),0)
-
-birds14$bin1 = ifelse(birds14$distance<1,1,0)
-birds14$bin2 = ifelse(birds14$distance<2,ifelse(birds14$distance>.9,1,0),0)
-birds14$bin3 = ifelse(birds14$distance<3,ifelse(birds14$distance>1.9,1,0),0)
-birds14$bin4 = ifelse(birds14$distance<4,ifelse(birds14$distance>2.9,1,0),0)
-birds14$bin5 = ifelse(birds14$distance<5,ifelse(birds14$distance>3.9,1,0),0)
-birds14$bin6 = ifelse(birds14$distance<6,ifelse(birds14$distance>4.9,1,0),0)
-birds14$bin7 = ifelse(birds14$distance<7,ifelse(birds14$distance>5.9,1,0),0)
-birds14$bin8 = ifelse(birds14$distance<8,ifelse(birds14$distance>6.9,1,0),0)
-birds14$bin9 = ifelse(birds14$distance<9,ifelse(birds14$distance>7.9,1,0),0)
-birds14$bin10 = ifelse(birds14$distance<10,ifelse(birds14$distance>8.9,1,0),0)
-birds14$bin11 = ifelse(birds14$distance<11,ifelse(birds14$distance>9.9,1,0),0)
-birds14$bin12 = ifelse(birds14$distance<12,ifelse(birds14$distance>10.9,1,0),0)
-
-round2_12 <- birds12[birds12$round==2,]
-round2_12s = round2_12[,c("impound", "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round3_12 <- birds12[birds12$round==3,]
-round3_12s = round3_12[,c("impound",  "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round1_13 <- birds13[birds13$round==1,]
-round1_13s = round1_13[,c("impound",  "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round2_13 <- birds13[birds13$round==2,]
-round2_13s = round2_13[,c("impound",  "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round3_13 <- birds13[birds13$round==3,]
-round3_13s = round3_13[,c("impound", "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round4_13 <- birds13[birds13$round==4,]
-round4_13s = round4_13[,c("impound", "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round1_14 <- birds14[birds14$round==1,]
-round1_14s = round1_14[,c("impound",  "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round2_14 <- birds14[birds14$round==2,]
-round2_14s = round2_14[,c("impound",  "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round3_14 <- birds14[birds14$round==3,]
-round3_14s = round3_14[,c("impound", "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
-round4_14 <- birds14[birds14$round==4,]
-round4_14s = round4_14[,c("impound", "night", "bin1", "bin2", "bin3", "bin4", "bin5", "bin6", "bin7", "bin8", "bin9", "bin10", "bin11", "bin12")]
 
 surv <- read.csv("survey_all.csv",header=T)
 surv <- surv[,c("year","night","round","impound","length")]
