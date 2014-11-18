@@ -1,0 +1,650 @@
+---
+output: pdf_document
+---
+
+# Effects of Wetland Impoundment Management and Vegetation Community on Sora Density in Missouri During Fall Migration
+# Set Up
+```{r, warning=FALSE, message=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
+
+#load required libraries
+library(unmarked)
+library(AICcmodavg)
+library(ggplot2)
+library(reshape2)
+library(lattice)
+library(sjPlot) 
+library(grid)
+
+```
+# 2012 Round 2
+```{r, warning=FALSE, message=FALSE}
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
+#read in the sora observations
+sora12r2 <- read.csv('2012r2_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov12r2 <- read.csv('2012r2_cov.csv', header=T)
+#subset just the covariates we need 
+cov12r2 <- cov12r2[,c("impound","region","length_2","averagewater_2","waterp","woodp")]
+
+sora12r2 <- sora12r2[sora12r2$impound!="n mallard",]
+sora12r2 <- sora12r2[sora12r2$impound!="sanctuary",]
+sora12r2 <- sora12r2[sora12r2$impound!="ash",]
+sora12r2 <- sora12r2[sora12r2$impound!="pool2",]
+
+cov12r2 <- cov12r2[cov12r2$impound!="n mallard",]
+cov12r2 <- cov12r2[cov12r2$impound!="sanctuary",]
+cov12r2 <- cov12r2[cov12r2$impound!="ash",]
+cov12r2 <- cov12r2[cov12r2$impound!="pool2",]
+
+sora12r2 <- sora12r2[order(sora12r2$impound),]
+cov12r2 <- cov12r2[order(cov12r2$impound),]
+sora12r2 <- sora12r2[,3:38]
+
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+
+#Unmarked Data Frame
+umf12r2 = unmarkedFrameGDS(y=sora12r2, 
+                           numPrimary=3,
+                           siteCovs = cov12r2,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="km", 
+                           tlength=cov12r2$length_2,
+)
+
+##candidate models 
+null12r2 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~1, 
+                     data = umf12r2, keyfun = "hazard",
+                     mixture="NB",
+                     se = T)
+
+global12r2 = gdistsamp(lambdaformula = ~averagewater_2+region-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf12r2, 
+                       keyfun = "hazard", 
+                       mixture="NB",
+                       se = T)
+
+a12r2 = gdistsamp(lambdaformula = ~waterp-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf12r2, keyfun = "hazard", mixture="NB",se = T)
+
+b12r2 = gdistsamp(lambdaformula = ~averagewater_2-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf12r2, keyfun = "hazard", mixture="NB",se = T)
+ 
+c12r2 = gdistsamp(lambdaformula = ~region-1, 
+                   phiformula = ~1, 
+                   pformula = ~  1,
+                   data = umf12r2, keyfun = "hazard", mixture="NB",se = T)
+
+list12r2 = fitList(null12r2, global12r2, a12r2, b12r2, c12r2)
+model12r2 = modSel(list12r2)
+```
+# 2012 Round 3
+```{r, warning=FALSE, message=FALSE}
+# #read in the sora observations
+# sora12r3 <- read.csv('2012r3_sora.csv', header=T)
+# #read in the covariate data #organized by impoundment.
+# cov12r3 <- read.csv('2012r3_cov.csv', header=T)
+# #subset the covariates we need
+# cov12r3 <- cov12r3[,c("region","length_3","averagewater_3","impound")]
+# 
+# sora12r3 <- sora12r3[order(sora12r3$impound),]
+# cov12r3 <- cov12r3[order(cov12r3$impound),]
+# sora12r3 <- sora12r3[,2:37]
+# #the distance bins
+# cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+# #Unmarked Data Frame
+# umf12r3 = unmarkedFrameGDS(y=sora12r3, 
+#                            numPrimary=3,
+#                            siteCovs = cov12r3,
+#                            survey="line", 
+#                            dist.breaks=cutpt,  
+#                            unitsIn="m", 
+#                            tlength=cov12r3$length_3,
+# )
+# 
+# null12r3 = gdistsamp(lambdaformula = ~1,
+#                      phiformula = ~1, 
+#                      pformula = ~ 1, 
+#                      data = umf12r3, keyfun = "hazard", mixture="NB",se = T)
+
+# global12r3 = gdistsamp(lambdaformula = ~averagewater_3+region-1, 
+#                        phiformula = ~1,
+#                        pformula = ~ 1, 
+#                        data = umf12r3, keyfun = "hazard", mixture="NB",se = T)
+# 
+# a12r3 = gdistsamp(lambdaformula = ~averagewater_3-1, 
+#                   phiformula = ~1, 
+#                   pformula = ~ 1,
+#                   data = umf12r3, keyfun = "hazard", mixture="NB",se = T)
+# 
+# 
+# b12r3 = gdistsamp(lambdaformula = ~region-1, 
+#                   phiformula = ~1, 
+#                   pformula = ~ 1,
+#                   data = umf12r3, keyfun = "hazard", mixture="NB",se = T)
+# 
+# 
+# 
+# list12r3 = fitList(null12r3, global12r3, a12r3, b12r3, d12r3,e12r3, f12r3,h12r3,m12r3)
+# model12r3 = modSel(list12r3)
+```
+# 2013 Round 1
+```{r, warning=FALSE, message=FALSE}
+#read in sora data
+sora13r1 <- read.csv('2013r1_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov13r1 <- read.csv('2013r1_cov.csv', header=T)
+#subset the covariates we need
+cov13r1 <- cov13r1[,c("region","length_1","averagewater_1","impound")]
+
+sora13r1 <- sora13r1[sora13r1$impound!="pool2w",]
+cov13r1 <- cov13r1[cov13r1$impound!="pool2w",]
+
+sora13r1 <- sora13r1[order(sora13r1$impound),]
+cov13r1 <- cov13r1[order(cov13r1$impound),]
+
+sora13r1 <- sora13r1[,2:73]
+
+
+#the distance bins
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+#Unmarked Data Frame
+umf13r1 = unmarkedFrameGDS(y=sora13r1, 
+                           numPrimary=6,
+                           siteCovs = cov13r1,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov13r1$length_1,
+)
+
+null13r1 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~ 1, 
+                     data = umf13r1, keyfun = "hazard", mixture="NB",se = T
+)
+
+global13r1 = gdistsamp(lambdaformula = ~averagewater_1+region-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf13r1, keyfun = "hazard", mixture="NB",se = T)
+
+a13r1 = gdistsamp(lambdaformula = ~averagewater_1-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf13r1, keyfun = "hazard", mixture="NB",se = T)
+
+b13r1 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf13r1, keyfun = "hazard", mixture="NB",se = T)
+
+list13r1 = fitList(null13r1, global13r1, a13r1, b13r1)
+model13r1 =modSel(list13r1)
+```
+# 2013 Round 2
+```{r, warning=FALSE, message=FALSE}
+#read in the sora observations
+sora13r2 <- read.csv('2013r2_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov13r2 <- read.csv('2013r2_cov.csv', header=T)
+#subset covaraites we need
+cov13r2 <- cov13r2[,c("region","length_2","averagewater_2","impound")]
+# #the distance bins
+
+sora13r2 <- sora13r2[sora13r2$impound!="kt2",]
+sora13r2 <- sora13r2[sora13r2$impound!="pool2w",]
+sora13r2 <- sora13r2[sora13r2$impound!="m3",]
+cov13r2 <- cov13r2[cov13r2$impound!="kt2",]
+cov13r2 <- cov13r2[cov13r2$impound!="pool2w",]
+cov13r2 <- cov13r2[cov13r2$impound!="m3",]
+sora13r2 <- sora13r2[order(sora13r2$impound),]
+cov13r2 <- cov13r2[order(cov13r2$impound),]
+
+sora13r2 <- sora13r2[,2:73]
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+#Unmarked Data Frame
+umf13r2 = unmarkedFrameGDS(y=sora13r2, 
+                           numPrimary=6,
+                           siteCovs = cov13r2,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov13r2$length_2,
+)
+
+null13r2 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~  1, 
+                     data = umf13r2, keyfun = "hazard", mixture="NB",se = T
+)
+
+global13r2 = gdistsamp(lambdaformula = ~averagewater_2+region-1, 
+                       phiformula = ~1,
+                       pformula = ~ 1, 
+                       data = umf13r2, keyfun = "hazard", mixture="NB",se = T)
+
+a13r2 = gdistsamp(lambdaformula = ~averagewater_2-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf13r2, keyfun = "hazard", mixture="NB",se = T)
+
+
+b13r2 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf13r2, keyfun = "hazard", mixture="NB",se = T)
+
+
+list13r2 = fitList(null13r2, global13r2, a13r2, b13r2)
+model13r2 = modSel(list13r2)
+```
+# 2013 Round 3
+```{r, message=FALSE, warning=FALSE}
+#read in the sora observations
+sora13r3 <- read.csv("2013r3_sora.csv", header=T)
+#read in the covariate data #organized by impoundment.
+cov13r3 <- read.csv('2013r3_cov.csv', header=T)
+#subset the covariates
+cov13r3 <- cov13r3[,c("region","length_3","averagewater_3","impound")]
+# #the distance bins
+
+sora13r3 <- sora13r3[sora13r3$impound!="dc11",]
+sora13r3 <- sora13r3[sora13r3$impound!="dc13",]
+sora13r3 <- sora13r3[sora13r3$impound!="dc15",]
+sora13r3 <- sora13r3[sora13r3$impound!="dc16",]
+sora13r3 <- sora13r3[sora13r3$impound!="r7",]
+cov13r3 <- cov13r3[cov13r3$impound!="dc11",]
+cov13r3 <- cov13r3[cov13r3$impound!="dc13",]
+cov13r3 <- cov13r3[cov13r3$impound!="dc15",]
+cov13r3 <- cov13r3[cov13r3$impound!="dc16",]
+cov13r3 <- cov13r3[cov13r3$impound!="r7",]
+sora13r3 <- sora13r3[order(sora13r3$impound),]
+cov13r3 <- cov13r3[order(cov13r3$impound),]
+sora13r3 <- sora13r3[,2:73]
+
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12))
+#Unmarked Data Frame
+umf13r3 = unmarkedFrameGDS(y=sora13r3, 
+                           numPrimary=6,
+                           siteCovs = cov13r3,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov13r3$length_3,
+)
+
+null13r3 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~  1, 
+                     data = umf13r3, keyfun = "hazard", mixture="NB",se = T)
+
+global13r3 = gdistsamp(lambdaformula = ~averagewater_3+region-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf13r3, keyfun = "hazard", mixture="NB",se = T)
+
+a13r3 = gdistsamp(lambdaformula = ~averagewater_3-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf13r3, keyfun = "hazard", mixture="NB",se = T)
+
+
+b13r3 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf13r3, keyfun = "hazard", mixture="NB",se = T)
+
+
+list13r3 = fitList(null13r3, global13r3, a13r3, b13r3)
+model13r3 = modSel(list13r3)
+```
+# 2013 Round 4
+```{r, warning=FALSE, message=FALSE}
+#sora 
+sora13r4 <- read.csv('2013r4_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov13r4 <- read.csv('2013r4_cov.csv', header=T)
+#subset the covariates
+cov13r4 <- cov13r4[,c("region","length_4","averagewater_4","impound")]
+# the distance bins
+
+sora13r4 <- sora13r4[sora13r4$impound!="m3",]
+cov13r4 <- cov13r4[cov13r4$impound!="m3",]
+
+sora13r4 <- sora13r4[order(sora13r4$impound),]
+cov13r4 <- cov13r4[order(cov13r4$impound),]
+sora13r4 <- sora13r4[,2:73]
+
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+#Unmarked Data Frame
+umf13r4 = unmarkedFrameGDS(y=sora13r4, 
+                           numPrimary=6,
+                           siteCovs = cov13r4,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov13r4$length_4,
+)
+
+null13r4 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~  1, 
+                     data = umf13r4, keyfun = "hazard", mixture="NB",se = T)
+
+global13r4 = gdistsamp(lambdaformula = ~averagewater_4+region-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf13r4, keyfun = "hazard", mixture="NB",se = T)
+
+a13r4 = gdistsamp(lambdaformula = ~averagewater_4-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf13r4, keyfun = "hazard", mixture="NB",se = T)
+
+b13r4 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~  1,
+                  data = umf13r4, keyfun = "hazard", mixture="NB",se = T)
+
+
+
+list13r4 = fitList(null13r4, global13r4, a13r4, b13r4)
+model13r4 = modSel(list13r4)
+```
+
+# 2014 Round 1
+```{r, warning=FALSE, message=FALSE}
+#read in sora data
+setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
+sora14r1 <- read.csv('2014r1_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov14r1 <- read.csv('2014r1_cov.csv', header=T)
+#subset the covariates we need
+cov14r1 <- cov14r1[,c("region","length_1","averagewater_1","impound","treat")]
+
+sora14r1 <- sora14r1[order(sora14r1$impound),]
+cov14r1 <- cov14r1[order(cov14r1$impound),]
+
+sora14r1 <- sora14r1[,2:73]
+
+
+#the distance bins
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) #the fartherest distance is 12
+#Unmarked Data Frame
+umf14r1 = unmarkedFrameGDS(y=sora14r1, 
+                           numPrimary=6,
+                           siteCovs = cov14r1,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov14r1$length_1,
+)
+
+null14r1 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~ 1, 
+                     data = umf14r1, keyfun = "hazard", mixture="NB",se = T
+)
+
+global14r1 = gdistsamp(lambdaformula = ~averagewater_1+region+treat-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf14r1, keyfun = "hazard", mixture="NB",se = T)
+
+water14r1 = gdistsamp(lambdaformula = ~averagewater_1-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r1, keyfun = "hazard", mixture="NB",se = T)
+
+reg14r1 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r1, keyfun = "hazard", mixture="NB",se = T)
+
+treat14r1 = gdistsamp(lambdaformula = ~treat-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r1, keyfun = "hazard", mixture="NB",se = T)
+
+treat_reg14r1 = gdistsamp(lambdaformula = ~treat+region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r1, keyfun = "hazard", mixture="NB",se = T)
+
+water_reg14r1 = gdistsamp(lambdaformula = ~region+averagewater_1-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r1, keyfun = "hazard", mixture="NB",se = T)
+
+list14r1 = fitList(null14r1, global14r1, water_reg14r1, treat_reg14r1,treat14r1,reg14r1,water14r1)
+model14r1 =modSel(list14r1)
+```
+# 2014 Round 2
+```{r, warning=FALSE, message=FALSE}
+#read in the sora observations
+sora14r2 <- read.csv('2014r2_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov14r2 <- read.csv('2014r2_cov.csv', header=T)
+#subset covaraites we need
+cov14r2 <- cov14r2[,c("region","length_2","averagewater_2","impound","treat")]
+# #the distance bins
+
+sora14r2 <- sora14r2[order(sora14r2$impound),]
+cov14r2 <- cov14r2[order(cov14r2$impound),]
+
+sora14r2 <- sora14r2[,2:73]
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+#Unmarked Data Frame
+umf14r2 = unmarkedFrameGDS(y=sora14r2, 
+                           numPrimary=6,
+                           siteCovs = cov14r2,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov14r2$length_2,
+)
+
+null14r2 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~ 1, 
+                     data = umf14r2, keyfun = "hazard", mixture="NB",se = T
+)
+
+global14r2 = gdistsamp(lambdaformula = ~averagewater_2+region+treat-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf14r2, keyfun = "hazard", mixture="NB",se = T)
+
+water14r2 = gdistsamp(lambdaformula = ~averagewater_2-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r2, keyfun = "hazard", mixture="NB",se = T)
+
+reg14r2 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r2, keyfun = "hazard", mixture="NB",se = T)
+
+treat14r2 = gdistsamp(lambdaformula = ~treat-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r2, keyfun = "hazard", mixture="NB",se = T)
+
+treat_reg14r2 = gdistsamp(lambdaformula = ~treat+region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r2, keyfun = "hazard", mixture="NB",se = T)
+
+water_reg14r2 = gdistsamp(lambdaformula = ~region+averagewater_2-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r2, keyfun = "hazard", mixture="NB",se = T)
+
+list14r2 = fitList(null14r2, global14r2, water_reg14r2, treat_reg14r2,treat14r2,reg14r2,water14r2)
+model14r2 =modSel(list14r2)
+```
+# 2014 Round 3
+```{r, message=FALSE, warning=FALSE}
+#read in the sora observations
+sora14r3 <- read.csv("2014r3_sora.csv", header=T)
+#read in the covariate data #organized by impoundment.
+cov14r3 <- read.csv('2014r3_cov.csv', header=T)
+#subset the covariates
+cov14r3 <- cov14r3[,c("region","length_3","averagewater_3","impound","treat")]
+# #the distance bins
+
+sora14r3 <- sora14r3[order(sora14r3$impound),]
+cov14r3 <- cov14r3[order(cov14r3$impound),]
+sora14r3 <- sora14r3[,2:73]
+
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12))
+#Unmarked Data Frame
+umf14r3 = unmarkedFrameGDS(y=sora14r3, 
+                           numPrimary=6,
+                           siteCovs = cov14r3,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov14r3$length_3,
+)
+
+null14r3 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~ 1, 
+                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T
+)
+
+global14r3 = gdistsamp(lambdaformula = ~averagewater_3+region+treat-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf14r3, keyfun = "hazard", mixture="NB",se = T)
+
+water14r3 = gdistsamp(lambdaformula = ~averagewater_3-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r3, keyfun = "hazard", mixture="NB",se = T)
+
+reg14r3 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r3, keyfun = "hazard", mixture="NB",se = T)
+
+treat14r3 = gdistsamp(lambdaformula = ~treat-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r3, keyfun = "hazard", mixture="NB",se = T)
+
+treat_reg14r3 = gdistsamp(lambdaformula = ~treat+region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r3, keyfun = "hazard", mixture="NB",se = T)
+
+water_reg14r3 = gdistsamp(lambdaformula = ~region+averagewater_3-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r3, keyfun = "hazard", mixture="NB",se = T)
+
+list14r3 = fitList(null14r3, global14r3, water_reg14r3, treat_reg14r3,treat14r3,reg14r3,water14r3)
+model14r3 =modSel(list14r3)
+```
+# 2014 Round 4
+```{r, warning=FALSE, message=FALSE}
+#sora 
+sora14r4 <- read.csv('2014r4_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov14r4 <- read.csv('2014r4_cov.csv', header=T)
+#subset the covariates
+cov14r4 <- cov14r4[,c("region","length_4","averagewater_4","impound","treat")]
+# the distance bins
+
+sora14r4 <- sora14r4[order(sora14r4$impound),]
+cov14r4 <- cov14r4[order(cov14r4$impound),]
+sora14r4 <- sora14r4[,2:73]
+
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12)) 
+#Unmarked Data Frame
+umf14r4 = unmarkedFrameGDS(y=sora14r4, 
+                           numPrimary=6,
+                           siteCovs = cov14r4,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov14r4$length_4,
+)
+
+null14r4 = gdistsamp(lambdaformula = ~1,
+                     phiformula = ~1, 
+                     pformula = ~ 1, 
+                     data = umf14r4, keyfun = "hazard", mixture="NB",se = T
+)
+
+global14r4 = gdistsamp(lambdaformula = ~averagewater_4+region+treat-1, 
+                       phiformula = ~1,
+                       pformula = ~  1, 
+                       data = umf14r4, keyfun = "hazard", mixture="NB",se = T)
+
+water14r4 = gdistsamp(lambdaformula = ~averagewater_4-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r4, keyfun = "hazard", mixture="NB",se = T)
+
+reg14r4 = gdistsamp(lambdaformula = ~region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r4, keyfun = "hazard", mixture="NB",se = T)
+
+treat14r4 = gdistsamp(lambdaformula = ~treat-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r4, keyfun = "hazard", mixture="NB",se = T)
+
+treat_reg14r4 = gdistsamp(lambdaformula = ~treat+region-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r4, keyfun = "hazard", mixture="NB",se = T)
+
+water_reg14r4 = gdistsamp(lambdaformula = ~region+averagewater_4-1, 
+                  phiformula = ~1, 
+                  pformula = ~ 1,
+                  data = umf14r4, keyfun = "hazard", mixture="NB",se = T)
+
+list14r4 = fitList(null14r4, global14r4, water_reg14r4, treat_reg14r4,treat14r4,reg14r4,water14r4)
+model14r4 =modSel(list14r4)
+```
+
+
+# Output Tables from models
+```{r}
+
+
+
+model12r2
+
+#model12r3
+
+model13r1
+
+model13r2
+
+model13r3
+
+model13r4
+
+model14r1
+
+model14r2
+
+model14r3
+
+model14r4
+```
