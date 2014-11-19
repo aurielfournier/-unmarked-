@@ -648,7 +648,7 @@ model14r4 =modSel(list14r4)
 
 model12r2
 
-model12r3
+#model12r3
 
 model13r1
 
