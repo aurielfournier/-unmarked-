@@ -1,7 +1,7 @@
 library(unmarked)
 library(ggplot2)
 library(reshape)
-
+library(gridExtra)
 #read in sora data
 setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
 sora14r1 <- read.csv('2014r1_sora.csv', header=T)
@@ -29,10 +29,10 @@ umf14r1 = unmarkedFrameGDS(y=sora14r1,
 )
 
 
-reg14r1 = gdistsamp(lambdaformula = ~1, 
+reg14r1 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r1)
+                    data = umf14r1, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
 
 #read in the sora observations
 sora14r2 <- read.csv('2014r2_sora.csv', header=T)
@@ -61,7 +61,7 @@ umf14r2 = unmarkedFrameGDS(y=sora14r2,
 reg14r2 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r2, keyfun = "hazard", mixture="NB",se = T)
+                    data = umf14r2, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
 
 
 
@@ -90,10 +90,10 @@ umf14r3 = unmarkedFrameGDS(y=sora14r3,
 
 
 
-water_reg14r3 = gdistsamp(lambdaformula = ~region+averagewater_3-1, 
-                          phiformula = ~1, 
-                          pformula = ~ 1,
-                          data = umf14r3, keyfun = "hazard", mixture="NB",se = T)
+treat14r3 = gdistsamp(lambdaformula = ~treat-1, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
 
 
 #sora 
@@ -120,24 +120,49 @@ umf14r4 = unmarkedFrameGDS(y=sora14r4,
 )
 
 
+treat14r4 = gdistsamp(lambdaformula = ~treat-1, 
+                          phiformula = ~1, 
+                          pformula = ~ 1,
+                          data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
+
+lc14r4 <- linearComb(reg14r2, c("nw",1,1), type="lambda")
+backTransform(reg14r2, type="phi")
+backTransform(reg14r2, type="det")
 
 
-reg14r4 = gdistsamp(lambdaformula = ~region-1, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf14r4, keyfun = "hazard", mixture="NB",se = T)
-
+#predictions
 
 
 df14r1 <- data.frame(region = cov14r1$region,
                      impound = cov14r1$impound)
 
+df14r2 <- data.frame(region = cov14r2$region,
+                     impound = cov14r2$impound)
+
+
+df14r3 <- data.frame(treat = cov14r3$treat,
+                     impound = cov14r3$impound)
+
+
+df14r4 <- data.frame(treat = cov14r4$treat,
+                     impound = cov14r4$impound)
+
 
 pred14r1 <- predict(reg14r1, type="lambda", newdata=df14r1, appendData=T)
+mpred14r1 <- melt(pred14r1)
 
-ggplot() +
-  geom_boxplot(data=pred14r1, aes(x=region, y=Predicted))+
-  xlab("Interspersion (%)") +
+pred14r2 <- predict(reg14r2, type="lambda", newdata=df14r2, appendData=T)
+mpred14r2 <- melt(pred14r2)
+
+pred14r3 <- predict(treat14r3, type="lambda", newdata=df14r3, appendData=T)
+mpred14r3 <- melt(pred14r3)
+
+pred14r4 <- predict(treat14r4, type="lambda", newdata=df14r4, appendData=T)
+mpred14r4 <- melt(pred14r4)
+
+r1 <- ggplot() +
+  geom_boxplot(data=mpred14r1, aes(x=region, y=value))+
+  #xlab("Interspersion (%)") +
   ylab("Sora per Hectare") +
   scale_y_continuous(limits=c(0,100))+
   #ggtitle("The Impact of Interspersion\n on Sora Density in 2012 Round 2") +
@@ -159,3 +184,82 @@ ggplot() +
         panel.grid.major.x = element_line(colour=NA),
         panel.grid.minor = element_line(colour=NA),
         plot.margin = unit(c(3,3,3,3), "line"))
+
+r2 <- ggplot() +
+  geom_boxplot(data=mpred14r2, aes(x=region, y=value))+
+  #xlab("Interspersion (%)") +
+  ylab("Sora per Hectare") +
+  scale_y_continuous(limits=c(0,100))+
+  #ggtitle("The Impact of Interspersion\n on Sora Density in 2012 Round 2") +
+  #scale_colour_manual(values=cbPalette)+
+  theme(plot.title = element_text(colour="black",size=40), #plot title
+        axis.text.x = element_text(colour="black", size=20), #x axis labels
+        axis.text.y = element_text(colour="black",size=20), #y axis labels
+        axis.title.x = element_text(colour="black", size=30, vjust=-.5), #x axis title
+        axis.title.y = element_text(colour="black",size=30), #y axis title
+        legend.text = element_text(colour="black", size=20), #legend text
+        legend.title = element_blank(),#legend title
+        legend.background = element_rect(fill="white"), #legend background color
+        legend.position = "top",
+        legend.direction= "horizontal",
+        legend.key = element_blank(),
+        plot.background = element_rect(fill = "white" ), #plot background color
+        panel.background = element_rect(fill = "white"), #panel background color
+        panel.grid.major.y= element_line(colour="black"), #y axis grid line color
+        panel.grid.major.x = element_line(colour=NA),
+        panel.grid.minor = element_line(colour=NA),
+        plot.margin = unit(c(3,3,3,3), "line"))
+
+r3 <- ggplot() +
+  geom_boxplot(data=mpred14r3, aes(x=treat, y=value))+
+  #xlab("Interspersion (%)") +
+  ylab("Sora per Hectare") +
+  scale_y_continuous(limits=c(0,100))+
+  #ggtitle("The Impact of Interspersion\n on Sora Density in 2012 Round 2") +
+  #scale_colour_manual(values=cbPalette)+
+  theme(plot.title = element_text(colour="black",size=40), #plot title
+        axis.text.x = element_text(colour="black", size=20), #x axis labels
+        axis.text.y = element_text(colour="black",size=20), #y axis labels
+        axis.title.x = element_text(colour="black", size=30, vjust=-.5), #x axis title
+        axis.title.y = element_text(colour="black",size=30), #y axis title
+        legend.text = element_text(colour="black", size=20), #legend text
+        legend.title = element_blank(),#legend title
+        legend.background = element_rect(fill="white"), #legend background color
+        legend.position = "top",
+        legend.direction= "horizontal",
+        legend.key = element_blank(),
+        plot.background = element_rect(fill = "white" ), #plot background color
+        panel.background = element_rect(fill = "white"), #panel background color
+        panel.grid.major.y= element_line(colour="black"), #y axis grid line color
+        panel.grid.major.x = element_line(colour=NA),
+        panel.grid.minor = element_line(colour=NA),
+        plot.margin = unit(c(3,3,3,3), "line"))
+
+
+
+r4 <- ggplot() +
+  geom_boxplot(data=mpred14r4, aes(x=treat, y=value))+
+  #xlab("Interspersion (%)") +
+  ylab("Sora per Hectare") +
+  scale_y_continuous(limits=c(0,100))+
+  #ggtitle("The Impact of Interspersion\n on Sora Density in 2012 Round 2") +
+  #scale_colour_manual(values=cbPalette)+
+  theme(plot.title = element_text(colour="black",size=40), #plot title
+        axis.text.x = element_text(colour="black", size=20), #x axis labels
+        axis.text.y = element_text(colour="black",size=20), #y axis labels
+        axis.title.x = element_text(colour="black", size=30, vjust=-.5), #x axis title
+        axis.title.y = element_text(colour="black",size=30), #y axis title
+        legend.text = element_text(colour="black", size=20), #legend text
+        legend.title = element_blank(),#legend title
+        legend.background = element_rect(fill="white"), #legend background color
+        legend.position = "top",
+        legend.direction= "horizontal",
+        legend.key = element_blank(),
+        plot.background = element_rect(fill = "white" ), #plot background color
+        panel.background = element_rect(fill = "white"), #panel background color
+        panel.grid.major.y= element_line(colour="black"), #y axis grid line color
+        panel.grid.major.x = element_line(colour=NA),
+        panel.grid.minor = element_line(colour=NA),
+        plot.margin = unit(c(3,3,3,3), "line"))
+
+grid.arrange(r1, r2,r3,r4,ncol=2)
