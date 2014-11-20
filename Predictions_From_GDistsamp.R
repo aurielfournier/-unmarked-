@@ -126,16 +126,42 @@ treat14r4 = gdistsamp(lambdaformula = ~treat-1,
                           data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
 ab14r1 <- ranef(reg14r1)
-ar14r1 <- as.data.frame(as(ab14r1, "array"))
-ar14r1$mean <- do.call(rbind, lapply(1:nrow(ar14r1), function (k) {mean(ar14r1[k,])}))
-
-ar14r1$mean <- rowMeans(ar14r1)
-df14r1$impound <- cov14r1$impound
-
+abund14r1 <- data.frame(matrix(ncol=4, nrow=33))
+abund14r1$X1 <- bup(ab14r1, stat="mean")
+abund14r1$X2 <- bup(ab14r1, stat="mode")
+abund14r1[,3:4] <- confint(ab14r1, level=0.9) # 90% CI
+abund14r1$X1 <- formatC(abund14r1$X1, format="d")
+abund14r1$impound <- cov14r1$impound
+write.csv(abund14r1, "abundance_14r1.csv")
+abund14r1 
 
 ab14r2 <- ranef(reg14r2)
+abund14r2 <- data.frame(matrix(ncol=4, nrow=33))
+abund14r2$X1 <- bup(ab14r2, stat="mean")
+abund14r2$X2 <- bup(ab14r2, stat="mode")
+abund14r2[,3:4] <- confint(ab14r2, level=0.9) # 90% CI
+abund14r2$impound <- cov14r2$impound
+write.csv(abund14r2, "abundance_14r2.csv")
+abund14r2
+
 ab14r3 <- ranef(treat14r3)
+abund14r3 <- data.frame(matrix(ncol=4, nrow=32))
+abund14r3$X1 <- bup(ab14r3, stat="mean")
+abund14r3$X2 <- bup(ab14r3, stat="mode")
+abund14r3[,3:4] <- confint(ab14r3, level=0.9) # 90% CI
+abund14r3$impound <- cov14r3$impound
+write.csv(abund14r3, "abundance_14r3.csv")
+abund14r3
+
 ab14r4 <- ranef(treat14r4)
+abund14r4 <- data.frame(matrix(ncol=4, nrow=32))
+abund14r4$X1 <- bup(ab14r4, stat="mean")
+abund14r4$X2 <- bup(ab14r4, stat="mode")
+abund14r4[,3:4] <- confint(ab14r4, level=0.9) # 90% CI
+abund14r4$impound <- cov14r4$impound
+write.csv(abund14r4, "abundance_14r4.csv")
+abund14r4
+
 
 
 #predictions
