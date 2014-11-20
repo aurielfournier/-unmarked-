@@ -32,7 +32,7 @@ umf14r1 = unmarkedFrameGDS(y=sora14r1,
 reg14r1 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r1, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
+                    data = umf14r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
 #read in the sora observations
 sora14r2 <- read.csv('2014r2_sora.csv', header=T)
@@ -61,7 +61,7 @@ umf14r2 = unmarkedFrameGDS(y=sora14r2,
 reg14r2 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r2, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
+                    data = umf14r2, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
 
 
@@ -93,7 +93,7 @@ umf14r3 = unmarkedFrameGDS(y=sora14r3,
 treat14r3 = gdistsamp(lambdaformula = ~treat-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
-                      data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
+                      data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
 
 #sora 
@@ -123,16 +123,22 @@ umf14r4 = unmarkedFrameGDS(y=sora14r4,
 treat14r4 = gdistsamp(lambdaformula = ~treat-1, 
                           phiformula = ~1, 
                           pformula = ~ 1,
-                          data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund",unitsOut="ha")
+                          data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
-lc14r4 <- linearComb(reg14r2, c("nw",1,1), type="lambda")
-backTransform(reg14r2, type="phi")
-backTransform(reg14r2, type="det")
+ab14r1 <- ranef(reg14r1)
+ar14r1 <- as.data.frame(as(ab14r1, "array"))
+ar14r1$mean <- do.call(rbind, lapply(1:nrow(ar14r1), function (k) {mean(ar14r1[,k])}))
+
+ar14r1$mean <- rowMeans(ar14r1)
+df14r1$impound <- cov14r1$impound
+
+
+ab14r2 <- ranef(reg14r2)
+ab14r3 <- ranef(treat14r3)
+ab14r4 <- ranef(treat14r4)
 
 
 #predictions
-
-
 df14r1 <- data.frame(region = cov14r1$region,
                      impound = cov14r1$impound)
 
