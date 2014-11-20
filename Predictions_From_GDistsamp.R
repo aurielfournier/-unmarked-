@@ -127,7 +127,7 @@ treat14r4 = gdistsamp(lambdaformula = ~treat-1,
 
 ab14r1 <- ranef(reg14r1)
 ar14r1 <- as.data.frame(as(ab14r1, "array"))
-ar14r1$mean <- do.call(rbind, lapply(1:nrow(ar14r1), function (k) {mean(ar14r1[,k])}))
+ar14r1$mean <- do.call(rbind, lapply(1:nrow(ar14r1), function (k) {mean(ar14r1[k,])}))
 
 ar14r1$mean <- rowMeans(ar14r1)
 df14r1$impound <- cov14r1$impound
