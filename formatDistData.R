@@ -1,7 +1,7 @@
 library(unmarked)
 
-setwd("C:/Users/avanderlaar/Dropbox/Field 2014")
-birds <- read.csv("allbirds.csv",header=T) #this is a csv with a row for each unique bird observation, 
+setwd("C:/Users/avanderlaar/Dropbox/data")
+birds <- read.csv("all_birds.csv",header=T) #this is a csv with a row for each unique bird observation, 
 #important columns are the impoundment where the bird was observed
 # the distance from the line the bird was observed at
 # and the night (in unmarked terms 'occasion') the survey occured on. 
