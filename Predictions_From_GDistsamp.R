@@ -8,7 +8,7 @@ sora14r1 <- read.csv('2014r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r1 <- read.csv('2014r1_cov.csv', header=T)
 #subset the covariates we need
-cov14r1 <- cov14r1[,c("region","length_1","averagewater_1","impound","treat")]
+cov14r1 <- cov14r1[,c("region","length_1","averagewater_1","impound","treat","jdate_1")]
 
 sora14r1 <- sora14r1[order(sora14r1$impound),]
 cov14r1 <- cov14r1[order(cov14r1$impound),]
@@ -39,7 +39,7 @@ sora14r2 <- read.csv('2014r2_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r2 <- read.csv('2014r2_cov.csv', header=T)
 #subset covaraites we need
-cov14r2 <- cov14r2[,c("region","length_2","averagewater_2","impound","treat")]
+cov14r2 <- cov14r2[,c("region","length_2","averagewater_2","impound","treat","jdate_2")]
 # #the distance bins
 
 sora14r2 <- sora14r2[order(sora14r2$impound),]
@@ -70,7 +70,7 @@ sora14r3 <- read.csv("2014r3_sora.csv", header=T)
 #read in the covariate data #organized by impoundment.
 cov14r3 <- read.csv('2014r3_cov.csv', header=T)
 #subset the covariates
-cov14r3 <- cov14r3[,c("region","length_3","averagewater_3","impound","treat")]
+cov14r3 <- cov14r3[,c("region","length_3","averagewater_3","impound","treat","jdate_3")]
 # #the distance bins
 
 sora14r3 <- sora14r3[order(sora14r3$impound),]
@@ -101,7 +101,7 @@ sora14r4 <- read.csv('2014r4_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r4 <- read.csv('2014r4_cov.csv', header=T)
 #subset the covariates
-cov14r4 <- cov14r4[,c("region","length_4","averagewater_4","impound","treat")]
+cov14r4 <- cov14r4[,c("region","length_4","averagewater_4","impound","treat","jdate_4")]
 # the distance bins
 
 sora14r4 <- sora14r4[order(sora14r4$impound),]
@@ -125,6 +125,8 @@ treat14r4 = gdistsamp(lambdaformula = ~treat-1,
                           pformula = ~ 1,
                           data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
+setwd("C:/Users/avanderlaar/Dropbox/data")
+
 options(scipen=999) #disables scientific notation
 
 ab14r1 <- ranef(reg14r1)
@@ -133,7 +135,10 @@ abund14r1$X1 <- bup(ab14r1, stat="mean")
 abund14r1$X2 <- bup(ab14r1, stat="mode")
 abund14r1[,3:4] <- confint(ab14r1, level=0.9) # 90% CI
 abund14r1$impound <- cov14r1$impound
-colnames(abund14r1) <- c("mean","mode","CI1","CI2","impound")
+abund14r1$jdate <- cov14r1$jdate_1
+abund14r1$region <- cov14r1$region
+abund14r1$treat <- cov14r1$treat
+colnames(abund14r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat")
 write.csv(abund14r1, "abundance_14r1.csv")
 abund14r1 
 
@@ -143,7 +148,10 @@ abund14r2$X1 <- bup(ab14r2, stat="mean")
 abund14r2$X2 <- bup(ab14r2, stat="mode")
 abund14r2[,3:4] <- confint(ab14r2, level=0.9) # 90% CI
 abund14r2$impound <- cov14r2$impound
-colnames(abund14r2) <- c("mean","mode","CI1","CI2","impound")
+abund14r2$jdate <- cov14r2$jdate_2
+abund14r2$region <- cov14r2$region
+abund14r2$treat <- cov14r2$treat
+colnames(abund14r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat")
 write.csv(abund14r2, "abundance_14r2.csv")
 abund14r2
 
@@ -153,7 +161,10 @@ abund14r3$X1 <- bup(ab14r3, stat="mean")
 abund14r3$X2 <- bup(ab14r3, stat="mode")
 abund14r3[,3:4] <- confint(ab14r3, level=0.9) # 90% CI
 abund14r3$impound <- cov14r3$impound
-colnames(abund14r3) <- c("mean","mode","CI1","CI2","impound")
+abund14r3$jdate <- cov14r3$jdate_3
+abund14r3$region <- cov14r3$region
+abund14r3$treat <- cov14r3$treat
+colnames(abund14r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat")
 write.csv(abund14r3, "abundance_14r3.csv")
 abund14r3
 
@@ -163,7 +174,10 @@ abund14r4$X1 <- bup(ab14r4, stat="mean")
 abund14r4$X2 <- bup(ab14r4, stat="mode")
 abund14r4[,3:4] <- confint(ab14r4, level=0.9) # 90% CI
 abund14r4$impound <- cov14r4$impound
-colnames(abund14r4) <- c("mean","mode","CI1","CI2","impound")
+abund14r4$jdate <- cov14r4$jdate_4
+abund14r4$region <- cov14r4$region
+abund14r4$treat <- cov14r4$treat
+colnames(abund14r4) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat")
 write.csv(abund14r4, "abundance_14r4.csv")
 abund14r4
 

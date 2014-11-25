@@ -65,8 +65,8 @@ gd14r4 <- as.data.frame(cbind(rownames(gd14r4),gd14r4))
 #which arent' currently in here, and ther are also impoundments listed in these files that we didn't survey every time
 
 
-surv <- read.csv("survey_all.csv",header=T)
-surv <- surv[,c("year","night","round","impound","length")]
+surv <- read.csv("all_surveys.csv",header=T)
+surv <- surv[,c("year","night","round","impound","length","jdate")]
 
 surv12 <- surv[surv$year==2012,]
 #no 12r1
@@ -104,8 +104,8 @@ b14r4 <- gd14r4[(gd14r4$V1 %in% surv144$impound),] #this makes it so that we onl
 ########################################################
 ##### Covariates (in my case, vegetation variables)
 #########################################################
-setwd("C:/Users/avanderlaar/Dropbox/R/Veg_Summary")
-veg = read.csv("masterveg.csv", header=T) #a file where each row is a unique vegetation point, collected at a certain time 
+setwd("C:/Users/avanderlaar/Dropbox/data")
+veg = read.csv("all_veg.csv", header=T) #a file where each row is a unique vegetation point, collected at a certain time 
 #(points are resampled throughout the season)
 
 
@@ -228,7 +228,7 @@ id14r4 = intersect(b14r4$V1,v144$impound)
 
 
 #create sora files
-setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
+setwd("C:/Users/avanderlaar/Dropbox/data")
 mmerge12r2 <- b12r2[(b12r2$V1 %in% id12r2),]
 colnames(mmerge12r2)[1] <- "impound"
 write.csv(mmerge12r2, "2012r2_sora.csv")
