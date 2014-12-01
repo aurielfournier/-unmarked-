@@ -107,7 +107,7 @@ b14r4 <- gd14r4[(gd14r4$V1 %in% surv144$impound),] #this makes it so that we onl
 setwd("C:/Users/avanderlaar/Dropbox/data")
 veg = read.csv("all_veg.csv", header=T) #a file where each row is a unique vegetation point, collected at a certain time 
 #(points are resampled throughout the season)
-
+hec <- read.csv('hectares.csv',header=T)
 
 ### 2012 ###
 veg12 <- veg[veg$year==2012,]
@@ -132,8 +132,13 @@ clen122 <- clen12[(clen12$impound %in% vid12r2),]
 castveg123_all = castveg12_all[(castveg12_all$impound %in% vid12r3),]
 clen123 <- clen12[(clen12$impound %in% vid12r3),]
 
+hec122 <- hec[(hec$impound %in% v122$impound),]
+hec123 <- hec[(hec$impound %in% v123$impound),]
+
 v122 <- cbind(clen122, castveg122_all)
+v122 <- cbind(v122, hec122)
 v123 <- cbind(clen123, castveg123_all)
+v123 <- cbind(v123, hec123)
 
 ### 2013 ###
 veg13 <- veg[veg$year==2013,]
@@ -166,10 +171,19 @@ clen133 <- clen13[(clen13$impound %in% vid13r3),]
 castveg134_all = castveg13_all[(castveg13_all$impound %in% vid13r4),]
 clen134 <- clen13[(clen13$impound %in% vid13r4),]
 
+hec131 <- hec[(hec$impound %in% v131$impound),]
+hec132 <- hec[(hec$impound %in% v132$impound),]
+hec133 <- hec[(hec$impound %in% v133$impound),]
+hec134 <- hec[(hec$impound %in% v134$impound),]
+
 v131 <- cbind(clen131, castveg131_all)
+v131 <- cbind(v131, hec131)
 v132 <- cbind(clen132, castveg132_all)
+v132 <- cbind(v132, hec132)
 v133 <- cbind(clen133, castveg133_all)
+v133 <- cbind(v133, hec133)
 v134 <- cbind(clen134, castveg134_all)
+v134 <- cbind(v134, hec134)
 
 ### 2014 ###
 v14 <- veg[veg$year==2014,]
@@ -210,10 +224,19 @@ clen143 <- clen14[(clen14$impound %in% vid14r3),]
 castveg144_all = castveg14_all[(castveg14_all$impound %in% vid14r4),]
 clen144 <- clen14[(clen14$impound %in% vid14r4),]
 
+hec141 <- hec[(hec$impound %in% v141$impound),]
+hec142 <- hec[(hec$impound %in% v142$impound),]
+hec143 <- hec[(hec$impound %in% v143$impound),]
+hec144 <- hec[(hec$impound %in% v144$impound),]
+
 v141 <- cbind(clen141, castveg141_all)
+v141 <- cbind(v141, hec141)
 v142 <- cbind(clen142, castveg142_all)
+v142 <- cbind(v141, hec141)
 v143 <- cbind(clen143, castveg143_all)
+v143 <- cbind(v141, hec141)
 v144 <- cbind(clen144, castveg144_all)
+v144 <- cbind(v141, hec141)
 
 id12r2 = intersect(b12r2$V1,v122$impound)
 id12r3 = intersect(b12r3$V1,v123$impound)

@@ -25,11 +25,11 @@ abundr3r4 <- rbind(abund14r3, abund14r4)
 abund <- rbind(abundr1r2, abundr3r4)
 abund <- abund[abund$impound!="r3",]
 abund <- abund[abund$impound!="r7",]
-abund <- abund[,c("mean",'impound',"treat","region","round","jdate")]
+abund <- abund[,c("mean",'impound',"treat","region","round","jdate","hectares")]
 jdate <- abund[,c("impound","round","jdate")]
-mdat <- melt(abund, id=c("impound","treat","region","round","jdate"))
+mdat <- melt(abund, id=c("impound","treat","region","round","jdate","hectares"))
 mjdate <- melt(jdate, id=c('round',"impound"))
-cdat <- cast(data=mdat, impound ~ round)
+cdat <- cast(data=mdat, impound + hectares ~ round)
 jdate <- cast(data=mjdate, impound ~ round)
 
 cdat[is.na(cdat)] <- 0
@@ -49,6 +49,8 @@ cdat$jsum <- (jdate21 + jdate32 + jdate43)
 cdat$rounds <- (jdate21 + jdate32 + jdate43)/cdat$surv
 cdat$rud_jdate <- ((cdat$"1" + cdat$"2")/2)+((cdat$"2"+cdat$"3")/2)+((cdat$"3"+cdat$"4")/2)*(cdat$rounds)
 cdat$rud <- ((cdat$"1" + cdat$"2")/2)+((cdat$"2"+cdat$"3")/2)+((cdat$"3"+cdat$"4")/2)
+cdat$rudh <- cdat$rud / cdat$hectares
+cdat$rud_jdateh <- cdat$rud_jdate / cdat$hectares
 
 a <- ggplot()+
   geom_bar(data=cdat, aes(x=impound, y=rud),
@@ -61,5 +63,17 @@ b <- ggplot()+
            position=position_dodge(), 
            stat="identity",
            colour="black")
-grid.arrange(a,b,ncol=1)
+
+c <- ggplot()+
+  geom_bar(data=cdat, aes(x=impound, y=rudh),
+           position=position_dodge(), 
+           stat="identity",
+           colour="black")
+
+d <- ggplot()+
+  geom_bar(data=cdat, aes(x=impound, y=rud_jdateh),
+           position=position_dodge(), 
+           stat="identity",
+           colour="black")
+grid.arrange(a,b,c,d,ncol=1)
 
