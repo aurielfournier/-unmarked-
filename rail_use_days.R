@@ -3,7 +3,7 @@ setwd("C:/Users/avanderlaar/Dropbox/data")
 
 library(ggplot2)
 library(reshape)
-
+library(gridExtra)
 
 options(scipen=999)
 
@@ -33,9 +33,21 @@ cdat <- cast(data=mdat, impound ~ round)
 jdate <- cast(data=mjdate, impound ~ round)
 
 cdat[is.na(cdat)] <- 0
-jdate[is.na(jdate)] <- 0
 
-cdat$rud_jdate <- -(((cdat$"1" + cdat$"2")/2)+((cdat$"2"+cdat$"3")/2)+((cdat$"3"+cdat$"4")/2))*((jdate$"1"-jdate$"2")+(jdate$"2"-jdate$"3")+(jdate$"3"-jdate$"4"))
+jdate21 <- (jdate$"2"-jdate$"1")
+jdate21[is.na(jdate21)] <- 0
+jdate32 <- (jdate$"3"-jdate$"2")
+jdate32[is.na(jdate32)] <- 0
+jdate43 <-(jdate$"4"-jdate$"3")
+jdate43[is.na(jdate43)] <- 0
+
+cdat$jdate21 <- jdate21
+cdat$jdate32 <- jdate32
+cdat$jdate43 <- jdate43
+cdat$surv <- apply(cdat[,c("jdate21","jdate32","jdate43")],1,function(x) sum(x>=1, na.rm=T))
+cdat$jsum <- (jdate21 + jdate32 + jdate43)
+cdat$rounds <- (jdate21 + jdate32 + jdate43)/cdat$surv
+cdat$rud_jdate <- ((cdat$"1" + cdat$"2")/2)+((cdat$"2"+cdat$"3")/2)+((cdat$"3"+cdat$"4")/2)*(cdat$rounds)
 cdat$rud <- ((cdat$"1" + cdat$"2")/2)+((cdat$"2"+cdat$"3")/2)+((cdat$"3"+cdat$"4")/2)
 
 a <- ggplot()+
@@ -50,3 +62,4 @@ b <- ggplot()+
            stat="identity",
            colour="black")
 grid.arrange(a,b,ncol=1)
+
