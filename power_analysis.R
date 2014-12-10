@@ -51,5 +51,3 @@ r3 <- pwr.t.test(n=NULL, d=e.s.treatr3, sig.level=0.05, power=.99, type="paired"
 r4 <- pwr.t.test(n=NULL, d=e.s.treatr4, sig.level=0.05, power=.99, type="paired", alternative="two.sided")
 
 
-
-
