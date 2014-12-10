@@ -8,13 +8,12 @@ sora14r1 <- read.csv('2014r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r1 <- read.csv('2014r1_cov.csv', header=T)
 #subset the covariates we need
-cov14r1 <- cov14r1[,c("region","length_1","averagewater_1","impound","treat","jdate_1","hectares")]
+cov14r1 <- cov14r1[,c("region","area","length_1","averagewater_1","impound","treat","jdate_1","hectares")]
 
 sora14r1 <- sora14r1[order(sora14r1$impound),]
 cov14r1 <- cov14r1[order(cov14r1$impound),]
 
 sora14r1 <- sora14r1[,2:79]
-
 
 #the distance bins
 cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) #the fartherest distance is 12
@@ -39,7 +38,7 @@ sora14r2 <- read.csv('2014r2_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r2 <- read.csv('2014r2_cov.csv', header=T)
 #subset covaraites we need
-cov14r2 <- cov14r2[,c("region","length_2","averagewater_2","impound","treat","jdate_2","hectares")]
+cov14r2 <- cov14r2[,c("region","area","length_2","averagewater_2","impound","treat","jdate_2","hectares")]
 # #the distance bins
 
 sora14r2 <- sora14r2[order(sora14r2$impound),]
@@ -70,7 +69,7 @@ sora14r3 <- read.csv("2014r3_sora.csv", header=T)
 #read in the covariate data #organized by impoundment.
 cov14r3 <- read.csv('2014r3_cov.csv', header=T)
 #subset the covariates
-cov14r3 <- cov14r3[,c("region","length_3","averagewater_3","impound","treat","jdate_3","hectares")]
+cov14r3 <- cov14r3[,c("region","area","length_3","averagewater_3","impound","treat","jdate_3","hectares")]
 # #the distance bins
 
 sora14r3 <- sora14r3[order(sora14r3$impound),]
@@ -101,7 +100,7 @@ sora14r4 <- read.csv('2014r4_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r4 <- read.csv('2014r4_cov.csv', header=T)
 #subset the covariates
-cov14r4 <- cov14r4[,c("region","length_4","averagewater_4","impound","treat","jdate_4","hectares")]
+cov14r4 <- cov14r4[,c("region","area","length_4","averagewater_4","impound","treat","jdate_4","hectares")]
 # the distance bins
 
 sora14r4 <- sora14r4[order(sora14r4$impound),]
@@ -139,7 +138,8 @@ abund14r1$jdate <- cov14r1$jdate_1
 abund14r1$region <- cov14r1$region
 abund14r1$treat <- cov14r1$treat
 abund14r1$hectares <- cov14r1$hectares
-colnames(abund14r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares")
+abund14r1$area <- cov14r1$area
+colnames(abund14r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
 write.csv(abund14r1, "abundance_14r1.csv")
 abund14r1 
 
@@ -153,7 +153,8 @@ abund14r2$jdate <- cov14r2$jdate_2
 abund14r2$region <- cov14r2$region
 abund14r2$treat <- cov14r2$treat
 abund14r2$hectares <- cov14r2$hectares
-colnames(abund14r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares")
+abund14r2$area <- cov14r2$area
+colnames(abund14r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
 write.csv(abund14r2, "abundance_14r2.csv")
 abund14r2
 
@@ -167,7 +168,8 @@ abund14r3$jdate <- cov14r3$jdate_3
 abund14r3$region <- cov14r3$region
 abund14r3$treat <- cov14r3$treat
 abund14r3$hectares <- cov14r3$hectares
-colnames(abund14r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares")
+abund14r3$area <- cov14r3$area
+colnames(abund14r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
 write.csv(abund14r3, "abundance_14r3.csv")
 abund14r3
 
@@ -181,7 +183,8 @@ abund14r4$jdate <- cov14r4$jdate_4
 abund14r4$region <- cov14r4$region
 abund14r4$treat <- cov14r4$treat
 abund14r4$hectares <- cov14r4$hectares
-colnames(abund14r4) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares")
+abund14r4$area <- cov14r4$area
+colnames(abund14r4) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
 write.csv(abund14r4, "abundance_14r4.csv")
 abund14r4
 

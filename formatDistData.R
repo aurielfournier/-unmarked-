@@ -114,7 +114,7 @@ veg12 <- veg[veg$year==2012,]
 veg12v <- veg12[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")]
 veg12w <- veg12[,c( "round",  "impound", "averagewater")]
 meltv12v = melt(veg12v)
-castveg12v = cast(meltv12v, impound + region~ variable, mean, fill=NA_real_,na.rm=T)
+castveg12v = cast(meltv12v, impound + area + region~ variable, mean, fill=NA_real_,na.rm=T)
 meltv12w = melt(veg12w, id=c("impound","round"))
 castveg12w = cast(meltv12w, impound ~ variable + round, mean, fill=NA_real_,na.rm=T)
 castveg12_all = cbind(castveg12v, castveg12w)
@@ -132,12 +132,11 @@ clen122 <- clen12[(clen12$impound %in% vid12r2),]
 castveg123_all = castveg12_all[(castveg12_all$impound %in% vid12r3),]
 clen123 <- clen12[(clen12$impound %in% vid12r3),]
 
-hec122 <- hec[(hec$impound %in% v122$impound),]
-hec123 <- hec[(hec$impound %in% v123$impound),]
-
 v122 <- cbind(clen122, castveg122_all)
+hec122 <- hec[(hec$impound %in% v122$impound),]
 v122 <- cbind(v122, hec122)
 v123 <- cbind(clen123, castveg123_all)
+hec123 <- hec[(hec$impound %in% v123$impound),]
 v123 <- cbind(v123, hec123)
 
 ### 2013 ###
@@ -145,7 +144,7 @@ veg13 <- veg[veg$year==2013,]
 veg13v <- veg13[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")]
 veg13w <- veg13[,c( "round",  "impound", "averagewater")]
 meltv13v = melt(veg13v)
-castveg13v = cast(meltv13v, impound + region ~ variable, mean, fill=NA_real_,na.rm=T)
+castveg13v = cast(meltv13v, impound + area+ region ~ variable, mean, fill=NA_real_,na.rm=T)
 meltv13w = melt(veg13w, id=c("impound","round"))
 castveg13w = cast(meltv13w, impound ~ variable + round, mean, fill=NA_real_,na.rm=T)
 castveg13_all = cbind(castveg13v, castveg13w)
@@ -171,18 +170,23 @@ clen133 <- clen13[(clen13$impound %in% vid13r3),]
 castveg134_all = castveg13_all[(castveg13_all$impound %in% vid13r4),]
 clen134 <- clen13[(clen13$impound %in% vid13r4),]
 
-hec131 <- hec[(hec$impound %in% v131$impound),]
-hec132 <- hec[(hec$impound %in% v132$impound),]
-hec133 <- hec[(hec$impound %in% v133$impound),]
-hec134 <- hec[(hec$impound %in% v134$impound),]
+
+
 
 v131 <- cbind(clen131, castveg131_all)
+hec131 <- hec[(hec$impound %in% v131$impound),]
 v131 <- cbind(v131, hec131)
+
 v132 <- cbind(clen132, castveg132_all)
+hec132 <- hec[(hec$impound %in% v132$impound),]
 v132 <- cbind(v132, hec132)
+
 v133 <- cbind(clen133, castveg133_all)
+hec133 <- hec[(hec$impound %in% v133$impound),]
 v133 <- cbind(v133, hec133)
+
 v134 <- cbind(clen134, castveg134_all)
+hec134 <- hec[(hec$impound %in% v134$impound),]
 v134 <- cbind(v134, hec134)
 
 ### 2014 ###
@@ -198,8 +202,8 @@ v14w <- v14w[v14w$averagewater<900,]
 v14w <- na.omit(v14w)
 v14v$woodp = ifelse(v14$wood>0,1,0)
 v14w$waterp = ifelse(v14w$averagewater>0,1,0)
-meltv14v = melt(v14v,id=c("impound","round","treat","region"), na.rm=T)
-castveg14v = cast(meltv14v, impound + treat + region ~ variable, mean, fill=NA_real_,na.rm=T)
+meltv14v = melt(v14v,id=c("impound","round","treat","region","area"), na.rm=T)
+castveg14v = cast(meltv14v, impound + area+  treat + region ~ variable, mean, fill=NA_real_,na.rm=T)
 meltv14w = melt(v14w,id=c("impound","round"), na.rm=T)
 castveg14w = cast(meltv14w, impound ~ variable + round ,na.rm=T, mean, fill=NA_real_)
 castveg14_all <- cbind(castveg14v, castveg14w)
@@ -224,18 +228,18 @@ clen143 <- clen14[(clen14$impound %in% vid14r3),]
 castveg144_all = castveg14_all[(castveg14_all$impound %in% vid14r4),]
 clen144 <- clen14[(clen14$impound %in% vid14r4),]
 
-hec141 <- hec[(hec$impound %in% v141$impound),]
-hec142 <- hec[(hec$impound %in% v142$impound),]
-hec143 <- hec[(hec$impound %in% v143$impound),]
-hec144 <- hec[(hec$impound %in% v144$impound),]
 
 v141 <- cbind(clen141, castveg141_all)
+hec141 <- hec[(hec$impound %in% v141$impound),]
 v141 <- cbind(v141, hec141)
 v142 <- cbind(clen142, castveg142_all)
+hec142 <- hec[(hec$impound %in% v142$impound),]
 v142 <- cbind(v141, hec141)
 v143 <- cbind(clen143, castveg143_all)
+hec143 <- hec[(hec$impound %in% v143$impound),]
 v143 <- cbind(v141, hec141)
 v144 <- cbind(clen144, castveg144_all)
+hec144 <- hec[(hec$impound %in% v144$impound),]
 v144 <- cbind(v141, hec141)
 
 id12r2 = intersect(b12r2$V1,v122$impound)
