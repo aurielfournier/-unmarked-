@@ -43,3 +43,10 @@ r2 <- pwr.anova.test(k=2, n=NULL, f=-e.s.treatr2, sig.level=0.05, power=.99)
 r3 <- pwr.anova.test(k=2, n=NULL, f=-e.s.treatr3, sig.level=0.05, power=.99)
 r4 <- pwr.anova.test(k=2, n=NULL, f=-e.s.treatr4, sig.level=0.05, power=.99)
 
+
+all <- pwr.t.test(n=NULL, d=e.s.treatall, sig.level=0.05, power=.99, type="paired")
+r1 <- pwr.t.test(n=NULL, d=e.s.treatr1, sig.level=0.05, power=.99, type="paired")
+r2 <- pwr.t.test(n=NULL, d=e.s.treatr2, sig.level=0.05, power=.99, type="paired")
+r3 <- pwr.t.test(n=NULL, d=e.s.treatr3, sig.level=0.05, power=.99, type="paired")
+r4 <- pwr.t.test(n=NULL, d=e.s.treatr4, sig.level=0.05, power=.99, type="paired")
+
