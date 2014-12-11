@@ -1,16 +1,12 @@
 library(unmarked)
 
 setwd("C:/Users/avanderlaar/Dropbox/data")
-birds <- read.csv("all_birds.csv",header=T) #this is a csv with a row for each unique bird observation, 
+#this is a csv with a row for each unique bird observation
+birds <- read.csv("all_birds.csv",header=T) 
 
-#pick a species
 birds <- birds[birds$species=="sora",] 
-#make nights a factor
 birds$night <- as.factor(birds$night)
-
 dist.breaks <- c(0,1,2,3,4,5,6,7,8,9,10,11,12,13) 
-
-#remember 2012 round 1 doesn't exisit
 gd12r2 <- as.data.frame(formatDistData(birds[birds$round==2&birds$year==2012,], "distance", "impound", dist.breaks, "night" ))
 gd12r3 <- as.data.frame(formatDistData(birds[birds$round==3&birds$year==2012,], "distance", "impound", dist.breaks, "night" ))
 gd13r1 <- as.data.frame(formatDistData(birds[birds$round==1&birds$year==2013,], "distance", "impound", dist.breaks, "night" ))
@@ -25,65 +21,43 @@ gd14r4 <- as.data.frame(formatDistData(birds[birds$round==4&birds$year==2014,], 
 surv <- read.csv("all_surveys.csv",header=T)
 surv <- surv[,c("year","night","round","impound","length","jdate")]
 
-surv12 <- surv[surv$year==2012,]
-#no 12r1
-surv122 <- surv12[surv12$round==2,]
-surv123 <- surv12[surv12$round==3,]
-#no 12r4
+b12r2 <- gd12r2[(rownames(gd12r2) %in% surv122$impound),] 
+b12r3 <- gd12r3[(rownames(gd12r3) %in% surv123$impound),] 
 
-surv13 <- surv[surv$year==2013,]
-surv131 <- surv13[surv13$round==1,]
-surv132 <- surv13[surv13$round==2,]
-surv133 <- surv13[surv13$round==3,]
-surv134 <- surv13[surv13$round==4,]
+b13r1 <- gd13r1[(rownames(gd13r1) %in% surv131$impound),]
+b13r2 <- gd13r2[(rownames(gd13r2) %in% surv132$impound),] 
+b13r3 <- gd13r3[(rownames(gd13r3) %in% surv133$impound),] 
+b13r4 <- gd13r4[(rownames(gd13r4) %in% surv134$impound),] 
 
-surv14 <- surv[surv$year==2014,]
-surv141 <- surv14[surv14$round==1,]
-surv142 <- surv14[surv14$round==2,]
-surv143 <- surv14[surv14$round==3,]
-surv144 <- surv14[surv14$round==4,]
+b14r1 <- gd14r1[(rownames(gd14r1) %in% surv141$impound),] 
+b14r2 <- gd14r2[(rownames(gd14r2) %in% surv142$impound),] 
+b14r3 <- gd14r3[(rownames(gd14r3) %in% surv143$impound),] 
+b14r4 <- gd14r4[(rownames(gd14r4) %in% surv144$impound),] 
 
-#no 12r1
-b12r2 <- gd12r2[(gd12r2$V1 %in% surv122$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-b12r3 <- gd12r3[(gd12r3$V1 %in% surv123$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-#no 12r4
-b13r1 <- gd13r1[(gd13r1$V1 %in% surv131$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-b13r2 <- gd13r2[(gd13r2$V1 %in% surv132$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-b13r3 <- gd13r3[(gd13r3$V1 %in% surv133$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-b13r4 <- gd13r4[(gd13r4$V1 %in% surv134$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-
-b14r1 <- gd14r1[(gd14r1$V1 %in% surv141$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-b14r2 <- gd14r2[(gd14r2$V1 %in% surv142$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-b14r3 <- gd14r3[(gd14r3$V1 %in% surv143$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-b14r4 <- gd14r4[(gd14r4$V1 %in% surv144$impound),] #this makes it so that we only have the impoundments that were surveyed during that year and round
-
-
-########################################################
-##### Covariates (in my case, vegetation variables)
-#########################################################
-setwd("C:/Users/avanderlaar/Dropbox/data")
-veg = read.csv("all_veg.csv", header=T) #a file where each row is a unique vegetation point, collected at a certain time 
-#(points are resampled throughout the season)
+# Covariates -----------------------------------------------
+veg <- read.csv("all_veg.csv", header=T) 
 hec <- read.csv('hectares.csv',header=T)
 
 ### 2012 ###
 veg12 <- veg[veg$year==2012,]
-veg12v <- veg12[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")]
-veg12w <- veg12[,c( "round",  "impound", "averagewater")]
-meltv12v = melt(veg12v)
-castveg12v = cast(meltv12v, impound + area + region~ variable, mean, fill=NA_real_,na.rm=T)
-meltv12w = melt(veg12w, id=c("impound","round"))
-castveg12w = cast(meltv12w, impound ~ variable + round, mean, fill=NA_real_,na.rm=T)
-castveg12_all = cbind(castveg12v, castveg12w)
+  
+meltv12v <- melt(veg12[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")])
+cveg12v <- cast(meltv12v, impound + area + region~ variable, mean, fill=NA_real_,na.rm=T)
 
-mlen12 <- melt(surv12, id=c("impound","round","night","year"))
+meltv12w <- melt(veg12[,c( "round",  "impound", "averagewater")], id=c("impound","round"))
+cveg12w <- cast(meltv12w, impound ~ variable + round, mean, fill=NA_real_,na.rm=T)
+
+cveg12_all <- cbind(cveg12v, cveg12w)
+
+mlen12 <- melt(surv[surv$year==2012,], id=c("impound","round","night","year"))
 clen12 <- cast(mlen12, impound ~ variable + round, mean, fill=NA_real_,na.rm=T)
 
-#remember no 12r1 or 12r4
-vid12r2 = intersect(clen12$impound,castveg12_all$impound)
-vid12r3 = intersect(clen12$impound,castveg12_all$impound)
 
-castveg122_all = castveg12_all[(castveg12_all$impound %in% vid12r2),]
+
+vid12r2 = intersect(clen12$impound,cveg12_all$impound)
+vid12r3 = intersect(clen12$impound,cveg12_all$impound)
+
+cveg122_all = cveg12_all[(cveg12_all$impound %in% vid12r2),]
 clen122 <- clen12[(clen12$impound %in% vid12r2),]
 
 castveg123_all = castveg12_all[(castveg12_all$impound %in% vid12r3),]
@@ -98,16 +72,14 @@ v123 <- cbind(v123, hec123)
 
 ### 2013 ###
 veg13 <- veg[veg$year==2013,]
-veg13v <- veg13[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")]
-veg13w <- veg13[,c( "round",  "impound", "averagewater")]
-meltv13v = melt(veg13v)
+meltv13v = melt(veg13[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")])
 castveg13v = cast(meltv13v, impound + area+ region ~ variable, mean, fill=NA_real_,na.rm=T)
-meltv13w = melt(veg13w, id=c("impound","round"))
+meltv13w = melt(veg13[,c("round",  "impound", "averagewater")], id=c("impound","round"))
 castveg13w = cast(meltv13w, impound ~ variable + round, mean, fill=NA_real_,na.rm=T)
+
 castveg13_all = cbind(castveg13v, castveg13w)
 
-
-mlen13 <- melt(surv13, id=c("impound","round","night","year"))
+mlen13 <- melt(surv[surv$year==2013,], id=c("impound","round","night","year"))
 clen13 <- cast(mlen13, impound ~ variable + round, mean, fill=NA_real_,na.rm=T)
 
 vid13r1 = intersect(clen13$impound,castveg13_all$impound)
@@ -127,9 +99,6 @@ clen133 <- clen13[(clen13$impound %in% vid13r3),]
 castveg134_all = castveg13_all[(castveg13_all$impound %in% vid13r4),]
 clen134 <- clen13[(clen13$impound %in% vid13r4),]
 
-
-
-
 v131 <- cbind(clen131, castveg131_all)
 hec131 <- hec[(hec$impound %in% v131$impound),]
 v131 <- cbind(v131, hec131)
@@ -147,25 +116,18 @@ hec134 <- hec[(hec$impound %in% v134$impound),]
 v134 <- cbind(v134, hec134)
 
 ### 2014 ###
-v14 <- veg[veg$year==2014,]
-
+v14 <- veg[veg$year==2014&veg$averagewater<900,]
 v14$treat[v14$impound=="sanctuary"|v14$impound=="scmsu2"|v14$impound=="pool2w"|v14$impound=="m10"|v14$impound=="ts2a"|v14$impound=="ts4a"|v14$impound=="ccmsu12"|v14$impound=="kt9"|v14$impound=="dc22"|v14$impound=="os23"|v14$impound=="pool i"|v14$impound=="pooli"|v14$impound=="ash"|v14$impound=="sgb"|v14$impound=="scmsu3"|v14$impound=="m11"|v14$impound=="kt2"|v14$impound=="kt6"|v14$impound=="r7"|v14$impound=="poolc"|v14$impound=="pool c"]<-"E"
-
 v14$treat[v14$impound=="sgd"|v14$impound=="rail"|v14$impound=="pool2"|v14$impound=="m13"|v14$impound=="ts6a"|v14$impound=="kt5"|v14$impound=="dc14"|v14$impound=="os21"|v14$impound=="pool e"|v14$impound=="poole"|v14$impound=="r3"|v14$impound=="dc20"|v14$impound=="dc18"|v14$impound=="ccmsu2"|v14$impound=="ccmsu1"|v14$impound=="ts8a"|v14$impound=="pool3w"]<-"L"
-
-v14v = v14[,c( "region","round","impound", "area", "int", "treat", "short","pe", "wood")]
-v14w = v14[,c( "impound","round", "averagewater")]
-v14w <- v14w[v14w$averagewater<900,]
-v14w <- na.omit(v14w)
-v14v$woodp = ifelse(v14$wood>0,1,0)
-v14w$waterp = ifelse(v14w$averagewater>0,1,0)
-meltv14v = melt(v14v,id=c("impound","round","treat","region","area"), na.rm=T)
+v14$woodp = ifelse(v14$wood>0,1,0)
+v14$waterp = ifelse(v14$averagewater>0,1,0)
+meltv14v = melt(v14[,c( "region","round","impound", "area", "int", "treat", "short","pe", "wood")],id=c("impound","round","treat","region","area"), na.rm=T)
 castveg14v = cast(meltv14v, impound + area+  treat + region ~ variable, mean, fill=NA_real_,na.rm=T)
-meltv14w = melt(v14w,id=c("impound","round"), na.rm=T)
+meltv14w = melt(na.omit(v14[,c( "impound","round", "averagewater")]),id=c("impound","round"), na.rm=T)
 castveg14w = cast(meltv14w, impound ~ variable + round ,na.rm=T, mean, fill=NA_real_)
 castveg14_all <- cbind(castveg14v, castveg14w)
 
-mlen14 <- melt(surv14, id=c("impound","round","night","year"))
+mlen14 <- melt(surv[surv$year==2014,], id=c("impound","round","night","year"))
 clen14 <- cast(mlen14, impound ~ variable + round, mean, fill=NA_real_)
 
 vid14r1 = intersect(clen14$impound,castveg14_all$impound)
