@@ -1,5 +1,11 @@
 # smooth spline of abundance estimates for 2014
 
+a12r2 <- read.csv("abundance_12r2.csv")
+a12r2 <- a12r2[,c("mean","jdate")]
+a12r3 <- read.csv("abundance_12r3.csv")
+a12r3 <- a12r3[,c("mean","jdate")]
+
+
 #a13r1 <- read.csv("abundance_13r1.csv")
 #a13r1 <- a13r1[,c("mean","jdate")]
 a13r2 <- read.csv("abundance_13r2.csv")
@@ -17,6 +23,16 @@ a14r3 <- read.csv("abundance_14r3.csv")
 a14r3 <- a14r3[,c("mean","jdate")]
 a14r4 <- read.csv("abundance_14r4.csv")
 a14r4 <- a14r4[,c("mean","jdate")]
+
+
+c12r2 <- melt(a12r2, id=c("jdate"))
+c12r2 <- cast(jdate ~ variable, data=c12r2, sum, fill=NA_real_)
+c12r3 <- melt(a12r3, id=c("jdate"))
+c12r3 <- cast(jdate ~ variable, data=c12r3, sum, fill=NA_real_)
+c12 <- rbind(c12r2, c12r3)
+spline12 = smooth.spline(c12$jdate, c12$mean, spar=.8)
+smoothdf12 = data.frame(x=spline12$x, y=spline12$y, year=2012)
+
 
 #c13r1 <- melt(a13r1, id=c("jdate"))
 #c13r1 <- cast(jdate ~ variable, data=c13r1, sum, fill=NA_real_)
@@ -48,7 +64,8 @@ smoothdf14 = data.frame(x=spline14$x, y=spline14$y, year=2014)
 
 xaxis <- data.frame(jdate=c(min(smoothdf14$x):max(smoothdf14$x)), value=rep(0))
 
-smoothdf <- rbind(smoothdf13, smoothdf14)
+smoothdf1213 <- rbind(smoothdf12, smoothdf13)
+smoothdf <- rbind(smoothdf1213, smoothdf14)
 
 smoothdf$year <- as.factor(smoothdf$year)
 
