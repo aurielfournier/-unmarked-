@@ -3,7 +3,7 @@ library(ggplot2)
 library(reshape)
 library(gridExtra)
 #read in sora data
-setwd("C:/Users/avanderlaar/Dropbox/R/Distance")
+setwd("C:/Users/avanderlaar/Dropbox/data")
 sora14r1 <- read.csv('2014r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r1 <- read.csv('2014r1_cov.csv', header=T)
