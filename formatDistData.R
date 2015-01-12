@@ -1,5 +1,10 @@
 library(unmarked)
 
+completeFun <- function(data, desiredCols) {
+  completeVec <- complete.cases(data[, desiredCols])
+  return(data[completeVec, ])
+}
+
 setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
 
 birds <- read.csv("all_birds.csv",header=T) 
@@ -52,6 +57,11 @@ veg12 <- cbind(cbind(clen12[(clen12$impound %in% intersect(clen12$impound,cveg12
 veg12r2 <- veg12[,c(1,3,6,9,10,12:22,24,27)]
 veg12r3 <- veg12[,c(1,4,7,9:10,12:22,25,27)]
 
+
+veg122 <- completeFun(veg12r2, c("length_2","area"))
+veg123 <- completeFun(veg12r3, c("length_3","area"))
+
+
 ### 2013 ###
 veg13 <- veg[veg$year==2013,]
 meltv13v = melt(veg13[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")])
@@ -69,6 +79,10 @@ veg13r2 <- veg13[,c(1,3,7,11,12,14:24,27,31)]
 veg13r3 <- veg13[,c(1,4,8,11,12,14:24,28,31)]
 veg13r4 <- veg13[,c(1,5,9,11,12,14:24,29,31)]
 
+veg131 <- completeFun(veg13r1, c("length_1","area"))
+veg132 <- completeFun(veg13r2, c("length_2","area"))
+veg133 <- completeFun(veg13r3, c("length_3","area"))
+veg134 <- completeFun(veg13r4, c("length_4","area"))
 
 ### 2014 ###
 v14 <- veg[veg$year==2014&veg$averagewater<900,]
@@ -91,57 +105,62 @@ veg14r2 <- veg14[,c(1,3,7,11:17,20,24)]
 veg14r3 <- veg14[,c(1,4,8,11:17,21,24)]
 veg14r4 <- veg14[,c(1,5,9,11:17,22,24)]
 
+veg141 <- completeFun(veg14r1, c("length_1","area"))
+veg142 <- completeFun(veg14r2, c("length_2","area"))
+veg143 <- completeFun(veg14r3, c("length_3","area"))
+veg144 <- completeFun(veg14r4, c("length_4","area"))
+
 # Create the Sora Input Files -----------------------------------------------------------------------------
-mmerge12r2 <- b12r2[(b12r2$V1 %in% intersect(b12r2$V1,v122$impound)),]
-colnames(mmerge12r2)[1] <- "impound"
+b12r2 <- cbind(impound=rownames(b12r2),b12r2)
+mmerge12r2 <- b12r2[(b12r2$impound %in% intersect(b12r2$impound,veg122$impound)),]
 write.csv(mmerge12r2, "2012r2_sora.csv")
 
-mmerge12r3 <- b12r3[(b12r3$V1 %in% intersect(b12r3$V1,v123$impound)),]
-colnames(mmerge12r3)[1] <- "impound"
+b12r3 <- cbind(impound=rownames(b12r3),b12r3)
+mmerge12r3 <- b12r3[(b12r3$impound %in% intersect(b12r3$impound,veg123$impound)),]
 write.csv(mmerge12r3, "2012r3_sora.csv", row.names=F)
 
-mmerge13r1 <- b13r1[(b13r1$V1 %in% intersect(b13r1$V1,v131$impound)),]
-colnames(mmerge13r1)[1] <- "impound"
+b13r1 <- cbind(impound=rownames(b13r1),b13r1)
+mmerge13r1 <- b13r1[(b13r1$impound %in% intersect(b13r1$impound,veg131$impound)),]
 write.csv(mmerge13r1, "2013r1_sora.csv", row.names=F)
 
-mmerge13r2 <- b13r2[(b13r2$V1 %in%  intersect(b13r2$V1,v132$impound)),]
-colnames(mmerge13r2)[1] <- "impound"
+b13r2 <- cbind(impound=rownames(b13r2),b13r2)
+mmerge13r2 <- b13r2[(b13r2$impound %in%  intersect(b13r2$impound,veg132$impound)),]
 write.csv(mmerge13r2, "2013r2_sora.csv", row.names=F)
 
-mmerge13r3 <- b13r3[(b13r3$V1 %in% intersect(b13r3$V1,v133$impound)),]
-colnames(mmerge13r3)[1] <- "impound"
+b13r3 <- cbind(impound=rownames(b13r3),b13r3)
+mmerge13r3 <- b13r3[(b13r3$impound %in% intersect(b13r3$impound,veg133$impound)),]
 write.csv(mmerge13r3, "2013r3_sora.csv", row.names=F)
 
-mmerge13r4 <- b13r4[(b13r4$V1 %in% intersect(b13r4$V1,v134$impound)),]
-colnames(mmerge13r4)[1] <- "impound"
+b13r4 <- cbind(impound=rownames(b13r4),b13r4)
+mmerge13r4 <- b13r4[(b13r4$impound %in% intersect(b13r4$impound,veg134$impound)),]
 write.csv(mmerge13r4, "2013r4_sora.csv", row.names=F)
 
-mmerge14r1 <- b14r1[(b14r1$V1 %in% intersect(b14r1$V1,v141$impound)),]
-colnames(mmerge14r1)[1] <- "impound"
+b14r1 <- cbind(impound=rownames(b42r1),b14r1)
+mmerge14r1 <- b14r1[(b14r1$impound %in% intersect(b14r1$impound,veg141$impound)),]
 write.csv(mmerge14r1, "2014r1_sora.csv", row.names=F)
 
-mmerge14r2 <- b14r2[(b14r2$V1 %in% intersect(b14r2$V1,v142$impound)),]
-colnames(mmerge14r2)[1] <- "impound"
+b14r2 <- cbind(impound=rownames(b14r2),b14r2)
+mmerge14r2 <- b14r2[(b14r2$impound %in% intersect(b14r2$impound,veg142$impound)),]
 write.csv(mmerge14r2, "2014r2_sora.csv", row.names=F)
 
-mmerge14r3 <- b14r3[(b14r3$V1 %in% intersect(b14r3$V1,v143$impound)),]
-colnames(mmerge14r3)[1] <- "impound"
+b14r3 <- cbind(impound=rownames(b14r3),b14r3)
+mmerge14r3 <- b14r3[(b14r3$impound %in% intersect(b14r3$impound,veg143$impound)),]
 write.csv(mmerge14r3, "2014r3_sora.csv", row.names=F)
 
-mmerge14r4 <- b14r4[(b14r4$V1 %in% intersect(b14r4$V1,v144$impound)),]
-colnames(mmerge14r4)[1] <- "impound"
+b14r4 <- cbind(impound=rownames(b14r4),b14r4)
+mmerge14r4 <- b14r4[(b14r4$impound %in% intersect(b14r4$impound,veg144$impound)),]
 write.csv(mmerge14r4, "2014r4_sora.csv", row.names=F)
 
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
-write.csv(v122[(v122$impound %in% intersect(b12r2$V1,v122$impound)),], "2012r2_cov.csv", row.names=F)
-write.csv(v123[(v123$impound %in% intersect(b12r3$V1,v123$impound)),], "2012r3_cov.csv", row.names=F)
-write.csv(v131[(v131$impound %in% intersect(b13r1$V1,v131$impound)),], "2013r1_cov.csv", row.names=F)
-write.csv(v132[(v132$impound %in% intersect(b13r2$V1,v132$impound)),], "2013r2_cov.csv", row.names=F)
-write.csv(v133[(v133$impound %in% intersect(b13r3$V1,v133$impound)),], "2013r3_cov.csv", row.names=F)
-write.csv(v134[(v134$impound %in% intersect(b13r4$V1,v134$impound)),], "2013r4_cov.csv", row.names=F)
-write.csv(v141[(v141$impound %in% intersect(b14r1$V1,v141$impound)),], "2014r1_cov.csv", row.names=F)
-write.csv(v142[(v142$impound %in% intersect(b14r2$V1,v142$impound)),], "2014r2_cov.csv", row.names=F)
-write.csv(v143[(v143$impound %in% intersect(b14r3$V1,v143$impound)),], "2014r3_cov.csv", row.names=F)
-write.csv(v144[(v144$impound %in% intersect(b14r4$V1,v144$impound)),], "2014r4_cov.csv", row.names=F)
+write.csv(veg122[(veg122$impound %in% intersect(b12r2$impound,veg122$impound)),], "2012r2_cov.csv", row.names=F)
+write.csv(veg123[(veg123$impound %in% intersect(b12r3$impound,veg123$impound)),], "2012r3_cov.csv", row.names=F)
+write.csv(veg131[(veg131$impound %in% intersect(b13r1$impound,veg131$impound)),], "2013r1_cov.csv", row.names=F)
+write.csv(veg132[(veg132$impound %in% intersect(b13r2$impound,veg132$impound)),], "2013r2_cov.csv", row.names=F)
+write.csv(veg133[(veg133$impound %in% intersect(b13r3$impound,veg133$impound)),], "2013r3_cov.csv", row.names=F)
+write.csv(veg134[(veg134$impound %in% intersect(b13r4$impound,veg134$impound)),], "2013r4_cov.csv", row.names=F)
+write.csv(veg141[(veg141$impound %in% intersect(b14r1$impound,veg141$impound)),], "2014r1_cov.csv", row.names=F)
+write.csv(veg142[(veg142$impound %in% intersect(b14r2$impound,veg142$impound)),], "2014r2_cov.csv", row.names=F)
+write.csv(veg143[(veg143$impound %in% intersect(b14r3$impound,veg143$impound)),], "2014r3_cov.csv", row.names=F)
+write.csv(veg144[(veg144$impound %in% intersect(b14r4$impound,veg144$impound)),], "2014r4_cov.csv", row.names=F)
 
