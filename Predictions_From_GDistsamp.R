@@ -124,7 +124,7 @@ treat14r4 = gdistsamp(lambdaformula = ~treat-1,
                           pformula = ~ 1,
                           data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
-setwd("C:/Users/avanderlaar/Dropbox/data")
+setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
 
 options(scipen=999) #disables scientific notation
 

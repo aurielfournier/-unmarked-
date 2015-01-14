@@ -1,6 +1,7 @@
 # predictions from GDistsamp 2013
+library(unmarked)
 #read in sora data
-setwd("C:/Users/avanderlaar/Dropbox/data")
+setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
 sora13r1 <- read.csv('2013r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov13r1 <- read.csv('2013r1_cov.csv', header=T)
@@ -10,7 +11,7 @@ cov13r1 <- cov13r1[,c("region","length_1","averagewater_1","impound","jdate_1","
 sora13r1 <- sora13r1[order(sora13r1$impound),]
 cov13r1 <- cov13r1[order(cov13r1$impound),]
 
-sora13r1 <- sora13r1[,2:79]
+sora13r1 <- sora13r1[,2:ncol(sora13r1)]
 
 #the distance bins
 cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) #the fartherest distance is 12
@@ -125,7 +126,7 @@ setwd("C:/Users/avanderlaar/Dropbox/data")
 options(scipen=999) #disables scientific notation
 
 ab13r1 <- ranef(reg13r1)
-abund13r1 <- data.frame(matrix(ncol=4, nrow=33))
+abund13r1 <- data.frame(matrix(ncol=4, nrow=27))
 abund13r1$X1 <- bup(ab13r1, stat="mean")
 abund13r1$X2 <- bup(ab13r1, stat="mode")
 abund13r1[,3:4] <- confint(ab13r1, level=0.9) # 90% CI

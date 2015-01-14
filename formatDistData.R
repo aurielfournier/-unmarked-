@@ -11,20 +11,31 @@ birds <- read.csv("all_birds.csv",header=T)
 birds <- birds[birds$species=="sora",] 
 birds$night <- as.factor(birds$night)
 dist.breaks <- c(0,1,2,3,4,5,6,7,8,9,10,11,12,13) 
-gd12r2 <- as.data.frame(formatDistData(birds[birds$round==2&birds$year==2012,], "distance", "impound", dist.breaks, "night" ))
-gd12r3 <- as.data.frame(formatDistData(birds[birds$round==3&birds$year==2012,], "distance", "impound", dist.breaks, "night" ))
-gd13r1 <- as.data.frame(formatDistData(birds[birds$round==1&birds$year==2013,], "distance", "impound", dist.breaks, "night" ))
-gd13r2 <- as.data.frame(formatDistData(birds[birds$round==2&birds$year==2013,], "distance", "impound", dist.breaks, "night" ))
-gd13r3 <- as.data.frame(formatDistData(birds[birds$round==3&birds$year==2013,], "distance", "impound", dist.breaks, "night" ))
-gd13r4 <- as.data.frame(formatDistData(birds[birds$round==4&birds$year==2013,], "distance", "impound", dist.breaks, "night" ))
-gd14r1 <- as.data.frame(formatDistData(birds[birds$round==1&birds$year==2014,], "distance", "impound", dist.breaks, "night" ))
-gd14r2 <- as.data.frame(formatDistData(birds[birds$round==2&birds$year==2014,], "distance", "impound", dist.breaks, "night" ))
-gd14r3 <- as.data.frame(formatDistData(birds[birds$round==3&birds$year==2014,], "distance", "impound", dist.breaks, "night" ))
-gd14r4 <- as.data.frame(formatDistData(birds[birds$round==4&birds$year==2014,], "distance", "impound", dist.breaks, "night" ))
+birds <- birds[birds$night!=4.2,]
+birds <- birds[birds$night!=4.1,]
+birds12 <- birds[birds$year==2012,]
+birds12$night <- factor(birds12$night, labels=c(1,2,3))
+birds13 <- birds[birds$year==2013,]
+birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
+birds14 <- birds[birds$year==2014,]
+birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
+
+gd12r1 <- as.data.frame(formatDistData(birds12[birds12$round==1,], "distance","impound", dist.breaks, "night"))
+gd12r2 <- as.data.frame(formatDistData(birds12[birds12$round==2,], "distance", "impound", dist.breaks, "night" ))
+gd12r3 <- as.data.frame(formatDistData(birds12[birds12$round==3,], "distance", "impound", dist.breaks, "night" ))
+gd13r1 <- as.data.frame(formatDistData(birds13[birds13$round==1,], "distance", "impound", dist.breaks, "night" ))
+gd13r2 <- as.data.frame(formatDistData(birds13[birds13$round==2,], "distance", "impound", dist.breaks, "night" ))
+gd13r3 <- as.data.frame(formatDistData(birds13[birds13$round==3,], "distance", "impound", dist.breaks, "night" ))
+gd13r4 <- as.data.frame(formatDistData(birds13[birds13$round==4,], "distance", "impound", dist.breaks, "night" ))
+gd14r1 <- as.data.frame(formatDistData(birds14[birds14$round==1,], "distance", "impound", dist.breaks, "night" ))
+gd14r2 <- as.data.frame(formatDistData(birds14[birds14$round==2,], "distance", "impound", dist.breaks, "night" ))
+gd14r3 <- as.data.frame(formatDistData(birds14[birds14$round==3,], "distance", "impound", dist.breaks, "night" ))
+gd14r4 <- as.data.frame(formatDistData(birds14[birds14$round==4,], "distance", "impound", dist.breaks, "night" ))
 
 surv <- read.csv("all_surveys.csv",header=T)
 surv <- surv[,c("year","night","round","impound","length","jdate")]
 
+b12r1 <- gd12r1[(rownames(gd12r1) %in% surv[surv$round==1&surv$year==2012,]$impound),]
 b12r2 <- gd12r2[(rownames(gd12r2) %in% surv[surv$round==2&surv$year==2012,]$impound),] 
 b12r3 <- gd12r3[(rownames(gd12r3) %in% surv[surv$round==3&surv$year==2012,]$impound),] 
 
@@ -54,10 +65,11 @@ clen12 <- cast(mlen12, impound ~ variable + round, max, fill=NA_real_,na.rm=T)
 
 veg12 <- cbind(cbind(clen12[(clen12$impound %in% intersect(clen12$impound,cveg12_all$impound)),], cveg12_all[(cveg12_all$impound %in% intersect(clen12$impound,cveg12_all$impound)),]),hec[(hec$impound %in% intersect(clen12$impound,cveg12_all$impound)),])
 
+veg12r1 <- veg12[,c(1,2,5,9,10,12:22,27)]
 veg12r2 <- veg12[,c(1,3,6,9,10,12:22,24,27)]
 veg12r3 <- veg12[,c(1,4,7,9:10,12:22,25,27)]
 
-
+veg121 <- completeFun(veg12r1, c("length_1","area"))
 veg122 <- completeFun(veg12r2, c("length_2","area"))
 veg123 <- completeFun(veg12r3, c("length_3","area"))
 
@@ -111,6 +123,10 @@ veg143 <- completeFun(veg14r3, c("length_3","area"))
 veg144 <- completeFun(veg14r4, c("length_4","area"))
 
 # Create the Sora Input Files -----------------------------------------------------------------------------
+b12r1 <- cbind(impound=rownames(b12r1),b12r1)
+mmerge12r1 <- b12r1[(b12r1$impound %in% intersect(b12r1$impound,veg121$impound)),]
+write.csv(mmerge12r1, "2012r1_sora.csv")
+
 b12r2 <- cbind(impound=rownames(b12r2),b12r2)
 mmerge12r2 <- b12r2[(b12r2$impound %in% intersect(b12r2$impound,veg122$impound)),]
 write.csv(mmerge12r2, "2012r2_sora.csv")
@@ -135,7 +151,7 @@ b13r4 <- cbind(impound=rownames(b13r4),b13r4)
 mmerge13r4 <- b13r4[(b13r4$impound %in% intersect(b13r4$impound,veg134$impound)),]
 write.csv(mmerge13r4, "2013r4_sora.csv", row.names=F)
 
-b14r1 <- cbind(impound=rownames(b42r1),b14r1)
+b14r1 <- cbind(impound=rownames(b14r1),b14r1)
 mmerge14r1 <- b14r1[(b14r1$impound %in% intersect(b14r1$impound,veg141$impound)),]
 write.csv(mmerge14r1, "2014r1_sora.csv", row.names=F)
 
@@ -153,6 +169,8 @@ write.csv(mmerge14r4, "2014r4_sora.csv", row.names=F)
 
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
+
+write.csv(veg121[(veg121$impound %in% intersect(b12r1$impound,veg121$impound)),], "2012r1_cov.csv", row.names=F)
 write.csv(veg122[(veg122$impound %in% intersect(b12r2$impound,veg122$impound)),], "2012r2_cov.csv", row.names=F)
 write.csv(veg123[(veg123$impound %in% intersect(b12r3$impound,veg123$impound)),], "2012r3_cov.csv", row.names=F)
 write.csv(veg131[(veg131$impound %in% intersect(b13r1$impound,veg131$impound)),], "2013r1_cov.csv", row.names=F)

@@ -1,5 +1,38 @@
-# predictions from GDistsamp 2013
-#read in sora data
+# predictions from GDistsamp 2012
+
+#read in the sora observations
+sora12r1 <- read.csv('2012r1_sora.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov12r1 <- read.csv('2012r1_cov.csv', header=T)
+#subset covaraites we need
+cov12r1 <- cov12r1[,c("region","length_1","impound","jdate_1","hectares")]
+# #the distance bins
+
+sora12r1 <- sora12r1[order(sora12r1$impound),]
+cov12r1 <- cov12r1[order(cov12r1$impound),]
+
+sora12r1 <- sora12r1[,3:41]
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
+#Unmarked Data Frame
+umf12r1 = unmarkedFrameGDS(y=sora12r1, 
+                           numPrimary=3,
+                           siteCovs = cov12r1,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov12r1$length_1,
+)
+
+
+reg12r1 = gdistsamp(lambdaformula = ~region-1, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
+
+
+
+
+
 
 #read in the sora observations
 sora12r2 <- read.csv('2012r2_sora.csv', header=T)
@@ -70,6 +103,19 @@ setwd("C:/Users/avanderlaar/Dropbox/data")
 
 options(scipen=999) #disables scientific notation
 
+
+ab12r1 <- ranef(reg12r1)
+abund12r1 <- data.frame(matrix(ncol=4, nrow=12))
+abund12r1$X1 <- bup(ab12r1, stat="mean")
+abund12r1$X2 <- bup(ab12r1, stat="mode")
+abund12r1[,3:4] <- confint(ab12r1, level=0.9) # 90% CI
+abund12r1$impound <- cov12r1$impound
+abund12r1$jdate <- cov12r1$jdate_1
+abund12r1$region <- cov12r1$region
+abund12r1$hectares <- cov12r1$hectares
+colnames(abund12r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
+write.csv(abund12r1, "abundance_12r1.csv")
+abund12r1
 
 ab12r2 <- ranef(reg12r2)
 abund12r2 <- data.frame(matrix(ncol=4, nrow=28))

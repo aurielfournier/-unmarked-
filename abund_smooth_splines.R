@@ -1,13 +1,18 @@
+library(ggplot2)
+library(reshape)
 # smooth spline of abundance estimates for 2014
 
+setwd("~/SourceTree/data")
+a12r1 <- read.csv("abundance_12r1.csv")
+a12r1 <- a12r1[,c("mean","jdate")]
 a12r2 <- read.csv("abundance_12r2.csv")
 a12r2 <- a12r2[,c("mean","jdate")]
 a12r3 <- read.csv("abundance_12r3.csv")
 a12r3 <- a12r3[,c("mean","jdate")]
 
 
-#a13r1 <- read.csv("abundance_13r1.csv")
-#a13r1 <- a13r1[,c("mean","jdate")]
+a13r1 <- read.csv("abundance_13r1.csv")
+a13r1 <- a13r1[,c("mean","jdate")]
 a13r2 <- read.csv("abundance_13r2.csv")
 a13r2 <- a13r2[,c("mean","jdate")]
 a13r3 <- read.csv("abundance_13r3.csv")
@@ -24,27 +29,29 @@ a14r3 <- a14r3[,c("mean","jdate")]
 a14r4 <- read.csv("abundance_14r4.csv")
 a14r4 <- a14r4[,c("mean","jdate")]
 
-
+c12r1 <- melt(a12r1, id=c("jdate"))
+c12r1 <- cast(jdate ~ variable, data=c12r1, sum, fill=NA_real_)
 c12r2 <- melt(a12r2, id=c("jdate"))
 c12r2 <- cast(jdate ~ variable, data=c12r2, sum, fill=NA_real_)
 c12r3 <- melt(a12r3, id=c("jdate"))
 c12r3 <- cast(jdate ~ variable, data=c12r3, sum, fill=NA_real_)
-c12 <- rbind(c12r2, c12r3)
+c1212 <- rbind(c12r1, c12r2)
+c12 <- rbind(c1212, c12r3)
 spline12 = smooth.spline(c12$jdate, c12$mean, spar=.8)
 smoothdf12 = data.frame(x=spline12$x, y=spline12$y, year=2012)
 
 
-#c13r1 <- melt(a13r1, id=c("jdate"))
-#c13r1 <- cast(jdate ~ variable, data=c13r1, sum, fill=NA_real_)
+c13r1 <- melt(a13r1, id=c("jdate"))
+c13r1 <- cast(jdate ~ variable, data=c13r1, sum, fill=NA_real_)
 c13r2 <- melt(a13r2, id=c("jdate"))
 c13r2 <- cast(jdate ~ variable, data=c13r2, sum, fill=NA_real_)
 c13r3 <- melt(a13r3, id=c("jdate"))
 c13r3 <- cast(jdate ~ variable, data=c13r3, sum, fill=NA_real_)
 c13r4 <- melt(a13r4, id=c("jdate"))
 c13r4 <- cast(jdate ~ variable, data=c13r4, sum, fill=NA_real_)
-#c13r12 <- rbind(c13r1, c13r2)
+c13r12 <- rbind(c13r1, c13r2)
 c13r34 <- rbind(c13r3, c13r4)
-c13 <- rbind(c13r2, c13r34)
+c13 <- rbind(c13r12, c13r34)
 spline13 = smooth.spline(c13$jdate, c13$mean, spar=.8)
 smoothdf13 = data.frame(x=spline13$x, y=spline13$y, year=2013)
 
@@ -73,7 +80,7 @@ ggplot() +
   geom_bar(data=xaxis, aes(x=jdate, y=value), position=position_dodge(), stat="identity", colour="black",size=.5) +    
   geom_line(data=smoothdf, aes(x=x, y=y, group=year, colour=year), size=2)+
   xlab("Date") +
-  ylab("Sora per hour") +
+  ylab("Sora per hectare") +
   ggtitle("Sora") +
   scale_fill_manual(values=c("2012"="#80cdc1", "2013"="#dfc27d", "2014"="#018571"))+
   scale_colour_manual(values=c("2012"="#80cdc1", "2013"="#dfc27d", "2014"="#018571"))+
