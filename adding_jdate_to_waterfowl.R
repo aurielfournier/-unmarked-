@@ -1,5 +1,5 @@
 #adding jdate to the waterfowl data
-
+setwd("~/SourceTree/data")
 dat <- read.csv('2014_waterfowl.csv')
 dat <- dat[,2:ncol(dat)]
 
@@ -14,4 +14,4 @@ for(i in 1:nrow(dates)) {juldates[i,1]<-varmonth[which(dates[i,1]==varmonth[,1])
 dat$jdate <- juldates$date
 
 
-write.csv(dat,"2014_waterfowl.csv")
+write.csv(dat,"2014_waterfowl.csv", row.names=F)
