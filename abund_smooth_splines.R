@@ -101,4 +101,40 @@ ggplot() +
         panel.grid.major.x = element_line(colour=NA),
         panel.grid.minor = element_line(colour=NA))
 
+av <- rbind(c12, c13)
+averg <- rbind(av, c14)
+
+data <- melt(averg)
+aver <- cast(jdate ~ variable, data=data, mean)
+
+splineav = smooth.spline(aver$jdate, aver$mean, spar=.7)
+smoothdfav = data.frame(x=splineav$x, y=splineav$y)
+
+ggplot() + 
+  geom_bar(data=xaxis, aes(x=jdate, y=value), position=position_dodge(), stat="identity", colour="black",size=.5) +
+  geom_line(data=smoothdf, aes(x=x, y=y, group=year, colour=year), size=2)+
+  geom_line(data=smoothdfav, aes(x=x, y=y), size=2)+
+  xlab("Date") +
+  ylab("Sora per hectare") +
+  ggtitle("Sora") +
+  scale_fill_manual(values=c("2012"="#80cdc1", "2013"="#dfc27d", "2014"="#018571"))+
+  scale_colour_manual(values=c("2012"="#80cdc1", "2013"="#dfc27d", "2014"="#018571"))+
+  theme(plot.title = element_text(colour="black",size=20), #plot title
+        axis.text.x = element_text(ang=90, colour="black", size=10), #x axis labels
+        axis.text.y = element_text(colour="black",size=10), #y axis labels
+        axis.title.x = element_blank(), #x axis title
+        axis.title.y = element_text(colour="black",size=15), #y axis title
+        legend.text = element_text(colour="black", size=15), #legend text
+        legend.title = element_blank(),#legend title
+        legend.background = element_rect(fill="white"), #legend background color
+        legend.position = "right",
+        legend.direction= "vertical",
+        legend.key = element_blank(),
+        plot.background = element_rect(fill = "white" ), #plot background color
+        panel.background = element_rect(fill = "white"), #panel background color
+        panel.grid.major.y= element_line(colour="black"), #y axis grid line color
+        panel.grid.major.x = element_line(colour=NA),
+        panel.grid.minor = element_line(colour=NA))+   
+        scale_x_continuous(breaks=seq(227,max(meltall$jdate),5),
+                                               labels=c("August 15","August 20","August 25","August 30","September 4","September 9","September 14","September 19","September 24","September 29","October 4","October 9","October 14","October 19","October 24","October 29"))
 

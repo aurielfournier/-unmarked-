@@ -1,5 +1,5 @@
 
-setwd("C:/Users/avanderlaar/Dropbox/data")
+setwd("~/SourceTree/data")
 
 library(ggplot2)
 library(reshape)
@@ -41,15 +41,22 @@ jdate32[is.na(jdate32)] <- 0
 jdate43 <-(jdate$"4"-jdate$"3")
 jdate43[is.na(jdate43)] <- 0
 
-cdat$jdate21 <- jdate21
-cdat$jdate32 <- jdate32
-cdat$jdate43 <- jdate43
+cdat$jdate21 <- as.integer(jdate21)
+cdat$jdate32 <- as.integer(jdate32)
+cdat$jdate43 <- as.integer(jdate43)
+#number of surveys
 cdat$surv <- apply(cdat[,c("jdate21","jdate32","jdate43")],1,function(x) sum(x>=1, na.rm=T))
+
 cdat$jsum <- (jdate21 + jdate32 + jdate43)
+
 cdat$rounds <- (jdate21 + jdate32 + jdate43)/cdat$surv
+
 cdat$rud_jdate <- ((cdat$"1" + cdat$"2")/2)+((cdat$"2"+cdat$"3")/2)+((cdat$"3"+cdat$"4")/2)*(cdat$rounds)
+
 cdat$rud <- ((cdat$"1" + cdat$"2")/2)+((cdat$"2"+cdat$"3")/2)+((cdat$"3"+cdat$"4")/2)
+
 cdat$rudh <- cdat$rud / cdat$hectares
+
 cdat$rud_jdateh <- cdat$rud_jdate / cdat$hectares
 
 a <- ggplot()+
