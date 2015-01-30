@@ -1,7 +1,6 @@
 #adding jdate to the waterfowl data
 setwd("~/SourceTree/data")
 dat <- read.csv('2014_waterfowl.csv')
-dat <- dat[,2:ncol(dat)]
 
 dates <- dat[,c("month","day","year")]
 
