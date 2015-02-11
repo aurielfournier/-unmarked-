@@ -1,6 +1,6 @@
 setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
 dat <- read.csv('2014_waterfowl.csv')
-dat <- dat[dat$region!="ne",]
+#dat <- dat[dat$region!="ne",]
 library(gridExtra)
 library(ggplot2)
 
