@@ -86,7 +86,28 @@ ks.test(ct$"2012",ct$"2013")
 ks.test(ct$"2012",ct$"2014")
 # p = 0.0008699
 
+m$week <-ifelse(m$x>=226&m$x<=232,1,
+                 ifelse(m$x>=233&m$x<=239,2,
+                 ifelse(m$x>=240&m$x<=246.9,3,
+                 ifelse(m$x>=247&m$x<=253.9,4,
+                 ifelse(m$x>=254&m$x<=260.9,5,
+                 ifelse(m$x>=261&m$x<=267,6,
+                 ifelse(m$x>=268&m$x<=274,7,
+                 ifelse(m$x>=275&m$x<=281,8,
+                 ifelse(m$x>=282&m$x<=288,9,
+                 ifelse(m$x>=289&m$x<=295,10,
+                 ifelse(m$x>=296&m$x<=300,11,NA)))))))))))
+
+cdat <- cast(week ~ year, data=m, mean )
+
+zero <- as.data.frame(matrix(0, nrow=2,ncol=4))
+colnames(zero) <- colnames(cdat)
+
+mo <- rbind(zero,cdat)
 
 
+ks.test(cdat12$Sora,mo$"2012")
 
+ks.test(cdat13$Sora,mo$"2013")
 
+ks.test(cdat14$Sora,mo$"2014")
