@@ -1,12 +1,12 @@
 # predictions from GDistsamp 2013
 library(unmarked)
 #read in sora data
-setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
+
 sora13r1 <- read.csv('2013r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov13r1 <- read.csv('2013r1_cov.csv', header=T)
 #subset the covariates we need
-cov13r1 <- cov13r1[,c("region","length_1","averagewater_1","impound","jdate_1","hectares")]
+cov13r1 <- cov13r1[,c("region","length_1","averagewater_1","impound","jdate_1","hectares","area")]
 
 sora13r1 <- sora13r1[order(sora13r1$impound),]
 cov13r1 <- cov13r1[order(cov13r1$impound),]
@@ -35,7 +35,7 @@ sora13r2 <- read.csv('2013r2_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov13r2 <- read.csv('2013r2_cov.csv', header=T)
 #subset covaraites we need
-cov13r2 <- cov13r2[,c("region","length_2","averagewater_2","impound","jdate_2","hectares")]
+cov13r2 <- cov13r2[,c("region","length_2","averagewater_2","impound","jdate_2","hectares","area")]
 # #the distance bins
 
 sora13r2 <- sora13r2[order(sora13r2$impound),]
@@ -66,7 +66,7 @@ sora13r3 <- read.csv("2013r3_sora.csv", header=T)
 #read in the covariate data #organized by impoundment.
 cov13r3 <- read.csv('2013r3_cov.csv', header=T)
 #subset the covariates
-cov13r3 <- cov13r3[,c("region","length_3","averagewater_3","impound","jdate_3","hectares")]
+cov13r3 <- cov13r3[,c("region","length_3","averagewater_3","impound","jdate_3","hectares","area")]
 # #the distance bins
 
 sora13r3 <- sora13r3[order(sora13r3$impound),]
@@ -97,7 +97,7 @@ sora13r4 <- read.csv('2013r4_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov13r4 <- read.csv('2013r4_cov.csv', header=T)
 #subset the covariates
-cov13r4 <- cov13r4[,c("region","length_4","averagewater_4","impound","jdate_4","hectares")]
+cov13r4 <- cov13r4[,c("region","length_4","averagewater_4","impound","jdate_4","hectares","area")]
 # the distance bins
 
 sora13r4 <- sora13r4[order(sora13r4$impound),]
@@ -121,7 +121,6 @@ reg13r4 = gdistsamp(lambdaformula = ~region-1,
                       pformula = ~ 1,
                       data = umf13r4, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
-setwd("C:/Users/avanderlaar/Dropbox/data")
 
 options(scipen=999) #disables scientific notation
 
@@ -134,9 +133,11 @@ abund13r1$impound <- cov13r1$impound
 abund13r1$jdate <- cov13r1$jdate_1
 abund13r1$region <- cov13r1$region
 abund13r1$hectares <- cov13r1$hectares
-colnames(abund13r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
-write.csv(abund13r1, "abundance_13r1.csv")
-abund13r1 
+abund13r1$area <- cov13r1$area
+abund13r1$year <- 2013
+abund13r1$round <- 1
+colnames(abund13r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
+
 
 ab13r2 <- ranef(reg13r2)
 abund13r2 <- data.frame(matrix(ncol=4, nrow=27))
@@ -147,11 +148,13 @@ abund13r2$impound <- cov13r2$impound
 abund13r2$jdate <- cov13r2$jdate_2
 abund13r2$region <- cov13r2$region
 abund13r2$hectares <- cov13r2$hectares
-colnames(abund13r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
-write.csv(abund13r2, "abundance_13r2.csv")
-abund13r2
+abund13r2$area <- cov13r2$area
+abund13r2$year <- 2013
+abund13r2$round <- 2
+colnames(abund13r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
 
-ab13r3 <- ranef(treat13r3)
+
+ab13r3 <- ranef(reg13r3)
 abund13r3 <- data.frame(matrix(ncol=4, nrow=30))
 abund13r3$X1 <- bup(ab13r3, stat="mean")
 abund13r3$X2 <- bup(ab13r3, stat="mode")
@@ -160,11 +163,13 @@ abund13r3$impound <- cov13r3$impound
 abund13r3$jdate <- cov13r3$jdate_3
 abund13r3$region <- cov13r3$region
 abund13r3$hectares <- cov13r3$hectares
-colnames(abund13r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
-write.csv(abund13r3, "abundance_13r3.csv")
-abund13r3
+abund13r3$area <- cov13r3$area
+abund13r3$year <- 2013
+abund13r3$round <- 3
+colnames(abund13r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
 
-ab13r4 <- ranef(treat13r4)
+
+ab13r4 <- ranef(reg13r4)
 abund13r4 <- data.frame(matrix(ncol=4, nrow=10))
 abund13r4$X1 <- bup(ab13r4, stat="mean")
 abund13r4$X2 <- bup(ab13r4, stat="mode")
@@ -173,6 +178,15 @@ abund13r4$impound <- cov13r4$impound
 abund13r4$jdate <- cov13r4$jdate_4
 abund13r4$region <- cov13r4$region
 abund13r4$hectares <- cov13r4$hectares
-colnames(abund13r4) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
-write.csv(abund13r4, "abundance_13r4.csv")
-abund13r4
+abund13r4$area <- cov13r4$area
+abund13r4$year <- 2013
+abund13r4$round <- 4
+colnames(abund13r4) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
+
+rr <- rbind(rbind(rbind(abund13r3,abund13r2),abund13r1),abund13r4)
+
+rr$treat <- NA
+
+rr <- rr[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")]
+
+write.csv(rr, "abundances_2013.csv", row.names=F)

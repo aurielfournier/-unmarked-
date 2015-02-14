@@ -124,7 +124,6 @@ treat14r4 = gdistsamp(lambdaformula = ~treat-1,
                           pformula = ~ 1,
                           data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
-setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
 
 options(scipen=999) #disables scientific notation
 
@@ -139,9 +138,10 @@ abund14r1$region <- cov14r1$region
 abund14r1$treat <- cov14r1$treat
 abund14r1$hectares <- cov14r1$hectares
 abund14r1$area <- cov14r1$area
-colnames(abund14r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
-write.csv(abund14r1, "abundance_14r1.csv")
-abund14r1 
+abund14r1$year <- 2014
+abund14r1$round <- 1
+colnames(abund14r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")
+ 
 
 ab14r2 <- ranef(reg14r2)
 abund14r2 <- data.frame(matrix(ncol=4, nrow=33))
@@ -154,9 +154,10 @@ abund14r2$region <- cov14r2$region
 abund14r2$treat <- cov14r2$treat
 abund14r2$hectares <- cov14r2$hectares
 abund14r2$area <- cov14r2$area
-colnames(abund14r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
-write.csv(abund14r2, "abundance_14r2.csv")
-abund14r2
+abund14r2$year <- 2014
+abund14r2$round <- 2
+colnames(abund14r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")
+
 
 ab14r3 <- ranef(treat14r3)
 abund14r3 <- data.frame(matrix(ncol=4, nrow=32))
@@ -169,9 +170,10 @@ abund14r3$region <- cov14r3$region
 abund14r3$treat <- cov14r3$treat
 abund14r3$hectares <- cov14r3$hectares
 abund14r3$area <- cov14r3$area
-colnames(abund14r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
-write.csv(abund14r3, "abundance_14r3.csv")
-abund14r3
+abund14r3$year <- 2014
+abund14r3$round <- 3
+colnames(abund14r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")
+
 
 ab14r4 <- ranef(treat14r4)
 abund14r4 <- data.frame(matrix(ncol=4, nrow=32))
@@ -184,11 +186,13 @@ abund14r4$region <- cov14r4$region
 abund14r4$treat <- cov14r4$treat
 abund14r4$hectares <- cov14r4$hectares
 abund14r4$area <- cov14r4$area
-colnames(abund14r4) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area")
-write.csv(abund14r4, "abundance_14r4.csv")
-abund14r4
+abund14r4$year <- 2014
+abund14r4$round <- 4
+colnames(abund14r4) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")
 
+rr <- rbind(rbind(rbind(abund14r4, abund14r3),abund14r2),abund14r1)
 
+write.csv(rr, "abundances_2014.csv", row.names=F)
 
 #predictions
 df14r1 <- data.frame(region = cov14r1$region,

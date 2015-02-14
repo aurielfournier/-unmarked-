@@ -5,7 +5,7 @@ sora12r1 <- read.csv('2012r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov12r1 <- read.csv('2012r1_cov.csv', header=T)
 #subset covaraites we need
-cov12r1 <- cov12r1[,c("region","length_1","impound","jdate_1","hectares")]
+cov12r1 <- cov12r1[,c("region","length_1","impound","jdate_1","hectares","area")]
 # #the distance bins
 
 sora12r1 <- sora12r1[order(sora12r1$impound),]
@@ -39,7 +39,7 @@ sora12r2 <- read.csv('2012r2_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov12r2 <- read.csv('2012r2_cov.csv', header=T)
 #subset covaraites we need
-cov12r2 <- cov12r2[,c("region","length_2","averagewater_2","impound","jdate_2","hectares")]
+cov12r2 <- cov12r2[,c("region","length_2","averagewater_2","impound","jdate_2","hectares","area")]
 # #the distance bins
 
 sora12r2 <- sora12r2[order(sora12r2$impound),]
@@ -70,7 +70,7 @@ sora12r3 <- read.csv("2012r3_sora.csv", header=T)
 #read in the covariate data #organized by impoundment.
 cov12r3 <- read.csv('2012r3_cov.csv', header=T)
 #subset the covariates
-cov12r3 <- cov12r3[,c("impound","region","length_3","averagewater_3","impound","jdate_3","hectares")]
+cov12r3 <- cov12r3[,c("impound","region","length_3","averagewater_3","impound","jdate_3","hectares","area")]
 # #the distance bins
 
 #cov12r3 <- cov12r3[(cov12r3$impound %in% sora12r3$impound),]
@@ -99,7 +99,6 @@ reg12r3 = gdistsamp(lambdaformula = ~region-1,
                     data = umf12r3, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
 
-setwd("C:/Users/avanderlaar/Dropbox/data")
 
 options(scipen=999) #disables scientific notation
 
@@ -113,9 +112,11 @@ abund12r1$impound <- cov12r1$impound
 abund12r1$jdate <- cov12r1$jdate_1
 abund12r1$region <- cov12r1$region
 abund12r1$hectares <- cov12r1$hectares
-colnames(abund12r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
-write.csv(abund12r1, "abundance_12r1.csv")
-abund12r1
+abund12r1$area <- cov12r1$area
+abund12r1$year <- 2012
+abund12r1$round <- 1
+colnames(abund12r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
+
 
 ab12r2 <- ranef(reg12r2)
 abund12r2 <- data.frame(matrix(ncol=4, nrow=28))
@@ -126,9 +127,11 @@ abund12r2$impound <- cov12r2$impound
 abund12r2$jdate <- cov12r2$jdate_2
 abund12r2$region <- cov12r2$region
 abund12r2$hectares <- cov12r2$hectares
-colnames(abund12r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
-write.csv(abund12r2, "abundance_12r2.csv")
-abund12r2
+abund12r2$area <- cov12r2$area
+abund12r2$year <- 2012
+abund12r2$round <- 2
+colnames(abund12r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
+
 
 ab12r3 <- ranef(reg12r3)
 abund12r3 <- data.frame(matrix(ncol=4, nrow=21))
@@ -139,7 +142,15 @@ abund12r3$impound <- cov12r3$impound
 abund12r3$jdate <- cov12r3$jdate_3
 abund12r3$region <- cov12r3$region
 abund12r3$hectares <- cov12r3$hectares
-colnames(abund12r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares")
-write.csv(abund12r3, "abundance_12r3.csv")
-abund12r3
+abund12r3$area <- cov12r3$area
+abund12r3$year <- 2012
+abund12r3$round <- 3
+colnames(abund12r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
 
+rr <- rbind(rbind(abund12r3,abund12r2),abund12r1)
+
+rr$treat <- NA
+
+rr <- rr[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")]
+
+write.csv(rr, "abundances_2012.csv",row.names=F)
