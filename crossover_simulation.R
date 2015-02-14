@@ -1,26 +1,61 @@
 # simulate differences in treatments
-
+library(ggplot2)
+library(gridExtra)
 #we'd expect counts of bird abundance to follow a poison distribution....I suppose anyway
-rail_e <- as.data.frame(rpois(200, lambda=50))
-rail_l <- as.data.frame(rpois(200, lambda=75))
-duck_e <- as.data.frame(rpois(200, lambda=200))
-duck_l <- as.data.frame(rpois(200, lambda=175))
-# n <- for the rails this should be 200
-# n <- for the waterfowl, 200 as well (20 surveys, 10 areas?)
 
-duck_l$treat <- "late"
-duck_e$treat <- "early"
-rail_e$treat <- "early"
-rail_l$treat <- "late"
+raillist <- list()
+region <- c("nw","nc","ne","se")
 
-names <- c("count","treat")
-colnames(rail_e) <- names
-colnames(rail_l) <- names
-colnames(duck_e) <- names
-colnames(duck_l) <- names
+for(i in region){
+    lambdae <- runif(min=30, max=70, n=2)
+    lambdal <- runif(min=20, max=50, n=2)
+    dat <- as.data.frame(rnorm(18*2, mean=lambdae[[1]],sd=lambdae[[2]]*.5))  
+      dat$region <- i
+      dat$treat <- "early"
+      datl <- as.data.frame(rnorm(15*2,mean=lambdal[[1]], sd=lambdal[[2]]*.5))
+      datl$region <- i
+      datl$treat <- "late"
+      colnames(datl) <- colnames(dat)
+      r <- rbind(dat, datl)
+      colnames(r) <- c("count","region","treat")
+    raillist[[i]] <- r
+}
 
-duck <- rbind(duck_e, duck_l)
-rail <- rbind(rail_e, rail_l)
+railbf <-do.call(rbind,raillist) 
 
-rlm <- lm(count ~ treat, data=rail)
-dlm <- lm(count ~ treat, data=duck)
+ducklist <- list()
+region <- c("nw","nc","ne","se")
+
+for(i in region){
+  lambdae <- runif(min=150, max=200, n=2)
+  lambdal <- runif(min=140, max=190, n=2)
+  dat <- as.data.frame(rnorm(20*2, mean=lambdae[[1]], sd=.25*lambdae[[2]]))  
+  dat$region <- i
+  dat$treat <- "early"
+  datl <- as.data.frame(rnorm(42*2,mean=lambdal[[1]], sd=.25*lambdal[[2]]))
+  datl$region <- i
+  datl$treat <- "late"
+  colnames(datl) <- colnames(dat)
+  r <- rbind(dat, datl)
+  colnames(r) <- c("count","region","treat")
+  ducklist[[i]] <- r
+}
+
+duckbf <-do.call(rbind,ducklist) 
+
+
+rlm <- lm(count ~ treat+region , data=railbf)
+dlm <- lm(count ~ treat+region , data=duckbf)
+
+rl <- ggplot(railbf[railbf$treat=="late",])+
+  geom_histogram(aes(x=count, group=region, fill=region),stat="bin",position="dodge")
+re <- ggplot(railbf[railbf$treat=="early",])+
+  geom_histogram(aes(x=count, group=region, fill=region),stat="bin",position="dodge")
+
+d <- ggplot(duckbf)+
+  geom_histogram(aes(x=count, group=treat, fill=treat),stat="bin", position="dodge")
+
+
+grid.arrange(re,rl, ncol=1)
+summary(rlm)
+summary(dlm)
