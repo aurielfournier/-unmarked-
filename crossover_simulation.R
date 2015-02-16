@@ -27,8 +27,8 @@ ducklist <- list()
 region <- c("nw","nc","ne","se")
 
 for(i in region){
-  lambdae <- runif(min=150, max=200, n=2)
-  lambdal <- runif(min=140, max=190, n=2)
+  lambdae <- runif(min=150, max=500, n=2)
+  lambdal <- runif(min=140, max=480, n=2)
   dat <- as.data.frame(rnorm(20*2, mean=lambdae[[1]], sd=.25*lambdae[[2]]))  
   dat$region <- i
   dat$treat <- "early"
