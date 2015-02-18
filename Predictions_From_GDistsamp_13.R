@@ -72,6 +72,7 @@ cov13r3 <- cov13r3[,c("region","length_3","averagewater_3","impound","jdate_3","
 sora13r3 <- sora13r3[order(sora13r3$impound),]
 cov13r3 <- cov13r3[order(cov13r3$impound),]
 sora13r3 <- sora13r3[,2:79]
+#cov13r3$jdate_3 <- as.factor(cov13r3$jdate_3)
 
 cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
