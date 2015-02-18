@@ -12,19 +12,19 @@ a14 <- a14[,c("mean","jdate")]
 c12 <- melt(a12, id=c("jdate"))
 c12 <- cast(jdate ~ variable, data=c12, sum, fill=NA_real_)
 
-spline12 = smooth.spline(c12$jdate, c12$mean, spar=.8)
+spline12 = smooth.spline(c12$jdate, c12$mean, spar=.6)
 smoothdf12 = data.frame(x=spline12$x, y=spline12$y, year=2012)
 
 c13 <- melt(a13, id=c("jdate"))
 c13 <- cast(jdate ~ variable, data=c13, sum, fill=NA_real_)
 
-spline13 = smooth.spline(c13$jdate, c13$mean, spar=.8)
+spline13 = smooth.spline(c13$jdate, c13$mean, spar=.6)
 smoothdf13 = data.frame(x=spline13$x, y=spline13$y, year=2013)
 
 c14 <- melt(a14, id=c("jdate"))
 c14 <- cast(jdate ~ variable, data=c14, sum, fill=NA_real_)
 
-spline14 = smooth.spline(c14$jdate, c14$mean, spar=.7)
+spline14 = smooth.spline(c14$jdate, c14$mean, spar=.6)
 smoothdf14 = data.frame(x=spline14$x, y=spline14$y, year=2014)
 
 xaxis <- data.frame(jdate=c(min(smoothdf14$x):max(smoothdf14$x)), value=rep(0))
