@@ -1,0 +1,75 @@
+---
+title: "Distance Histograms"
+author: "Auriel Fournier"
+date: "September 6, 2014"
+output: pdf_document
+---
+
+```{r}
+
+library(reshape2)
+library(reshape)
+library(ggplot2)
+setwd("~/Dropbox/Field 2014")
+
+dat<- read.csv('allbirds.csv')
+
+dat <- dat[,c("obs","distance","year")]
+mdat <- melt(dat, id=c("obs","year"))
+cdat <- cast(obs + year ~ value, data=mdat)
+
+mdat_a <- mdat[mdat$obs=="A",]
+mdat_d <- mdat[mdat$obs=="D",]
+mdat_m <- mdat[mdat$obs=="M",]
+mdat_n <- mdat[mdat$obs=="N",]
+mdat_j <- mdat[mdat$obs=="J",]
+mdat_l <- mdat[mdat$obs=="L",]
+mdat_jf <- mdat[mdat$obs=="JF",]
+
+
+a <- ggplot(mdat_a)+
+  geom_histogram(aes(x=value, group=obs),stat="bin")
+
+d <- ggplot(mdat_d)+
+  geom_histogram(aes(x=value, group=obs),stat="bin")
+m <- ggplot(mdat_m)+
+  geom_histogram(aes(x=value, group=obs),stat="bin")
+n <- ggplot(mdat_n)+
+  geom_histogram(aes(x=value, group=obs),stat="bin")
+j <- ggplot(mdat_j)+
+  geom_histogram(aes(x=value, group=obs),stat="bin")
+l <- ggplot(mdat_l)+
+  geom_histogram(aes(x=value, group=obs),stat="bin")
+jf <- ggplot(mdat_jf)+
+  geom_histogram(aes(x=value, group=obs),stat="bin")
+```
+\newpage
+```{r}
+a
+```
+\newpage
+```{r}
+d
+```
+\newpage
+```{r}
+m
+```
+\newpage
+```{r}
+n
+```
+\newpage
+```{r}
+j
+```
+\newpage
+
+```{r}
+l
+```
+\newpage
+```{r}
+jf
+```
+
