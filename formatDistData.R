@@ -5,9 +5,10 @@ completeFun <- function(data, desiredCols) {
   return(data[completeVec, ])
 }
 
-setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
+
 
 birds <- read.csv("all_birds.csv",header=T) 
+birds$jdate <- as.factor(birds$jdate)
 birds <- birds[birds$species=="sora",] 
 birds$night <- as.factor(birds$night)
 dist.breaks <- c(0,1,2,3,4,5,6,7,8,9,10,11,12,13) 
@@ -33,6 +34,7 @@ gd14r3 <- as.data.frame(formatDistData(birds14[birds14$round==3,], "distance", "
 gd14r4 <- as.data.frame(formatDistData(birds14[birds14$round==4,], "distance", "impound", dist.breaks, "night" ))
 
 surv <- read.csv("all_surveys.csv",header=T)
+surv$jdate <- as.factor(surv$jdate)
 surv <- surv[,c("year","night","round","impound","length","jdate")]
 
 b12r1 <- gd12r1[(rownames(gd12r1) %in% surv[surv$round==1&surv$year==2012,]$impound),]
