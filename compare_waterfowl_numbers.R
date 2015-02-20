@@ -1,4 +1,4 @@
-setwd("C:/Users/avanderlaar/Documents/SourceTree/data")
+
 dat <- read.csv('2014_waterfowl.csv')
 #dat <- dat[dat$region!="ne",]
 library(gridExtra)
@@ -60,4 +60,4 @@ d <- ggplot()+
 
 grid.arrange(a,b,d,ncol=1)
 
-ttest <- lm(waterfowl ~ treat*region, data=dat)
+ttest <- lm(waterfowl ~ treat, data=dat)
