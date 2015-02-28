@@ -5,7 +5,7 @@ sora12r1 <- read.csv('2012r1_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov12r1 <- read.csv('2012r1_cov.csv', header=T)
 #subset covaraites we need
-cov12r1 <- cov12r1[,c("region","length_1","impound","jdate_1","hectares","area")]
+cov12r1 <- cov12r1[,c("region","length_1","impound","jdate_1","hectares","area", "int","short","water")]
 # #the distance bins
 
 sora12r1 <- sora12r1[order(sora12r1$impound),]
@@ -24,15 +24,40 @@ umf12r1 = unmarkedFrameGDS(y=sora12r1,
 )
 
 
+null12r1 = gdistsamp(lambdaformula = ~1, 
+                   phiformula = ~1, 
+                   pformula = ~ 1,
+                   data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
+
 reg12r1 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
+area12r1 = gdistsamp(lambdaformula = ~area-1, 
+          phiformula = ~1, 
+          pformula = ~ 1,
+          data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
+reg_w12r1 =gdistsamp(lambdaformula = ~region+water-1, 
+          phiformula = ~1, 
+          pformula = ~ 1,
+          data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
+short12r1 =gdistsamp(lambdaformula = ~short-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
+short_w12r1 =gdistsamp(lambdaformula = ~short+water-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
+global12r1 =gdistsamp(lambdaformula = ~region+water+area+short-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
 #read in the sora observations
 sora12r2 <- read.csv('2012r2_sora.csv', header=T)

@@ -1,0 +1,34 @@
+---
+
+output: html_document
+---
+
+```{r}
+setwd("C:/Users/Auriel Fournier/Documents/data")
+m12 <- load("model2012.RData") 
+m13 <- load("model2013.RData")
+m14 <- load("model2014.RData")
+
+model12r1
+
+model12r2
+
+model12r3
+
+model13r1
+
+model13r2
+
+model13r3
+
+model13r4
+
+model14r1
+
+model14r2
+
+model14r3
+
+model14r4
+
+```
