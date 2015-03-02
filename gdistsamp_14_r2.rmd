@@ -84,7 +84,7 @@ area14r2d = gdistsamp(lambdaformula = ~area-1,
                       pformula = ~short- 1,
                       data = umf14r2, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
 
-reg_w14r2d =gdistsamp(lambdaformula = ~region+water-1, 
+reg_w14r2d =gdistsamp(lambdaformula = ~region+averagewater_2-1, 
                       phiformula = ~1, 
                       pformula = ~short- 1,
                       data = umf14r2, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
@@ -94,12 +94,12 @@ short14r2d =gdistsamp(lambdaformula = ~short-1,
                       pformula = ~short- 1,
                       data = umf14r2, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
 
-short_w14r2d =gdistsamp(lambdaformula = ~short+water-1, 
+short_w14r2d =gdistsamp(lambdaformula = ~short+averagewater_2-1, 
                         phiformula = ~1, 
                         pformula = ~short- 1,
                         data = umf14r2, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
 
-global14r2d =gdistsamp(lambdaformula = ~region+water+area+short-1, 
+global14r2d =gdistsamp(lambdaformula = ~region+averagewater_2+area+short-1, 
                        phiformula = ~1, 
                        pformula = ~short- 1,
                        data = umf14r2, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
