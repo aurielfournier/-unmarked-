@@ -1,5 +1,5 @@
-#adding jdate to the waterfowl data
-setwd("~/GitHub/data")
+#adding julian date to the waterfowl data
+
 dat <- read.csv('2014_waterfowl.csv')
 
 dates <- dat[,c("month","day","year")]
