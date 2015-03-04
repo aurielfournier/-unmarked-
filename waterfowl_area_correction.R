@@ -1,4 +1,4 @@
-#correcting waterfowl for hectares
+#correcting waterfowl counts for area
 library(dplyr)
 dat <- read.csv("2014_waterfowl_tidy.csv")
 cov <- read.csv("hectares.csv")
