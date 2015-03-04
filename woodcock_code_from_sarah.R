@@ -1,7 +1,7 @@
-library(unmarked)
-setwd("~/distance")
-source("data.100m.R.txt")    # load ISSJ data file 
+## this is code from Sarah Lehman. The code she originally gave me did a similar analysis on woodcock data. 
 
+library(unmarked)
+source("data.100m.R.txt")    # load ISSJ data file 
 
 ## Format data using unmarkedFrameGDS()
 # Note that it's unmarkedFrameGDS, not unmarkedFrameDS
@@ -19,8 +19,10 @@ summary(umfSpr)
 
 ## Fit models
 ## Note that the order of formulas is lambda, phi, p
-## Fall models
 
+#############
+## Fall models
+##############
 fall <- list()
 fall$Null <- gdistsamp(lambdaformula=~1, phiformula=~1, pformula=~1, 
                        umfFall, output="abund", K=200)
