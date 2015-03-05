@@ -1,5 +1,5 @@
 ```{r}
-setwd("C:/Users/Auriel Fournier/Documents/data")
+setwd("~/GitHub/data")
 # predictions from GDistsamp 2012
 library(unmarked)
 #read in the sora observations
@@ -13,11 +13,11 @@ cov12r1 <- cov12r1[,c("region","length_1","impound","jdate_1","hectares","area",
 sora12r1 <- sora12r1[order(sora12r1$impound),]
 cov12r1 <- cov12r1[order(cov12r1$impound),]
 
-sora12r1 <- sora12r1[,3:41]
+sora12r1 <- sora12r1[,3:15]
 cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
 umf12r1 = unmarkedFrameGDS(y=sora12r1, 
-                           numPrimary=3,
+                           numPrimary=1,
                            siteCovs = cov12r1,
                            survey="line", 
                            dist.breaks=cutpt,  
@@ -29,71 +29,72 @@ umf12r1 = unmarkedFrameGDS(y=sora12r1,
 null12r1 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~1,
-                     data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-reg12r1 = gdistsamp(lambdaformula = ~region-1, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+#reg12r1 = gdistsamp(lambdaformula = ~region-1, 
+#                    phiformula = ~1, 
+#                    pformula = ~ 1,
+#                    data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 area12r1 = gdistsamp(lambdaformula = ~area-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 reg_w12r1 =gdistsamp(lambdaformula = ~region+water-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 short12r1 =gdistsamp(lambdaformula = ~short-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 short_w12r1 =gdistsamp(lambdaformula = ~short+water-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
-                       data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                       data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-global12r1 =gdistsamp(lambdaformula = ~region+water+area+short-1, 
+global12r1 =gdistsamp(lambdaformula = ~region+water+area-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
-                      data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                      data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 
 reg12r1d = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~short-1,
-                    data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                    data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 area12r1d = gdistsamp(lambdaformula = ~area-1, 
                      phiformula = ~1, 
                      pformula = ~short- 1,
-                     data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 reg_w12r1d =gdistsamp(lambdaformula = ~region+water-1, 
                      phiformula = ~1, 
                      pformula = ~short- 1,
-                     data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 short12r1d =gdistsamp(lambdaformula = ~short-1, 
                      phiformula = ~1, 
                      pformula = ~short- 1,
-                     data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 short_w12r1d =gdistsamp(lambdaformula = ~short+water-1, 
                        phiformula = ~1, 
                        pformula = ~short- 1,
-                       data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                       data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 global12r1d =gdistsamp(lambdaformula = ~region+water+area+short-1, 
                       phiformula = ~1, 
                       pformula = ~short- 1,
-                      data = umf12r1, keyfun = "hazard", mixture="P",se = T, output="density",unitsOut="ha")
+                      data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 
-list12r1  = fitList(null12r1, global12r1, short_w12r1, short12r1,reg_w12r1,area12r1,reg12r1, global12r1d, short_w12r1d, short12r1d,reg_w12r1d,area12r1d,reg12r1d)
+list12r1  = fitList(null12r1, global12r1, short_w12r1, short12r1,reg_w12r1,area12r1,#reg12r1,
+                    global12r1d, short_w12r1d, short12r1d,reg_w12r1d,area12r1d,reg12r1d)
 model12r1 = modSel(list12r1)
 model12r1
 ```
