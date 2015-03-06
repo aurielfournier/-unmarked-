@@ -61,16 +61,12 @@ img {
 
 
 
-<pre class="r"><code># predictions from GDistsamp 2012
-setwd(&quot;C:/Users/Auriel Fournier/Documents/data&quot;)
+<pre class="r"><code># predictions from GDistsamp 2013 Round 2
+setwd(&quot;~/GitHub/data&quot;)
 library(unmarked)</code></pre>
-<pre><code>## Warning: package 'unmarked' was built under R version 3.0.3</code></pre>
-<pre><code>## Loading required package: reshape</code></pre>
-<pre><code>## Warning: package 'reshape' was built under R version 3.0.3</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Warning: package 'lattice' was built under R version 3.0.3</code></pre>
-<pre><code>## Loading required package: Rcpp</code></pre>
-<pre><code>## Warning: package 'Rcpp' was built under R version 3.0.3</code></pre>
+<pre><code>## Loading required package: reshape
+## Loading required package: lattice
+## Loading required package: Rcpp</code></pre>
 <pre class="r"><code>#read in the sora observations
 sora13r2 &lt;- read.csv('2013r2_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
@@ -98,37 +94,37 @@ umf13r2 = unmarkedFrameGDS(y=sora13r2,
 null13r2 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 reg13r2 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                    data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 area13r2 = gdistsamp(lambdaformula = ~area-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 reg_w13r2 =gdistsamp(lambdaformula = ~region+water-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 short13r2 =gdistsamp(lambdaformula = ~short-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 short_w13r2 =gdistsamp(lambdaformula = ~short+water-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
-                       data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                       data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 global13r2 =gdistsamp(lambdaformula = ~region+water+area+short-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
-                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 
 
@@ -136,34 +132,32 @@ global13r2 =gdistsamp(lambdaformula = ~region+water+area+short-1,
 reg13r2d = gdistsamp(lambdaformula = ~region-1, 
                      phiformula = ~1, 
                      pformula = ~short-1,
-                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 area13r2d = gdistsamp(lambdaformula = ~area-1, 
                       phiformula = ~1, 
                       pformula = ~short- 1,
-                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 reg_w13r2d =gdistsamp(lambdaformula = ~region+water-1, 
                       phiformula = ~1, 
                       pformula = ~short- 1,
-                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)</code></pre>
-<pre><code>## Warning in gdistsamp(lambdaformula = ~region + water - 1, phiformula = ~1,
-## : Hessian is singular. Try using fewer covariates and supplying starting
-## values.</code></pre>
-<pre class="r"><code>short13r2d =gdistsamp(lambdaformula = ~short-1, 
+                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+
+short13r2d =gdistsamp(lambdaformula = ~short-1, 
                       phiformula = ~1, 
                       pformula = ~short- 1,
-                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                      data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 short_w13r2d =gdistsamp(lambdaformula = ~short+water-1, 
                         phiformula = ~1, 
                         pformula = ~short- 1,
-                        data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                        data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 global13r2d =gdistsamp(lambdaformula = ~region+water+area+short-1, 
                        phiformula = ~1, 
                        pformula = ~short- 1,
-                       data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                       data = umf13r2, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 
 list13r2  = fitList(null13r2, global13r2, short_w13r2, short13r2,reg_w13r2,area13r2,reg13r2, global13r2d, short_w13r2d, short13r2d,reg_w13r2d,area13r2d,reg13r2d)</code></pre>
@@ -173,23 +167,21 @@ list13r2  = fitList(null13r2, global13r2, short_w13r2, short13r2,reg_w13r2,area1
 <pre class="r"><code>model13r2 = modSel(list13r2)</code></pre>
 <pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
 <pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
-<pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
-<pre><code>## Hessian is singular.</code></pre>
 <pre class="r"><code>model13r2</code></pre>
-<pre><code>##              nPars     AIC   delta    AICwt cumltvWt
-## global13r2d     15  478.02    0.00  9.8e-01     0.98
-## global13r2      15  486.26    8.25  1.6e-02     1.00
-## area13r2d       10  492.20   14.18  8.2e-04     1.00
-## reg13r2d         7  524.37   46.35  8.5e-11     1.00
-## reg_w13r2        8  531.41   53.39  2.5e-12     1.00
-## null13r2         4  643.10  165.08  1.4e-36     1.00
-## reg_w13r2d       8 1132.70  654.68 6.8e-143     1.00
-## short_w13r2      5 1221.66  743.64 3.3e-162     1.00
-## short_w13r2d     5 1232.54  754.52 1.4e-164     1.00
-## short13r2        4 1262.36  784.34 4.7e-171     1.00
-## short13r2d       4 1274.65  796.63 1.0e-173     1.00
-## area13r2        10 1513.29 1035.27 1.5e-225     1.00
-## reg13r2          7 1536.87 1058.85 1.2e-230     1.00</code></pre>
+<pre><code>##              nPars    AIC  delta   AICwt cumltvWt
+## global13r2      15 508.67   0.00 5.9e-01     0.59
+## global13r2d     15 510.42   1.75 2.5e-01     0.84
+## area13r2d       10 511.24   2.57 1.6e-01     1.00
+## area13r2        10 523.51  14.84 3.5e-04     1.00
+## reg13r2d         7 530.44  21.77 1.1e-05     1.00
+## reg_w13r2d       8 531.09  22.42 8.0e-06     1.00
+## reg13r2          7 537.57  28.90 3.1e-07     1.00
+## reg_w13r2        8 537.93  29.26 2.6e-07     1.00
+## null13r2         4 647.63 138.97 3.9e-31     1.00
+## short_w13r2      5 772.09 263.42 3.7e-58     1.00
+## short_w13r2d     5 774.46 265.79 1.1e-58     1.00
+## short13r2        4 783.20 274.54 1.4e-60     1.00
+## short13r2d       4 786.44 277.77 2.8e-61     1.00</code></pre>
 
 
 </div>
