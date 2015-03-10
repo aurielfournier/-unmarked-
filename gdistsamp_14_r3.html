@@ -61,8 +61,8 @@ img {
 
 
 
-<pre class="r"><code># predictions from GDistsamp 2012
-setwd(&quot;C:/Users/Auriel Fournier/Documents/data&quot;)
+<pre class="r"><code># predictions from GDistsamp 2014 round 3
+setwd(&quot;~/data&quot;)
 library(unmarked)</code></pre>
 <pre><code>## Warning: package 'unmarked' was built under R version 3.0.3</code></pre>
 <pre><code>## Loading required package: reshape</code></pre>
@@ -75,9 +75,6 @@ library(unmarked)</code></pre>
 sora14r3 &lt;- read.csv('2014r3_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r3 &lt;- read.csv('2014r3_cov.csv', header=T)
-#subset covaraites we need
-cov14r3 &lt;- cov14r3[,c(&quot;region&quot;,&quot;length_3&quot;,&quot;impound&quot;,&quot;jdate_3&quot;,&quot;hectares&quot;,&quot;area&quot;, &quot;treat&quot;,&quot;int&quot;,&quot;short&quot;,&quot;averagewater_3&quot;)]
-# #the distance bins
 
 sora14r3 &lt;- sora14r3[order(sora14r3$impound),]
 cov14r3 &lt;- cov14r3[order(cov14r3$impound),]
@@ -94,110 +91,293 @@ umf14r3 = unmarkedFrameGDS(y=sora14r3,
                            tlength=cov14r3$length_3,
 )
 
-
-null14r3 = gdistsamp(lambdaformula = ~1, 
+model14r3 &lt;- list()
+model14r3$null14r3 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-reg14r3 = gdistsamp(lambdaformula = ~region-1, 
+model14r3$reg14r3 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                    data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-reg_treat14r3 = gdistsamp(lambdaformula = ~region+treat-1, 
+model14r3$reg_treat14r3 = gdistsamp(lambdaformula = ~region+treat-1, 
                           phiformula = ~1, 
                           pformula = ~ 1,
-                          data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                          data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-area14r3 = gdistsamp(lambdaformula = ~area-1, 
+model14r3$reg_w14r3 =gdistsamp(lambdaformula = ~region+averagewater_3-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-reg_w14r3 =gdistsamp(lambdaformula = ~region+averagewater_3-1, 
+model14r3$short14r3 =gdistsamp(lambdaformula = ~short-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-short14r3 =gdistsamp(lambdaformula = ~short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
-
-short_w14r3 =gdistsamp(lambdaformula = ~short+averagewater_3-1, 
+model14r3$short_w14r3 =gdistsamp(lambdaformula = ~short+averagewater_3-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
-                       data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                       data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-treat14r3 =gdistsamp(lambdaformula = ~treat-1, 
+model14r3$treat14r3 =gdistsamp(lambdaformula = ~treat-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-
-global14r3 =gdistsamp(lambdaformula = ~region+averagewater_3+area+short+treat-1, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)</code></pre>
-<pre><code>## Warning in gdistsamp(lambdaformula = ~region + averagewater_3 + area +
-## short + : Hessian is singular. Try using fewer covariates and supplying
-## starting values.</code></pre>
-<pre class="r"><code>reg14r3d = gdistsamp(lambdaformula = ~region-1, 
+model14r3$water14r3 =gdistsamp(lambdaformula = ~averagewater_3-1, 
                      phiformula = ~1, 
-                     pformula = ~short-1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-area14r3d = gdistsamp(lambdaformula = ~area-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+model14r3$pe14r3 =gdistsamp(lambdaformula = ~pe-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-reg_w14r3d =gdistsamp(lambdaformula = ~region+averagewater_3-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+model14r3$int14r3 =gdistsamp(lambdaformula = ~int-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-short14r3d =gdistsamp(lambdaformula = ~short-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+model14r3$wood14r3 =gdistsamp(lambdaformula = ~wood-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-short_w14r3d =gdistsamp(lambdaformula = ~short+averagewater_3-1, 
-                        phiformula = ~1, 
-                        pformula = ~short- 1,
-                        data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)
+model14r3$treat_w14r3 =gdistsamp(lambdaformula = ~treat+averagewater_3-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-global14r3d =gdistsamp(lambdaformula = ~region+averagewater_3+area+short-1, 
-                       phiformula = ~1, 
-                       pformula = ~short- 1,
-                       data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;density&quot;,unitsOut=&quot;ha&quot;)</code></pre>
-<pre><code>## Warning in gdistsamp(lambdaformula = ~region + averagewater_3 + area +
-## short - : Hessian is singular. Try using fewer covariates and supplying
-## starting values.</code></pre>
-<pre class="r"><code>list14r3  = fitList(null14r3, global14r3, short_w14r3, short14r3,reg_w14r3,area14r3,reg14r3, global14r3d, short_w14r3d, short14r3d,reg_w14r3d,area14r3d,reg14r3d)</code></pre>
-<pre><code>## Warning in fitList(null14r3, global14r3, short_w14r3, short14r3,
-## reg_w14r3, : Your list was unnamed, so model names were added as object
-## names</code></pre>
-<pre class="r"><code>model14r3 = modSel(list14r3)</code></pre>
-<pre><code>## Hessian is singular.
-## Hessian is singular.</code></pre>
-<pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
-<pre class="r"><code>model14r3</code></pre>
-<pre><code>##              nPars     AIC   delta    AICwt cumltvWt
-## global14r3      19  -48.46    0.00  1.0e+00     1.00
-## area14r3        13  -15.75   32.71  7.9e-08     1.00
-## global14r3d     18   -9.98   38.48  4.4e-09     1.00
-## area14r3d       13   -0.50   47.96  3.8e-11     1.00
-## reg_w14r3        8  139.58  188.04  1.5e-41     1.00
-## reg_w14r3d       8  149.42  197.88  1.1e-43     1.00
-## reg14r3          7  160.00  208.47  5.4e-46     1.00
-## reg14r3d         7  173.47  221.94  6.4e-49     1.00
-## null14r3         4  248.17  296.63  3.9e-65     1.00
-## short_w14r3d     5 1289.67 1338.13 2.7e-291     1.00
-## short_w14r3      5 1306.38 1354.84 6.3e-295     1.00
-## short14r3d       4 1905.88 1954.34  0.0e+00     1.00
-## short14r3        4 1910.55 1959.02  0.0e+00     1.00</code></pre>
+model14r3$treat_pe14r3 =gdistsamp(lambdaformula = ~treat+pe-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$treat_wood14r3 =gdistsamp(lambdaformula = ~treat+wood-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$region_pe14r3 =gdistsamp(lambdaformula = ~region+pe-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~region + pe - 1, phiformula = ~1, :
+## Hessian is singular. Try using fewer covariates and supplying starting
+## values.</code></pre>
+<pre class="r"><code>model14r3$region_short14r3 =gdistsamp(lambdaformula = ~region+short-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+
+model14r3$region_int14r3 =gdistsamp(lambdaformula = ~region+int-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$region_wood14r3 =gdistsamp(lambdaformula = ~region+wood-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$short_treat14r3 =gdistsamp(lambdaformula = ~short+treat-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$short_int14r3 =gdistsamp(lambdaformula = ~short+int-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$int_w14r3 =gdistsamp(lambdaformula = ~int+averagewater_3-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$int_wood14r3 =gdistsamp(lambdaformula = ~int+wood-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+model14r3$int_treat14r3 =gdistsamp(lambdaformula = ~int+treat-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+
+
+list14r3  = fitList(fits=model14r3)
+(model14r3 = modSel(list14r3))</code></pre>
+<pre><code>## Hessian is singular.</code></pre>
+<pre><code>##                  nPars    AIC delta   AICwt cumltvWt
+## treat_wood14r3       7 -58.34  0.00 3.5e-01     0.35
+## null14r3             5 -56.76  1.58 1.6e-01     0.51
+## treat14r3            6 -55.97  2.37 1.1e-01     0.61
+## region_wood14r3      9 -55.96  2.37 1.1e-01     0.72
+## short_treat14r3      7 -54.93  3.40 6.3e-02     0.78
+## treat_w14r3          7 -54.38  3.96 4.8e-02     0.83
+## int_treat14r3        7 -54.22  4.11 4.5e-02     0.87
+## treat_pe14r3         7 -54.05  4.29 4.1e-02     0.92
+## reg_w14r3            9 -52.60  5.74 2.0e-02     0.94
+## reg_treat14r3        9 -52.36  5.97 1.8e-02     0.95
+## reg14r3              8 -52.23  6.11 1.6e-02     0.97
+## region_short14r3     9 -52.05  6.28 1.5e-02     0.98
+## region_int14r3       9 -50.75  7.59 7.8e-03     0.99
+## region_pe14r3        9 -50.29  8.04 6.2e-03     1.00
+## int_w14r3            6 -47.09 11.25 1.3e-03     1.00
+## short_w14r3          6 -44.32 14.01 3.2e-04     1.00
+## water14r3            5 -39.22 19.12 2.5e-05     1.00
+## short_int14r3        6 -33.98 24.35 1.8e-06     1.00
+## int_wood14r3         6 -30.87 27.47 3.8e-07     1.00
+## short14r3            5 -26.65 31.69 4.6e-08     1.00
+## int14r3              5 -24.10 34.24 1.3e-08     1.00
+## wood14r3             5  18.48 76.82 7.3e-18     1.00
+## pe14r3               5  21.58 79.92 1.5e-18     1.00</code></pre>
 
 
 </div>

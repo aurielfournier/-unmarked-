@@ -1,13 +1,13 @@
 ```{r}
 # predictions from GDistsamp 2014 round 4
-setwd("~/GitHub/data")
+setwd("~/data")
 library(unmarked)
 #read in the sora observations
 sora14r4 <- read.csv('2014r4_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 cov14r4 <- read.csv('2014r4_cov.csv', header=T)
 #subset covaraites we need
-cov14r4 <- cov14r4[,c("region","length_4","impound","jdate_4","hectares","area", "treat","int","short","averagewater_4")]
+cov14r4 <- cov14r4[,c("region","length_4","impound","jdate_4","hectares","area", "treat","pe","int","short","averagewater_4")]
 # #the distance bins
 
 sora14r4 <- sora14r4[order(sora14r4$impound),]
@@ -61,6 +61,16 @@ short_w14r4 =gdistsamp(lambdaformula = ~short+averagewater_4-1,
                        pformula = ~ 1,
                        data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
+short_pe14r4 <- gdistsamp(lambdaformula = ~short+pe-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+short_pe14r4d <- gdistsamp(lambdaformula = ~short+pe-1, 
+                       phiformula = ~1, 
+                       pformula = ~ short-1,
+                       data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
 treat14r4 =gdistsamp(lambdaformula = ~treat-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
@@ -105,7 +115,7 @@ global14r4d =gdistsamp(lambdaformula = ~region+averagewater_4+area+short-1,
                        data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 
-list14r4  = fitList(null14r4, global14r4, short_w14r4, short14r4,reg_w14r4,area14r4,reg14r4, global14r4d, short_w14r4d, short14r4d,reg_w14r4d,area14r4d,reg14r4d)
+list14r4  = fitList(null14r4, global14r4, short_w14r4, treat14r4, reg_treat14r4,short_pe14r4d, short_pe14r4, short14r4,reg_w14r4,area14r4,reg14r4, global14r4d, short_w14r4d, short14r4d,reg_w14r4d,area14r4d,reg14r4d)
 model14r4 = modSel(list14r4)
 model14r4
 ```
