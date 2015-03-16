@@ -109,7 +109,7 @@ global14r1d =gdistsamp(lambdaformula = ~region+averagewater_1+area+short-1,
                        data = umf14r1, keyfun = "hazard", mixture="P",se = T, output="abund")
 
 
-list14r1  = fitList(null14r1, global14r1, short_w14r1, short14r1,reg_w14r1,area14r1,reg14r1, global14r1d, short_w14r1d, short14r1d,reg_w14r1d,area14r1d,reg14r1d)
+list14r1  = fitList(null14r1, global14r1, short_w14r1, short14r1,reg_w14r1,area14r1,reg14r1, global14r1d, short_w14r1d, short14r1d,reg_w14r1d,area14r1d,reg14r1d,reg_treat14r1,reg_treat14r1d, treat14r1, treat14r1d)
 model14r1 = modSel(list14r1)
 model14r1
 ```
