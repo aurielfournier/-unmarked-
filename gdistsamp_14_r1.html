@@ -174,7 +174,7 @@ global14r1d =gdistsamp(lambdaformula = ~region+averagewater_1+area+short-1,
                        data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 
-list14r1  = fitList(null14r1, global14r1, short_w14r1, short14r1,reg_w14r1,area14r1,reg14r1, global14r1d, short_w14r1d, short14r1d,reg_w14r1d,area14r1d,reg14r1d)</code></pre>
+list14r1  = fitList(null14r1, global14r1, short_w14r1, short14r1,reg_w14r1,area14r1,reg14r1, global14r1d, short_w14r1d, short14r1d,reg_w14r1d,area14r1d,reg14r1d,reg_treat14r1, treat14r1)</code></pre>
 <pre><code>## Warning in fitList(null14r1, global14r1, short_w14r1, short14r1,
 ## reg_w14r1, : Your list was unnamed, so model names were added as object
 ## names</code></pre>
@@ -182,20 +182,22 @@ list14r1  = fitList(null14r1, global14r1, short_w14r1, short14r1,reg_w14r1,area1
 <pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
 <pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
 <pre class="r"><code>model14r1</code></pre>
-<pre><code>##              nPars    AIC  delta   AICwt cumltvWt
-## area14r1        13 157.52   0.00 8.7e-01     0.87
-## global14r1      19 161.41   3.89 1.2e-01     0.99
-## area14r1d       13 166.56   9.03 9.5e-03     1.00
-## global14r1d     18 174.20  16.67 2.1e-04     1.00
-## reg_w14r1        8 192.09  34.57 2.7e-08     1.00
-## reg_w14r1d       8 201.67  44.14 2.2e-10     1.00
-## reg14r1          7 205.27  47.75 3.7e-11     1.00
-## reg14r1d         7 213.59  56.07 5.8e-13     1.00
-## null14r1         4 236.95  79.42 4.9e-18     1.00
-## short_w14r1      5 237.60  80.08 3.5e-18     1.00
-## short_w14r1d     5 238.68  81.16 2.1e-18     1.00
-## short14r1d       4 286.20 128.67 9.9e-29     1.00
-## short14r1        4 287.92 130.40 4.2e-29     1.00</code></pre>
+<pre><code>##               nPars    AIC  delta   AICwt cumltvWt
+## area14r1         13 157.52   0.00 8.7e-01     0.87
+## global14r1       19 161.41   3.89 1.2e-01     0.99
+## area14r1d        13 166.56   9.03 9.5e-03     1.00
+## global14r1d      18 174.20  16.67 2.1e-04     1.00
+## reg_w14r1         8 192.09  34.57 2.7e-08     1.00
+## reg_treat14r1     8 197.00  39.47 2.3e-09     1.00
+## reg_w14r1d        8 201.67  44.14 2.2e-10     1.00
+## reg14r1           7 205.27  47.75 3.7e-11     1.00
+## reg14r1d          7 213.59  56.07 5.8e-13     1.00
+## treat14r1         5 230.70  73.18 1.1e-16     1.00
+## null14r1          4 236.95  79.42 4.9e-18     1.00
+## short_w14r1       5 237.60  80.08 3.5e-18     1.00
+## short_w14r1d      5 238.68  81.16 2.1e-18     1.00
+## short14r1d        4 286.20 128.67 9.9e-29     1.00
+## short14r1         4 287.92 130.40 4.2e-29     1.00</code></pre>
 
 
 </div>

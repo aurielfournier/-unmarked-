@@ -31,3 +31,4 @@ a <-ggplot()+
 
 
 ttest <- lm(birds_ha ~ treat, data=dat)
+ttest1 <- lm(birds_ha ~ treat+region, data=dat)
