@@ -1,11 +1,14 @@
 ```{r}
 # predictions from GDistsamp 2014 round 4
-setwd("~/data")
+setwd("~/GitHub/data")
 library(unmarked)
 #read in the sora observations
+#read in the sora observations
 sora14r4 <- read.csv('2014r4_sora.csv', header=T)
+sora14r4 <- sora14r4[!(sora14r4$impound=="ccmsu12"|sora14r4$impound=="ccmsu2"|sora14r4$impound=="ccmsu1"|sora14r4$impound=="ts2a"|sora14r4$impound=="ts4a"|sora14r4$impound=="ts6a"|sora14r4$impound=="ts8a"|sora14r4$impound=="kt2"|sora14r4$impound=="kt5"|sora14r4$impound=="kt5"|sora14r4$impound=="kt6"|sora14r4$impound=="kt9"|sora14r4$impound=="pool2"|sora14r4$impound=="pool2w"|sora14r4$impound=="pool3w"|sora14r4$impound=="m10"|sora14r4$impound=="m11"|sora14r4$impound=="m13"),]
 #read in the covariate data #organized by impoundment.
 cov14r4 <- read.csv('2014r4_cov.csv', header=T)
+cov14r4 <- cov14r4[!(cov14r4$impound=="ccmsu12"|cov14r4$impound=="ccmsu2"|cov14r4$impound=="ccmsu1"|cov14r4$impound=="ts2a"|cov14r4$impound=="ts4a"|cov14r4$impound=="ts6a"|cov14r4$impound=="ts8a"|cov14r4$impound=="kt2"|cov14r4$impound=="kt5"|cov14r4$impound=="kt5"|cov14r4$impound=="kt6"|cov14r4$impound=="kt9"|cov14r4$impound=="pool2"|cov14r4$impound=="pool2w"|cov14r4$impound=="pool3w"|cov14r4$impound=="m10"|cov14r4$impound=="m11"|cov14r4$impound=="m13"),]
 #subset covaraites we need
 cov14r4 <- cov14r4[,c("region","length_4","impound","jdate_4","hectares","area", "treat","pe","int","short","averagewater_4")]
 # #the distance bins
@@ -26,96 +29,29 @@ umf14r4 = unmarkedFrameGDS(y=sora14r4,
 )
 
 
-null14r4 = gdistsamp(lambdaformula = ~1, 
+model14r4 <- list()
+model14r4$null14r4 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-reg14r4 = gdistsamp(lambdaformula = ~region-1, 
+model14r4$reg14r4 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-reg_treat14r4 = gdistsamp(lambdaformula = ~region+treat-1, 
+model14r4$reg_treat14r4 = gdistsamp(lambdaformula = ~region+treat-1, 
                           phiformula = ~1, 
                           pformula = ~ 1,
                           data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-area14r4 = gdistsamp(lambdaformula = ~area-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-reg_w14r4 =gdistsamp(lambdaformula = ~region+averagewater_4-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-short14r4 =gdistsamp(lambdaformula = ~short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-short_w14r4 =gdistsamp(lambdaformula = ~short+averagewater_4-1, 
-                       phiformula = ~1, 
-                       pformula = ~ 1,
-                       data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-short_pe14r4 <- gdistsamp(lambdaformula = ~short+pe-1, 
-                       phiformula = ~1, 
-                       pformula = ~ 1,
-                       data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-short_pe14r4d <- gdistsamp(lambdaformula = ~short+pe-1, 
-                       phiformula = ~1, 
-                       pformula = ~ short-1,
-                       data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-treat14r4 =gdistsamp(lambdaformula = ~treat-1, 
+model14r4$treat14r4 =gdistsamp(lambdaformula = ~treat-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 
-global14r4 =gdistsamp(lambdaformula = ~region+averagewater_4+area+short+treat-1, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
+list14r4  = fitList(fits=model14r4)
+(models14r4 = modSel(list14r4))
 
-
-
-reg14r4d = gdistsamp(lambdaformula = ~region-1, 
-                     phiformula = ~1, 
-                     pformula = ~short-1,
-                     data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-area14r4d = gdistsamp(lambdaformula = ~area-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-reg_w14r4d =gdistsamp(lambdaformula = ~region+averagewater_4-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-short14r4d =gdistsamp(lambdaformula = ~short-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-short_w14r4d =gdistsamp(lambdaformula = ~short+averagewater_4-1, 
-                        phiformula = ~1, 
-                        pformula = ~short- 1,
-                        data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-global14r4d =gdistsamp(lambdaformula = ~region+averagewater_4+area+short-1, 
-                       phiformula = ~1, 
-                       pformula = ~short- 1,
-                       data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-
-list14r4  = fitList(null14r4, global14r4, short_w14r4, treat14r4, reg_treat14r4,short_pe14r4d, short_pe14r4, short14r4,reg_w14r4,area14r4,reg14r4, global14r4d, short_w14r4d, short14r4d,reg_w14r4d,area14r4d,reg14r4d)
-model14r4 = modSel(list14r4)
-model14r4
 ```

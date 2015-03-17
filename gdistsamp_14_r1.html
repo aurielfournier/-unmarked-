@@ -69,8 +69,10 @@ library(unmarked)</code></pre>
 ## Loading required package: Rcpp</code></pre>
 <pre class="r"><code>#read in the sora observations
 sora14r1 &lt;- read.csv('2014r1_sora.csv', header=T)
+sora14r1 &lt;- sora14r1[!(sora14r1$impound==&quot;ccmsu12&quot;|sora14r1$impound==&quot;ccmsu2&quot;|sora14r1$impound==&quot;ccmsu1&quot;|sora14r1$impound==&quot;ts2a&quot;|sora14r1$impound==&quot;ts4a&quot;|sora14r1$impound==&quot;ts6a&quot;|sora14r1$impound==&quot;ts8a&quot;|sora14r1$impound==&quot;kt2&quot;|sora14r1$impound==&quot;kt5&quot;|sora14r1$impound==&quot;kt5&quot;|sora14r1$impound==&quot;kt6&quot;|sora14r1$impound==&quot;kt9&quot;),]
 #read in the covariate data #organized by impoundment.
 cov14r1 &lt;- read.csv('2014r1_cov.csv', header=T)
+cov14r1 &lt;- cov14r1[!(cov14r1$impound==&quot;ccmsu12&quot;|cov14r1$impound==&quot;ccmsu2&quot;|cov14r1$impound==&quot;ccmsu1&quot;|cov14r1$impound==&quot;ts2a&quot;|cov14r1$impound==&quot;ts4a&quot;|cov14r1$impound==&quot;ts6a&quot;|cov14r1$impound==&quot;ts8a&quot;|cov14r1$impound==&quot;kt2&quot;|cov14r1$impound==&quot;kt5&quot;|cov14r1$impound==&quot;kt5&quot;|cov14r1$impound==&quot;kt6&quot;|cov14r1$impound==&quot;kt9&quot;),]
 #subset covaraites we need
 cov14r1 &lt;- cov14r1[,c(&quot;region&quot;,&quot;length_1&quot;,&quot;impound&quot;,&quot;jdate_1&quot;,&quot;hectares&quot;,&quot;area&quot;, &quot;treat&quot;,&quot;int&quot;,&quot;short&quot;,&quot;averagewater_1&quot;)]
 # #the distance bins
@@ -94,110 +96,41 @@ umf14r1 = unmarkedFrameGDS(y=sora14r1,
 )
 
 
-
-null14r1 = gdistsamp(lambdaformula = ~1, 
+model14r1 &lt;- list()
+model14r1$null14r1 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+                     data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
-reg14r1 = gdistsamp(lambdaformula = ~region-1, 
+model14r1$reg14r1 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-reg_treat14r1 = gdistsamp(lambdaformula = ~region+treat-1, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-area14r1 = gdistsamp(lambdaformula = ~area-1, 
+                    data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~region - 1, phiformula = ~1,
+## pformula = ~1, : Hessian is singular. Try using fewer covariates and
+## supplying starting values.</code></pre>
+<pre class="r"><code>model14r1$reg_treat14r1 = gdistsamp(lambdaformula = ~region+treat-1, 
+                          phiformula = ~1, 
+                          pformula = ~ 1,
+                          data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~region + treat - 1, phiformula = ~1,
+## : Hessian is singular. Try using fewer covariates and supplying starting
+## values.</code></pre>
+<pre class="r"><code>model14r1$treat14r1 =gdistsamp(lambdaformula = ~treat-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-reg_w14r1 =gdistsamp(lambdaformula = ~region+averagewater_1-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-short14r1 =gdistsamp(lambdaformula = ~short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-short_w14r1 =gdistsamp(lambdaformula = ~short+averagewater_1-1, 
-                       phiformula = ~1, 
-                       pformula = ~ 1,
-                       data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-treat14r1 =gdistsamp(lambdaformula = ~treat-1, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+                     data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 
 
-global14r1 =gdistsamp(lambdaformula = ~region+averagewater_1+area+short+treat-1, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-
-
-reg14r1d = gdistsamp(lambdaformula = ~region-1, 
-                     phiformula = ~1, 
-                     pformula = ~short-1,
-                     data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-area14r1d = gdistsamp(lambdaformula = ~area-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-reg_w14r1d =gdistsamp(lambdaformula = ~region+averagewater_1-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-short14r1d =gdistsamp(lambdaformula = ~short-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-short_w14r1d =gdistsamp(lambdaformula = ~short+averagewater_1-1, 
-                        phiformula = ~1, 
-                        pformula = ~short- 1,
-                        data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-global14r1d =gdistsamp(lambdaformula = ~region+averagewater_1+area+short-1, 
-                       phiformula = ~1, 
-                       pformula = ~short- 1,
-                       data = umf14r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-
-list14r1  = fitList(null14r1, global14r1, short_w14r1, short14r1,reg_w14r1,area14r1,reg14r1, global14r1d, short_w14r1d, short14r1d,reg_w14r1d,area14r1d,reg14r1d,reg_treat14r1, treat14r1)</code></pre>
-<pre><code>## Warning in fitList(null14r1, global14r1, short_w14r1, short14r1,
-## reg_w14r1, : Your list was unnamed, so model names were added as object
-## names</code></pre>
-<pre class="r"><code>model14r1 = modSel(list14r1)</code></pre>
-<pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
-<pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
-<pre class="r"><code>model14r1</code></pre>
-<pre><code>##               nPars    AIC  delta   AICwt cumltvWt
-## area14r1         13 157.52   0.00 8.7e-01     0.87
-## global14r1       19 161.41   3.89 1.2e-01     0.99
-## area14r1d        13 166.56   9.03 9.5e-03     1.00
-## global14r1d      18 174.20  16.67 2.1e-04     1.00
-## reg_w14r1         8 192.09  34.57 2.7e-08     1.00
-## reg_treat14r1     8 197.00  39.47 2.3e-09     1.00
-## reg_w14r1d        8 201.67  44.14 2.2e-10     1.00
-## reg14r1           7 205.27  47.75 3.7e-11     1.00
-## reg14r1d          7 213.59  56.07 5.8e-13     1.00
-## treat14r1         5 230.70  73.18 1.1e-16     1.00
-## null14r1          4 236.95  79.42 4.9e-18     1.00
-## short_w14r1       5 237.60  80.08 3.5e-18     1.00
-## short_w14r1d      5 238.68  81.16 2.1e-18     1.00
-## short14r1d        4 286.20 128.67 9.9e-29     1.00
-## short14r1         4 287.92 130.40 4.2e-29     1.00</code></pre>
+list14r1  = fitList(fits=model14r1)
+(model14r1 = modSel(list14r1))</code></pre>
+<pre><code>## Hessian is singular.
+## Hessian is singular.</code></pre>
+<pre><code>##               nPars   AIC delta AICwt cumltvWt
+## null14r1          5 68.10  0.00  0.40     0.40
+## reg14r1           8 68.47  0.37  0.33     0.73
+## treat14r1         6 70.02  1.92  0.15     0.88
+## reg_treat14r1     9 70.47  2.37  0.12     1.00</code></pre>
 
 
 </div>

@@ -1,13 +1,14 @@
 ```{r}
 # predictions from GDistsamp 2014 round 3
-setwd("~/data")
+setwd("~/GitHub/data")
 library(unmarked)
 #read in the sora observations
 sora14r3 <- read.csv('2014r3_sora.csv', header=T)
+sora14r3 <- sora14r3[!(sora14r3$impound=="ccmsu12"|sora14r3$impound=="ccmsu2"|sora14r3$impound=="ccmsu1"|sora14r3$impound=="ts2a"|sora14r3$impound=="ts4a"|sora14r3$impound=="ts6a"|sora14r3$impound=="ts8a"|sora14r3$impound=="kt2"|sora14r3$impound=="kt5"|sora14r3$impound=="kt5"|sora14r3$impound=="kt6"|sora14r3$impound=="kt9"|sora14r3$impound=="pool2"|sora14r3$impound=="pool2w"|sora14r3$impound=="pool3w"|sora14r3$impound=="m10"|sora14r3$impound=="m11"|sora14r3$impound=="m13"),]
 #read in the covariate data #organized by impoundment.
 cov14r3 <- read.csv('2014r3_cov.csv', header=T)
-
-sora14r3 <- sora14r3[order(sora14r3$impound),]
+cov14r3 <- cov14r3[!(cov14r3$impound=="ccmsu12"|cov14r3$impound=="ccmsu2"|cov14r3$impound=="ccmsu1"|cov14r3$impound=="ts2a"|cov14r3$impound=="ts4a"|cov14r3$impound=="ts6a"|cov14r3$impound=="ts8a"|cov14r3$impound=="kt2"|cov14r3$impound=="kt5"|cov14r3$impound=="kt5"|cov14r3$impound=="kt6"|cov14r3$impound=="kt9"|cov14r3$impound=="pool2"|cov14r3$impound=="pool2w"|cov14r3$impound=="pool3w"|cov14r3$impound=="m10"|cov14r3$impound=="m11"|cov14r3$impound=="m13"),]
+cov14r3 <- cov14r3[order(cov14r3$impound),]
 cov14r3 <- cov14r3[order(cov14r3$impound),]
 
 sora14r3 <- sora14r3[,2:40]
@@ -38,103 +39,7 @@ model14r3$reg_treat14r3 = gdistsamp(lambdaformula = ~region+treat-1,
                           pformula = ~ 1,
                           data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model14r3$reg_w14r3 =gdistsamp(lambdaformula = ~region+averagewater_3-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$short14r3 =gdistsamp(lambdaformula = ~short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$short_w14r3 =gdistsamp(lambdaformula = ~short+averagewater_3-1, 
-                       phiformula = ~1, 
-                       pformula = ~ 1,
-                       data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
 model14r3$treat14r3 =gdistsamp(lambdaformula = ~treat-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$water14r3 =gdistsamp(lambdaformula = ~averagewater_3-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$pe14r3 =gdistsamp(lambdaformula = ~pe-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$int14r3 =gdistsamp(lambdaformula = ~int-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$wood14r3 =gdistsamp(lambdaformula = ~wood-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$treat_w14r3 =gdistsamp(lambdaformula = ~treat+averagewater_3-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$treat_pe14r3 =gdistsamp(lambdaformula = ~treat+pe-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$treat_wood14r3 =gdistsamp(lambdaformula = ~treat+wood-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$region_pe14r3 =gdistsamp(lambdaformula = ~region+pe-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$region_short14r3 =gdistsamp(lambdaformula = ~region+short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-
-model14r3$region_int14r3 =gdistsamp(lambdaformula = ~region+int-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$region_wood14r3 =gdistsamp(lambdaformula = ~region+wood-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$short_treat14r3 =gdistsamp(lambdaformula = ~short+treat-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$short_int14r3 =gdistsamp(lambdaformula = ~short+int-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$int_w14r3 =gdistsamp(lambdaformula = ~int+averagewater_3-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$int_wood14r3 =gdistsamp(lambdaformula = ~int+wood-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model14r3$int_treat14r3 =gdistsamp(lambdaformula = ~int+treat-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
