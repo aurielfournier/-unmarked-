@@ -27,7 +27,7 @@ umf14r1 = unmarkedFrameGDS(y=sora14r1,
 )
 
 
-reg14r1 = gdistsamp(lambdaformula = ~region-1, 
+n14r1 = gdistsamp(lambdaformula = ~1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf14r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
@@ -56,7 +56,7 @@ umf14r2 = unmarkedFrameGDS(y=sora14r2,
 )
 
 
-reg14r2 = gdistsamp(lambdaformula = ~region-1, 
+n14r2 = gdistsamp(lambdaformula = ~1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf14r2, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
@@ -88,7 +88,7 @@ umf14r3 = unmarkedFrameGDS(y=sora14r3,
 
 
 
-treat14r3 = gdistsamp(lambdaformula = ~treat-1, 
+n14r3 = gdistsamp(lambdaformula = ~1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
@@ -118,7 +118,7 @@ umf14r4 = unmarkedFrameGDS(y=sora14r4,
 )
 
 
-treat14r4 = gdistsamp(lambdaformula = ~treat-1, 
+n14r4 = gdistsamp(lambdaformula = ~1, 
                           phiformula = ~1, 
                           pformula = ~ 1,
                           data = umf14r4, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
@@ -126,7 +126,7 @@ treat14r4 = gdistsamp(lambdaformula = ~treat-1,
 
 options(scipen=999) #disables scientific notation
 
-ab14r1 <- ranef(reg14r1)
+ab14r1 <- ranef(n14r1)
 abund14r1 <- data.frame(matrix(ncol=4, nrow=33))
 abund14r1$X1 <- bup(ab14r1, stat="mean")
 abund14r1$X2 <- bup(ab14r1, stat="mode")
@@ -142,7 +142,7 @@ abund14r1$round <- 1
 colnames(abund14r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")
  
 
-ab14r2 <- ranef(reg14r2)
+ab14r2 <- ranef(n14r2)
 abund14r2 <- data.frame(matrix(ncol=4, nrow=33))
 abund14r2$X1 <- bup(ab14r2, stat="mean")
 abund14r2$X2 <- bup(ab14r2, stat="mode")
@@ -158,7 +158,7 @@ abund14r2$round <- 2
 colnames(abund14r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")
 
 
-ab14r3 <- ranef(treat14r3)
+ab14r3 <- ranef(n14r3)
 abund14r3 <- data.frame(matrix(ncol=4, nrow=32))
 abund14r3$X1 <- bup(ab14r3, stat="mean")
 abund14r3$X2 <- bup(ab14r3, stat="mode")
@@ -174,7 +174,7 @@ abund14r3$round <- 3
 colnames(abund14r3) <- c("mean","mode","CI1","CI2","impound","jdate","region","treat","hectares","area","year","round")
 
 
-ab14r4 <- ranef(treat14r4)
+ab14r4 <- ranef(n14r4)
 abund14r4 <- data.frame(matrix(ncol=4, nrow=32))
 abund14r4$X1 <- bup(ab14r4, stat="mean")
 abund14r4$X2 <- bup(ab14r4, stat="mode")

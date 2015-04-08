@@ -24,40 +24,10 @@ umf12r1 = unmarkedFrameGDS(y=sora12r1,
 )
 
 
-null12r1 = gdistsamp(lambdaformula = ~1, 
+n12r1 = gdistsamp(lambdaformula = ~1, 
                    phiformula = ~1, 
                    pformula = ~ 1,
                    data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
-
-reg12r1 = gdistsamp(lambdaformula = ~region-1, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
-
-area12r1 = gdistsamp(lambdaformula = ~area-1, 
-          phiformula = ~1, 
-          pformula = ~ 1,
-          data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
-
-reg_w12r1 =gdistsamp(lambdaformula = ~region+water-1, 
-          phiformula = ~1, 
-          pformula = ~ 1,
-          data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
-
-short12r1 =gdistsamp(lambdaformula = ~short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
-
-short_w12r1 =gdistsamp(lambdaformula = ~short+water-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
-
-global12r1 =gdistsamp(lambdaformula = ~region+water+area+short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf12r1, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
 
 #read in the sora observations
 sora12r2 <- read.csv('2012r2_sora.csv', header=T)
@@ -83,7 +53,7 @@ umf12r2 = unmarkedFrameGDS(y=sora12r2,
 )
 
 
-reg12r2 = gdistsamp(lambdaformula = ~region-1, 
+n12r2 = gdistsamp(lambdaformula = ~1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf12r2, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
@@ -118,7 +88,7 @@ umf12r3 = unmarkedFrameGDS(y=sora12r3,
 
 
 
-reg12r3 = gdistsamp(lambdaformula = ~region-1, 
+n12r3 = gdistsamp(lambdaformula = ~1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf12r3, keyfun = "hazard", mixture="NB",se = T, output="density",unitsOut="ha")
@@ -128,7 +98,7 @@ reg12r3 = gdistsamp(lambdaformula = ~region-1,
 options(scipen=999) #disables scientific notation
 
 
-ab12r1 <- ranef(reg12r1)
+ab12r1 <- ranef(n12r1)
 abund12r1 <- data.frame(matrix(ncol=4, nrow=12))
 abund12r1$X1 <- bup(ab12r1, stat="mean")
 abund12r1$X2 <- bup(ab12r1, stat="mode")
@@ -143,7 +113,7 @@ abund12r1$round <- 1
 colnames(abund12r1) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
 
 
-ab12r2 <- ranef(reg12r2)
+ab12r2 <- ranef(n12r2)
 abund12r2 <- data.frame(matrix(ncol=4, nrow=28))
 abund12r2$X1 <- bup(ab12r2, stat="mean")
 abund12r2$X2 <- bup(ab12r2, stat="mode")
@@ -158,7 +128,7 @@ abund12r2$round <- 2
 colnames(abund12r2) <- c("mean","mode","CI1","CI2","impound","jdate","region","hectares","area","year","round")
 
 
-ab12r3 <- ranef(reg12r3)
+ab12r3 <- ranef(n12r3)
 abund12r3 <- data.frame(matrix(ncol=4, nrow=21))
 abund12r3$X1 <- bup(ab12r3, stat="mean")
 abund12r3$X2 <- bup(ab12r3, stat="mode")
