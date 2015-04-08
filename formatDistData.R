@@ -57,8 +57,8 @@ hec <- read.csv('hectares.csv',header=T)
 
 ### 2012 ###
 veg12 <- veg[veg$year==2012,]
-vegs <- veg12[,c(13:29,33:35)]
-vegss <- scale(vegs)
+vegss <- veg12[,c(13:29,33:35)]
+#vegss <- scale(vegs)
 veg12 <- cbind(veg12[,1:12],vegss)
 meltv12v <- melt(veg12[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")])
 cveg12v <- cast(meltv12v, impound + area + region~ variable, mean, fill=NA_real_,na.rm=T)
@@ -81,8 +81,8 @@ veg123 <- completeFun(veg12r3, c("length_3","area"))
 
 ### 2013 ###
 veg13 <- veg[veg$year==2013,]
-vegs <- veg13[,c(13:29,33:35)]
-vegss <- scale(vegs)
+vegss <- veg13[,c(13:29,33:35)]
+#vegss <- scale(vegs)
 veg13 <- cbind(veg13[,1:12],vegss)
 meltv13v = melt(veg13[,c("bv","region", "round", "habtype","point", "spp", "impound", "area", "int", "short", "tall", "up", "water", "wood", "bg", "other", "crop", "waterp", "woodp")])
 castveg13v = cast(meltv13v, impound + area+ region ~ variable, mean, fill=NA_real_,na.rm=T)
@@ -106,8 +106,8 @@ veg134 <- completeFun(veg13r4, c("length_4","area"))
 
 ### 2014 ###
 v14 <- veg[veg$year==2014&veg$averagewater<900,]
-vegs <- v14[,c(13:29,33:35)]
-vegss <- scale(vegs)
+vegss <- v14[,c(13:29,33:35)]
+#vegss <- scale(vegs)
 v14 <- cbind(v14[,1:12],vegss)
 v14$treat[v14$impound=="sanctuary"|v14$impound=="scmsu2"|v14$impound=="pool2w"|v14$impound=="m10"|v14$impound=="ts2a"|v14$impound=="ts4a"|v14$impound=="ccmsu12"|v14$impound=="kt9"|v14$impound=="dc22"|v14$impound=="os23"|v14$impound=="pool i"|v14$impound=="pooli"|v14$impound=="ash"|v14$impound=="sgb"|v14$impound=="scmsu3"|v14$impound=="m11"|v14$impound=="kt2"|v14$impound=="kt6"|v14$impound=="r7"|v14$impound=="poolc"|v14$impound=="pool c"]<-"E"
 v14$treat[v14$impound=="sgd"|v14$impound=="rail"|v14$impound=="pool2"|v14$impound=="m13"|v14$impound=="ts6a"|v14$impound=="kt5"|v14$impound=="dc14"|v14$impound=="os21"|v14$impound=="pool e"|v14$impound=="poole"|v14$impound=="r3"|v14$impound=="dc20"|v14$impound=="dc18"|v14$impound=="ccmsu2"|v14$impound=="ccmsu1"|v14$impound=="ts8a"|v14$impound=="pool3w"]<-"L"
@@ -181,15 +181,15 @@ write.csv(mmerge14r4, "2014r4_sora.csv", row.names=F)
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
 
-write.csv(veg121[(veg121$impound %in% intersect(b12r1$impound,veg121$impound)),], "2012r1_cov.csv", row.names=F)
-write.csv(veg122[(veg122$impound %in% intersect(b12r2$impound,veg122$impound)),], "2012r2_cov.csv", row.names=F)
-write.csv(veg123[(veg123$impound %in% intersect(b12r3$impound,veg123$impound)),], "2012r3_cov.csv", row.names=F)
-write.csv(veg131[(veg131$impound %in% intersect(b13r1$impound,veg131$impound)),], "2013r1_cov.csv", row.names=F)
-write.csv(veg132[(veg132$impound %in% intersect(b13r2$impound,veg132$impound)),], "2013r2_cov.csv", row.names=F)
-write.csv(veg133[(veg133$impound %in% intersect(b13r3$impound,veg133$impound)),], "2013r3_cov.csv", row.names=F)
-write.csv(veg134[(veg134$impound %in% intersect(b13r4$impound,veg134$impound)),], "2013r4_cov.csv", row.names=F)
-write.csv(veg141[(veg141$impound %in% intersect(b14r1$impound,veg141$impound)),], "2014r1_cov.csv", row.names=F)
-write.csv(veg142[(veg142$impound %in% intersect(b14r2$impound,veg142$impound)),], "2014r2_cov.csv", row.names=F)
-write.csv(veg143[(veg143$impound %in% intersect(b14r3$impound,veg143$impound)),], "2014r3_cov.csv", row.names=F)
-write.csv(veg144[(veg144$impound %in% intersect(b14r4$impound,veg144$impound)),], "2014r4_cov.csv", row.names=F)
+write.csv(veg121[(veg121$impound %in% intersect(b12r1$impound,veg121$impound)),], "2012r1_cov_nostand.csv", row.names=F)
+write.csv(veg122[(veg122$impound %in% intersect(b12r2$impound,veg122$impound)),], "2012r2_cov_nostand.csv", row.names=F)
+write.csv(veg123[(veg123$impound %in% intersect(b12r3$impound,veg123$impound)),], "2012r3_cov_nostand.csv", row.names=F)
+write.csv(veg131[(veg131$impound %in% intersect(b13r1$impound,veg131$impound)),], "2013r1_cov_nostand.csv", row.names=F)
+write.csv(veg132[(veg132$impound %in% intersect(b13r2$impound,veg132$impound)),], "2013r2_cov_nostand.csv", row.names=F)
+write.csv(veg133[(veg133$impound %in% intersect(b13r3$impound,veg133$impound)),], "2013r3_cov_nostand.csv", row.names=F)
+write.csv(veg134[(veg134$impound %in% intersect(b13r4$impound,veg134$impound)),], "2013r4_cov_nostand.csv", row.names=F)
+write.csv(veg141[(veg141$impound %in% intersect(b14r1$impound,veg141$impound)),], "2014r1_cov_nostand.csv", row.names=F)
+write.csv(veg142[(veg142$impound %in% intersect(b14r2$impound,veg142$impound)),], "2014r2_cov_nostand.csv", row.names=F)
+write.csv(veg143[(veg143$impound %in% intersect(b14r3$impound,veg143$impound)),], "2014r3_cov_nostand.csv", row.names=F)
+write.csv(veg144[(veg144$impound %in% intersect(b14r4$impound,veg144$impound)),], "2014r4_cov_nostand.csv", row.names=F)
 
