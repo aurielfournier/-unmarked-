@@ -89,92 +89,67 @@ umf12r1 = unmarkedFrameGDS(y=sora12r1,
                            unitsIn=&quot;m&quot;, 
                            tlength=cov12r1$length_1,
 )</code></pre>
-<pre class="r"><code>null12r1 = gdistsamp(lambdaformula = ~1, 
+<pre class="r"><code>model12r1 &lt;- list()
+model12r1$null12r1 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~1,
                      data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
-reg12r1 = gdistsamp(lambdaformula = ~region-1, 
+model12r1$reg12r1 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre class="r"><code>area12r1 = gdistsamp(lambdaformula = ~area-1, 
+<pre class="r"><code>model12r1$reg_w12r1 =gdistsamp(lambdaformula = ~region+water-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
-reg_w12r1 =gdistsamp(lambdaformula = ~region+water-1, 
+model12r1$reg_w_i_12r1 =gdistsamp(lambdaformula = ~region+water+region*water-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre class="r"><code>short12r1 =gdistsamp(lambdaformula = ~short-1, 
+<pre class="r"><code>model12r1$short_r12r1 =gdistsamp(lambdaformula = ~short+region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+model12r1$short_r_i_12r1 =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre class="r"><code>model12r1$short12r1 =gdistsamp(lambdaformula = ~short-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
-short_w12r1 =gdistsamp(lambdaformula = ~short+water-1, 
+model12r1$short_w12r1 =gdistsamp(lambdaformula = ~short+water-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+model12r1$short_w_i_12r1 =gdistsamp(lambdaformula = ~short+water+short*water-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre class="r"><code>global12r1 =gdistsamp(lambdaformula = ~region+water+area-1, 
+<pre class="r"><code>model12r1$global12r1 =gdistsamp(lambdaformula = ~region+water+short+region*water+water*short+region*short+region*water*short-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre><code>## Warning in gdistsamp(lambdaformula = ~region + water + area - 1,
-## phiformula = ~1, : Hessian is singular. Try using fewer covariates and
-## supplying starting values.</code></pre>
-<pre class="r"><code>reg12r1d = gdistsamp(lambdaformula = ~region-1, 
-                    phiformula = ~1, 
-                    pformula = ~short-1,
-                    data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre class="r"><code>area12r1d = gdistsamp(lambdaformula = ~area-1, 
-                     phiformula = ~1, 
-                     pformula = ~short- 1,
-                     data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-reg_w12r1d =gdistsamp(lambdaformula = ~region+water-1, 
-                     phiformula = ~1, 
-                     pformula = ~short- 1,
-                     data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre class="r"><code>short12r1d =gdistsamp(lambdaformula = ~short-1, 
-                     phiformula = ~1, 
-                     pformula = ~short- 1,
-                     data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-short_w12r1d =gdistsamp(lambdaformula = ~short+water-1, 
-                       phiformula = ~1, 
-                       pformula = ~short- 1,
-                       data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre class="r"><code>global12r1d =gdistsamp(lambdaformula = ~region+water+area+short-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf12r1, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre><code>## Warning in gdistsamp(lambdaformula = ~region + water + area + short - 1, :
-## Hessian is singular. Try using fewer covariates and supplying starting
-## values.</code></pre>
-<pre class="r"><code>list12r1  = fitList(null12r1, global12r1, short_w12r1, short12r1,reg_w12r1,area12r1,reg12r1,
-                    global12r1d, short_w12r1d, short12r1d,reg_w12r1d,area12r1d,reg12r1d)</code></pre>
-<pre><code>## Warning in fitList(null12r1, global12r1, short_w12r1, short12r1,
-## reg_w12r1, : Your list was unnamed, so model names were added as object
-## names</code></pre>
+<pre class="r"><code>list12r1  = fitList(model12r1)</code></pre>
+<pre><code>## Warning in fitList(model12r1): If supplying a list of fits, use fits =
+## 'mylist'</code></pre>
 <pre class="r"><code>model12r1 = modSel(list12r1)</code></pre>
-<pre><code>## Hessian is singular.
-## Hessian is singular.</code></pre>
+<pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
 <pre class="r"><code>model12r1</code></pre>
-<pre><code>##              nPars    AIC  delta   AICwt cumltvWt
-## global12r1d     12 -79.42   0.00 2.6e-01     0.26
-## reg_w12r1        7 -79.02   0.39 2.1e-01     0.47
-## reg_w12r1d       7 -78.54   0.87 1.7e-01     0.64
-## global12r1      11 -78.24   1.17 1.4e-01     0.78
-## area12r1         7 -77.89   1.53 1.2e-01     0.90
-## area12r1d        7 -76.75   2.67 6.8e-02     0.97
-## reg12r1          6 -74.35   5.07 2.0e-02     0.99
-## reg12r1d         6 -73.27   6.14 1.2e-02     1.00
-## null12r1         3 -32.34  47.08 1.5e-11     1.00
-## short_w12r1d     4  18.67  98.08 1.3e-22     1.00
-## short_w12r1      4  18.81  98.22 1.2e-22     1.00
-## short12r1        3 124.92 204.34 1.1e-45     1.00
-## short12r1d       3 125.95 205.36 6.6e-46     1.00</code></pre>
+<pre><code>##                nPars    AIC  delta   AICwt cumltvWt
+## reg_w12r1          7 -79.02   0.00 8.0e-01     0.80
+## reg_w_i_12r1      10 -74.37   4.65 7.8e-02     0.88
+## reg12r1            6 -74.35   4.68 7.7e-02     0.96
+## short_r12r1        7 -72.78   6.24 3.5e-02     0.99
+## short_r_i_12r1    10 -69.05   9.97 5.5e-03     1.00
+## global12r1        18 -68.57  10.46 4.3e-03     1.00
+## short_w_i_12r1     5 -39.35  39.67 1.9e-09     1.00
+## null12r1           3 -32.34  46.68 5.8e-11     1.00
+## short_w12r1        4  18.81  97.83 4.6e-22     1.00
+## short12r1          3 124.92 203.94 4.1e-45     1.00</code></pre>
 
 
 </div>

@@ -22,29 +22,68 @@ umf14r3 = unmarkedFrameGDS(y=sora14r3,
                            unitsIn="m", 
                            tlength=cov14r3$length_3,
 )
+```
+
+```{r}
 
 model14r3 <- list()
 model14r3$null14r3 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                     pformula = ~1,
+                     data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
 
 model14r3$reg14r3 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                    data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+```
+```{r}
 
-model14r3$reg_treat14r3 = gdistsamp(lambdaformula = ~region+treat-1, 
-                          phiformula = ~1, 
-                          pformula = ~ 1,
-                          data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model14r3$treat14r3 =gdistsamp(lambdaformula = ~treat-1, 
+model14r3$reg_w14r3 =gdistsamp(lambdaformula = ~region+averagewater_3-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r3, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                     data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+
+model14r3$reg_w_i_14r3 =gdistsamp(lambdaformula = ~region+averagewater_3+region*averagewater_3-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+```
+```{r}
+model14r3$short_r14r3 =gdistsamp(lambdaformula = ~short+region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+model14r3$short_r_i_14r3 =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
 
 
+```{r}
+model14r3$short14r3 =gdistsamp(lambdaformula = ~short-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+
+model14r3$short_w14r3 =gdistsamp(lambdaformula = ~short+averagewater_3-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+model14r3$short_w_i_14r3 =gdistsamp(lambdaformula = ~short+averagewater_3+short*averagewater_3-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+```
+```{r}
+model14r3$global14r3 =gdistsamp(lambdaformula = ~region+averagewater_3+short+region*averagewater_3+averagewater_3*short+region*short+region*averagewater_3*short-1, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf14r3, keyfun = "hazard", mixture="P",se = T, output="abund")
+
+```
+```{r}
 list14r3  = fitList(fits=model14r3)
 (model14r3 = modSel(list14r3))
 

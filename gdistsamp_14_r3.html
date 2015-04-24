@@ -86,43 +86,87 @@ umf14r3 = unmarkedFrameGDS(y=sora14r3,
                            dist.breaks=cutpt,  
                            unitsIn=&quot;m&quot;, 
                            tlength=cov14r3$length_3,
-)
-
-model14r3 &lt;- list()
+)</code></pre>
+<pre class="r"><code>model14r3 &lt;- list()
 model14r3$null14r3 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+                     pformula = ~1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
 model14r3$reg14r3 = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+                    data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
 <pre><code>## Warning in gdistsamp(lambdaformula = ~region - 1, phiformula = ~1,
 ## pformula = ~1, : Hessian is singular. Try using fewer covariates and
 ## supplying starting values.</code></pre>
-<pre class="r"><code>model14r3$reg_treat14r3 = gdistsamp(lambdaformula = ~region+treat-1, 
-                          phiformula = ~1, 
-                          pformula = ~ 1,
-                          data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre><code>## Warning in gdistsamp(lambdaformula = ~region + treat - 1, phiformula = ~1,
-## : Hessian is singular. Try using fewer covariates and supplying starting
-## values.</code></pre>
-<pre class="r"><code>model14r3$treat14r3 =gdistsamp(lambdaformula = ~treat-1, 
+<pre class="r"><code>model14r3$reg_w14r3 =gdistsamp(lambdaformula = ~region+averagewater_3-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~region + averagewater_3 - 1,
+## phiformula = ~1, : Hessian is singular. Try using fewer covariates and
+## supplying starting values.</code></pre>
+<pre class="r"><code>model14r3$reg_w_i_14r3 =gdistsamp(lambdaformula = ~region+averagewater_3+region*averagewater_3-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~region + averagewater_3 + region * :
+## Hessian is singular. Try using fewer covariates and supplying starting
+## values.</code></pre>
+<pre class="r"><code>model14r3$short_r14r3 =gdistsamp(lambdaformula = ~short+region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~short + region - 1, phiformula = ~1,
+## : Hessian is singular. Try using fewer covariates and supplying starting
+## values.</code></pre>
+<pre class="r"><code>model14r3$short_r_i_14r3 =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~short + region + short * region - :
+## Hessian is singular. Try using fewer covariates and supplying starting
+## values.</code></pre>
+<pre class="r"><code>model14r3$short14r3 =gdistsamp(lambdaformula = ~short-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
-
-list14r3  = fitList(fits=model14r3)
+model14r3$short_w14r3 =gdistsamp(lambdaformula = ~short+averagewater_3-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+model14r3$short_w_i_14r3 =gdistsamp(lambdaformula = ~short+averagewater_3+short*averagewater_3-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre class="r"><code>model14r3$global14r3 =gdistsamp(lambdaformula = ~region+averagewater_3+short+region*averagewater_3+averagewater_3*short+region*short+region*averagewater_3*short-1, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf14r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = ~region + averagewater_3 + short + :
+## Hessian is singular. Try using fewer covariates and supplying starting
+## values.</code></pre>
+<pre class="r"><code>list14r3  = fitList(fits=model14r3)
 (model14r3 = modSel(list14r3))</code></pre>
 <pre><code>## Hessian is singular.
+## Hessian is singular.
+## Hessian is singular.
+## Hessian is singular.
+## Hessian is singular.
 ## Hessian is singular.</code></pre>
-<pre><code>##               nPars     AIC delta AICwt cumltvWt
-## null14r3          5 -130.17  0.00 0.650     0.65
-## treat14r3         6 -128.63  1.54 0.301     0.95
-## reg14r3           8 -124.22  5.95 0.033     0.98
-## reg_treat14r3     9 -122.64  7.53 0.015     1.00</code></pre>
+<pre><code>##                nPars    AIC  delta    AICwt cumltvWt
+## short_r_i_14r3    11 -26.89   0.00  5.4e-01     0.54
+## global14r3        19 -26.58   0.31  4.6e-01     1.00
+## short_r14r3        8  29.22  56.11  3.5e-13     1.00
+## reg14r3            7  29.37  56.27  3.3e-13     1.00
+## null14r3           4  30.30  57.20  2.0e-13     1.00
+## reg_w14r3          8  31.20  58.09  1.3e-13     1.00
+## reg_w_i_14r3      11  37.06  63.95  7.0e-15     1.00
+## short_w_i_14r3     6 632.36 659.25 3.8e-144     1.00
+## short_w14r3        5 637.17 664.06 3.4e-145     1.00
+## short14r3          4 831.78 858.67 1.9e-187     1.00</code></pre>
 
 
 </div>

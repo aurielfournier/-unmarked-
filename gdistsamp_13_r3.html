@@ -88,99 +88,67 @@ umf13r3 = unmarkedFrameGDS(y=sora13r3,
                            dist.breaks=cutpt,  
                            unitsIn=&quot;m&quot;, 
                            tlength=cov13r3$length_3,
-)
-
-
-null13r3 = gdistsamp(lambdaformula = ~1, 
+)</code></pre>
+<pre class="r"><code>model13r3 &lt;- list()
+model13r3$null13r3 = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
-
-reg13r3 = gdistsamp(lambdaformula = ~region-1, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
-
-area13r3 = gdistsamp(lambdaformula = ~area-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
-
-reg_w13r3 =gdistsamp(lambdaformula = ~region+water-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
-
-short13r3 =gdistsamp(lambdaformula = ~short-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
-
-short_w13r3 =gdistsamp(lambdaformula = ~short+water-1, 
-                       phiformula = ~1, 
-                       pformula = ~ 1,
-                       data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
-
-global13r3 =gdistsamp(lambdaformula = ~region+water+area+short-1, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
-
-
-
-reg13r3d = gdistsamp(lambdaformula = ~region-1, 
-                     phiformula = ~1, 
-                     pformula = ~short-1,
+                     pformula = ~1,
                      data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
-area13r3d = gdistsamp(lambdaformula = ~area-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+model13r3$reg13r3 = gdistsamp(lambdaformula = ~region-1, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre class="r"><code>model13r3$reg_w13r3 =gdistsamp(lambdaformula = ~region+water-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
-reg_w13r3d =gdistsamp(lambdaformula = ~region+water-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+model13r3$reg_w_i_13r3 =gdistsamp(lambdaformula = ~region+water+region*water-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre class="r"><code>model13r3$short_r13r3 =gdistsamp(lambdaformula = ~short+region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
+model13r3$short_r_i_13r3 =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre class="r"><code>model13r3$short13r3 =gdistsamp(lambdaformula = ~short-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
 
-short13r3d =gdistsamp(lambdaformula = ~short-1, 
-                      phiformula = ~1, 
-                      pformula = ~short- 1,
-                      data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-short_w13r3d =gdistsamp(lambdaformula = ~short+water-1, 
-                        phiformula = ~1, 
-                        pformula = ~short- 1,
-                        data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-global13r3d =gdistsamp(lambdaformula = ~region+water+area+short-1, 
+model13r3$short_w13r3 =gdistsamp(lambdaformula = ~short+water-1, 
                        phiformula = ~1, 
-                       pformula = ~short- 1,
+                       pformula = ~ 1,
                        data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)
-
-
-list13r3  = fitList(null13r3, global13r3, short_w13r3, short13r3,reg_w13r3,area13r3,reg13r3, global13r3d, short_w13r3d, short13r3d,reg_w13r3d,area13r3d,reg13r3d)</code></pre>
-<pre><code>## Warning in fitList(null13r3, global13r3, short_w13r3, short13r3,
-## reg_w13r3, : Your list was unnamed, so model names were added as object
-## names</code></pre>
-<pre class="r"><code>model13r3 = modSel(list13r3)</code></pre>
-<pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
-<pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
-<pre class="r"><code>model13r3</code></pre>
-<pre><code>##              nPars     AIC   delta    AICwt cumltvWt
-## area13r3        11 -493.13    0.00  9.5e-01     0.95
-## global13r3      16 -486.85    6.27  4.1e-02     0.99
-## reg13r3          8 -481.76   11.37  3.2e-03     1.00
-## null13r3         5 -481.19   11.93  2.4e-03     1.00
-## reg_w13r3        9 -480.02   13.10  1.4e-03     1.00
-## short_w13r3      6 -398.26   94.86  2.4e-21     1.00
-## short13r3        5 -393.42   99.71  2.1e-22     1.00
-## global13r3d     15 -153.44  339.69  1.6e-74     1.00
-## area13r3d       10 -116.99  376.13  2.0e-82     1.00
-## reg_w13r3d       8  -41.70  451.43  8.9e-99     1.00
-## reg13r3d         7  -32.43  460.70 8.7e-101     1.00
-## short_w13r3d     5 1992.67 2485.79  0.0e+00     1.00
-## short13r3d       4 2403.20 2896.32  0.0e+00     1.00</code></pre>
+model13r3$short_w_i_13r3 =gdistsamp(lambdaformula = ~short+water+short*water-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre class="r"><code>model13r3$global13r3 =gdistsamp(lambdaformula = ~region+water+short+region*water+water*short+region*short+region*water*short-1, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf13r3, keyfun = &quot;hazard&quot;, mixture=&quot;P&quot;,se = T, output=&quot;abund&quot;)</code></pre>
+<pre class="r"><code>list13r3  = fitList(model13r3)</code></pre>
+<pre><code>## Warning in fitList(model13r3): If supplying a list of fits, use fits =
+## 'mylist'</code></pre>
+<pre class="r"><code>model13r3 = modSel(list13r3)
+model13r3</code></pre>
+<pre><code>##                nPars     AIC   delta    AICwt cumltvWt
+## global13r3        19 -377.17    0.00  1.0e+00     1.00
+## reg_w_i_13r3      11 -195.25  181.93  3.1e-40     1.00
+## short_r_i_13r3    11 -101.34  275.84  1.3e-60     1.00
+## reg_w13r3          8  -40.23  336.94  6.8e-74     1.00
+## short_r13r3        8  -33.56  343.61  2.4e-75     1.00
+## reg13r3            7  -30.07  347.11  4.2e-76     1.00
+## null13r3           4  307.37  684.54 2.3e-149     1.00
+## short_w13r3        5 1824.99 2202.16  0.0e+00     1.00
+## short_w_i_13r3     6 1825.83 2203.00  0.0e+00     1.00
+## short13r3          4 2163.72 2540.89  0.0e+00     1.00</code></pre>
 
 
 </div>
