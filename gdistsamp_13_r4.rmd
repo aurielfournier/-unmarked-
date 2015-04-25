@@ -1,6 +1,6 @@
 ```{r}
 # predictions from GDistsamp 2013 Round 4
-setwd("~/GitHub/data")
+setwd("~/Documents/data")
 library(unmarked)
 #read in the sora observations
 sora13r4 <- read.csv('2013r4_sora.csv', header=T)
@@ -79,7 +79,7 @@ model13r4$short_w_i_13r4 =gdistsamp(lambdaformula = ~short+water+short*water-1,
                        data = umf13r4, keyfun = "hazard", mixture="P",se = T, output="abund")
 ```
 ```{r}
-model13r4$global13r4 =gdistsamp(lambdaformula = ~region+water+short+region*water+water*short+region*short+region*water*short-1, 
+model13r4$global13r4 =gdistsamp(lambdaformula = ~region+water+short+region*water+water*short+region*short-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf13r4, keyfun = "hazard", mixture="P",se = T, output="abund")
