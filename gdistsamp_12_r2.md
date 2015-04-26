@@ -98,7 +98,7 @@ model12r2$short_w_i_12r2 =gdistsamp(lambdaformula = ~short+water+short*water-1,
 ```
 
 ```r
-model12r2$global12r2 =gdistsamp(lambdaformula = ~region+water+short+region*water+water*short+region*short-1, 
+model12r2$global12r2 =gdistsamp(lambdaformula = ~region+water+short+region*water+region*short-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf12r2, keyfun = "hazard", mixture="P",se = T, output="abund")
@@ -120,14 +120,14 @@ model12r2
 
 ```
 ##                nPars     AIC   delta   AICwt cumltvWt
-## global12r2        16  626.35    0.00 1.0e+00     1.00
-## short_r_i_12r2    11  680.48   54.13 1.8e-12     1.00
-## short_r12r2        8  717.86   91.51 1.3e-20     1.00
-## reg_w12r2          8  720.08   93.74 4.4e-21     1.00
-## reg_w_i_12r2      11  722.13   95.79 1.6e-21     1.00
-## reg12r2            7  723.62   97.27 7.5e-22     1.00
-## null12r2           4  780.36  154.02 3.6e-34     1.00
-## short_w_i_12r2     6 2263.01 1636.66 0.0e+00     1.00
-## short_w12r2        5 2539.07 1912.73 0.0e+00     1.00
-## short12r2          4 2906.59 2280.25 0.0e+00     1.00
+## global12r2        15  662.94    0.00 1.0e+00     1.00
+## short_r_i_12r2    11  680.48   17.54 1.6e-04     1.00
+## short_r12r2        8  717.86   54.92 1.2e-12     1.00
+## reg_w12r2          8  720.08   57.15 3.9e-13     1.00
+## reg_w_i_12r2      11  722.13   59.20 1.4e-13     1.00
+## reg12r2            7  723.62   60.68 6.7e-14     1.00
+## null12r2           4  780.36  117.42 3.2e-26     1.00
+## short_w_i_12r2     6 2263.01 1600.07 0.0e+00     1.00
+## short_w12r2        5 2539.07 1876.14 0.0e+00     1.00
+## short12r2          4 2906.59 2243.65 0.0e+00     1.00
 ```

@@ -98,15 +98,10 @@ model13r4$short_w_i_13r4 =gdistsamp(lambdaformula = ~short+water+short*water-1,
 ```
 
 ```r
-model13r4$global13r4 =gdistsamp(lambdaformula = ~region+water+short+region*water+water*short+region*short-1, 
+model13r4$global13r4 =gdistsamp(lambdaformula = ~region+water+short+region*water+region*short-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf13r4, keyfun = "hazard", mixture="P",se = T, output="abund")
-```
-
-```
-## Warning: Hessian is singular. Try using fewer covariates and supplying
-## starting values.
 ```
 
 
@@ -121,26 +116,19 @@ list13r4  = fitList(model13r4)
 
 ```r
 model13r4 = modSel(list13r4)
-```
-
-```
-## Hessian is singular.
-```
-
-```r
 model13r4
 ```
 
 ```
 ##                nPars   AIC delta   AICwt cumltvWt
-## reg_w13r4          6 71.79  0.00 7.1e-01     0.71
-## reg_w_i_13r4       7 73.79  2.00 2.6e-01     0.98
-## global13r4        10 79.22  7.44 1.7e-02     0.99
-## short_r13r4        6 82.67 10.88 3.1e-03     1.00
+## reg_w13r4          6 71.79  0.00 7.0e-01     0.70
+## reg_w_i_13r4       7 73.79  2.00 2.6e-01     0.96
+## global13r4         9 77.70  5.91 3.6e-02     0.99
+## short_r13r4        6 82.67 10.88 3.0e-03     1.00
 ## reg13r4            5 83.01 11.22 2.6e-03     1.00
 ## short_r_i_13r4     7 84.67 12.88 1.1e-03     1.00
-## short_w_i_13r4     6 86.00 14.21 5.8e-04     1.00
-## short_w13r4        5 96.42 24.63 3.2e-06     1.00
+## short_w_i_13r4     6 86.00 14.21 5.7e-04     1.00
+## short_w13r4        5 96.42 24.63 3.1e-06     1.00
 ## short13r4          4 97.14 25.35 2.2e-06     1.00
 ## null13r4           4 98.06 26.27 1.4e-06     1.00
 ```

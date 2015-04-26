@@ -77,8 +77,7 @@ model14r2$short_w_i_14r2 =gdistsamp(lambdaformula = ~short+averagewater_2+short*
                        data = umf14r2, keyfun = "hazard", mixture="P",se = T, output="abund")
 ```
 ```{r}
-model14r2$global14r2 =gdistsamp(lambdaformula = ~region+averagewater_2+short+region*averagewater_2+averagewater_2*short+region*short-1, 
-                      phiformula = ~1, 
+model14r2$global14r2 =gdistsamp(lambdaformula = ~region+averagewater_2+short+region*averagewater_2+region*short-1, phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf14r2, keyfun = "hazard", mixture="P",se = T, output="abund")
 
