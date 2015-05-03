@@ -1,0 +1,38 @@
+
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.1.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(unmarked)
+Loading required package: reshape
+Loading required package: lattice
+Loading required package: Rcpp
+Warning message:
+package ‘reshape’ was built under R version 3.1.2 
+> 
+> completeFun <- function(data, desiredCols) {
++   completeVec <- complete.cases(data[, desiredCols])
++   return(data[completeVec, ])
++ }
+> 
+> birds <- read.csv("all_birds.csv",header=T) 
+Error in file(file, "rt") : cannot open the connection
+Calls: read.csv -> read.table -> file
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'all_birds.csv': No such file or directory
+Execution halted

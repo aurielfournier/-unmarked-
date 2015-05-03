@@ -19,27 +19,40 @@ birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 birds14 <- birds[birds$year==2014,]
 birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
-gd12 <- as.data.frame(formatDistData(birds12, "distance","impound", dist.breaks, "night"))
-gd13 <- as.data.frame(formatDistData(birds13, "distance", "impound", dist.breaks, "night" ))
-gd14 <- as.data.frame(formatDistData(birds14, "distance", "impound", dist.breaks, "night" ))
+format_dist_data_by_round <- function(data, year){
+  rounds <- unique(data$round)
+  lis <- list()
+  for(i in rounds){
+    lis[[i]] <- as.data.frame(formatDistData(data[data$round==i,], "distance","impound",dist.breaks,"night"))
+  }
+  assign(paste("gd",year,sep=""),lis)
+  }
+
+gd2012 <- format_dist_data_by_round(birds12, 2012)
+gd2013 <- format_dist_data_by_round(birds13, 2013)
+gd2014 <- format_dist_data_by_round(birds14, 2014)
 
 surv <- read.csv("all_surveys.csv",header=T)
 surv$jdate <- as.factor(surv$jdate)
 surv <- surv[,c("year","night","round","impound","length","jdate")]
 
-b12r1 <- gd12r1[(rownames(gd12r1) %in% surv[surv$round==1&surv$year==2012,]$impound),]
-b12r2 <- gd12r2[(rownames(gd12r2) %in% surv[surv$round==2&surv$year==2012,]$impound),] 
-b12r3 <- gd12r3[(rownames(gd12r3) %in% surv[surv$round==3&surv$year==2012,]$impound),] 
+list2012 <- list()
+for(i in 1:3){
+    bird <- gd2012[[i]]
+    list2012[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2012,]$impound),]
+}
 
-b13r1 <- gd13r1[(rownames(gd13r1) %in% surv[surv$round==1&surv$year==2013,]$impound),]
-b13r2 <- gd13r2[(rownames(gd13r2) %in% surv[surv$round==2&surv$year==2013,]$impound),] 
-b13r3 <- gd13r3[(rownames(gd13r3) %in% surv[surv$round==3&surv$year==2013,]$impound),] 
-b13r4 <- gd13r4[(rownames(gd13r4) %in% surv[surv$round==4&surv$year==2013,]$impound),] 
+list2013 <- list()
+for(i in 1:4){
+  bird <- gd2013[[i]]
+  list2013[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2013,]$impound),]
+}
 
-b14r1 <- gd14r1[(rownames(gd14r1) %in% surv[surv$round==1&surv$year==2014,]$impound),] 
-b14r2 <- gd14r2[(rownames(gd14r2) %in% surv[surv$round==2&surv$year==2014,]$impound),] 
-b14r3 <- gd14r3[(rownames(gd14r3) %in% surv[surv$round==3&surv$year==2014,]$impound),] 
-b14r4 <- gd14r4[(rownames(gd14r4) %in% surv[surv$round==4&surv$year==2014,]$impound),] 
+list2014 <- list()
+for(i in 1:4){
+  bird <- gd2013[[i]]
+  list2014[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2014,]$impound),]
+}
 
 # Covariates -----------------------------------------------
 veg <- read.csv("all_veg.csv", header=T) 
@@ -59,15 +72,14 @@ mlen12 <- melt(surv[surv$year==2012,], id=c("impound","round","night","year"), n
 clen12 <- cast(mlen12, impound ~ variable + round, max, fill=NA_real_,na.rm=T)
 
 veg12 <- cbind(cbind(clen12[(clen12$impound %in% intersect(clen12$impound,cveg12_all$impound)),], cveg12_all[(cveg12_all$impound %in% intersect(clen12$impound,cveg12_all$impound)),]),hec[(hec$impound %in% intersect(clen12$impound,cveg12_all$impound)),])
-
-veg12r1 <- veg12[,c(1,2,5,9,10,12:22,27)]
+veg12$awater1 <- NA
+veg12r1 <- veg12[,c(1,2,5,9,10,12:22,28,27)]
 veg12r2 <- veg12[,c(1,3,6,9,10,12:22,24,27)]
 veg12r3 <- veg12[,c(1,4,7,9:10,12:22,25,27)]
 
 veg121 <- completeFun(veg12r1, c("length_1","area"))
 veg122 <- completeFun(veg12r2, c("length_2","area"))
 veg123 <- completeFun(veg12r3, c("length_3","area"))
-
 
 ### 2013 ###
 veg13 <- veg[veg$year==2013,]
@@ -113,30 +125,67 @@ clen14 <- cast(mlen14, impound ~ variable + round, max, fill=NA_real_)
 
 veg14 <- cbind(cbind(clen14[(clen14$impound %in% intersect(clen14$impound,castveg14_all$impound)),], castveg14_all[(castveg14_all$impound %in% intersect(clen14$impound,castveg14_all$impound)),]), hec[(hec$impound %in% intersect(clen14$impound,castveg14_all$impound)),])
 
-veg14 <- veg14[,c(1,2,6,11:17,19,24)]
+veg14r1 <- veg14[,c(1,2,6,11:17,19,24)]
+veg14r2 <- veg14[,c(1,3,7,11:17,20,24)]
+veg14r3 <- veg14[,c(1,4,8,11:17,21,24)]
+veg14r4 <- veg14[,c(1,5,9,11:17,22,24)]
 
-veg14 <- completeFun(veg14, c("length_1","area"))
-
+veg14r1c <- completeFun(veg14r1, c("length_1","area"))
+veg14r2c <- completeFun(veg14r2, c("length_2","area"))
+veg14r3c <- completeFun(veg14r3, c("length_3","area"))
+veg14r4c <- completeFun(veg14r4, c("length_4","area"))
 
 # Create the Sora Input Files -----------------------------------------------------------------------------
-b12 <- cbind(impound=rownames(b12),b12)
-mmerge12 <- b12[(b12$impound %in% intersect(b12$impound,veg12$impound)),]
-write.csv(mmerge12, "2012_sora.csv")
+s12 <- list()
+for(i in 1:3){
+  bird <- list2012[[i]]
+  s <- cbind(impound=rownames(bird),bird)
+  s12[[i]] <- s[(s$impound %in% intersect(s$impound, veg12r1$impound)),]
+}
+sora12 <- do.call(rbind, s12)
+write.csv(sora12, "2012_sora.csv", row.names=F)
 
-b13 <- cbind(impound=rownames(b13),b13)
-mmerge12r2 <- b13[(b13$impound %in% intersect(b13$impound,veg13$impound)),]
-write.csv(mmerge13, "2013_sora.csv")
+s13 <- list()
+for(i in 1:3){
+  bird <- list2013[[i]]
+  s <- cbind(impound=rownames(bird),bird)
+  s13[[i]] <- s[(s$impound %in% intersect(s$impound, veg13r1$impound)),]
+}
+sora13 <- do.call(rbind, s13)
+write.csv(sora13, "2013_sora.csv", row.names=F)
 
-b14 <- cbind(impound=rownames(b14),b14)
-mmerge14 <- b14[(b14$impound %in% intersect(b14$impound,veg14$impound)),]
-write.csv(mmerge14, "2014_sora.csv", row.names=F)
-
-
+s14 <- list()
+for(i in 1:3){
+  bird <- list2014[[i]]
+  s <- cbind(impound=rownames(bird),bird)
+  s14[[i]] <- s[(s$impound %in% intersect(s$impound, veg14r1$impound)),]
+}
+sora14 <- do.call(rbind, s14)
+write.csv(sora14, "2014_sora.csv", row.names=F)
 
 # Create Covariate Files ----------------------------------------------------------------------------------------
+names <- c("impound","length","jdate","area","region","int","short","tall","up","water","wood","bg","other","crop","waterp","woodp","hectares")
+colnames(veg121) <- names
+colnames(veg122) <- names
+colnames(veg123) <- names
 
 
-write.csv(veg12[(veg12$impound %in% intersect(b12$impound,veg12$impound)),], "2012_cov_nostand.csv", row.names=F)
-write.csv(veg13[(veg13$impound %in% intersect(b13$impound,veg13$impound)),], "2013_cov_nostand.csv", row.names=F)
-write.csv(veg14[(veg14$impound %in% intersect(b14$impound,veg14$impound)),], "2014_cov_nostand.csv", row.names=F)
+write.csv(rbind(veg121, veg122, veg123), "2012_cov_nostand.csv", row.names=F)
+
+names <- c("impound","length","jdate","area","region","int","short","tall","up","water","wood","bg","other","crop","waterp","woodp","awater","hectares")
+colnames(veg131) <- names
+colnames(veg132) <- names
+colnames(veg133) <- names
+colnames(veg134) <- names
+
+write.csv(rbind(veg131, veg132, veg133, veg134), "2013_cov_nostand.csv", row.names=F)
+
+names <- c("impound","length","jdate","area","treat","region","int","short","pe","wood","awater","hectares")
+
+colnames(veg14r1c) <- names
+colnames(veg14r2c) <- names
+colnames(veg14r3c) <- names
+colnames(veg14r4c) <- names
+
+write.csv(rbind(veg14r1c, veg14r2c, veg14r3c, veg14r4c), "2014_cov_nostand.csv", row.names=F)
 
