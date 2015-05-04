@@ -35,10 +35,10 @@ dist.breaks12 <- c(0,2,4,6,8,10,12,14)
 dist.breaks <- c(0,1,2,3,4,5,6,7,8,9,10,11,12,13) 
 
 birds <- read.csv("all_birds.csv",header=T) 
-birds <- birds[birds$species=="sora",] 
+birds <- birds[birds$species=="vira",] 
 birds$jdate <- as.factor(birds$jdate)
 birds$night <- as.factor(birds$night)
-birds <- birds[!(birds$night==4.2|birds$night==4.1),]
+birds <- birds[!(birds$night==4.2|birds$night==4.1|birds$night==0),]
 
 birds12 <- birds[birds$year==2012,]
 birds12$night <- factor(birds12$night, labels=c(1,2,3))
@@ -47,7 +47,7 @@ birds13 <- birds[birds$year==2013,]
 birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
 birds14 <- birds[birds$year==2014,]
-birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
+birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,3.1,3.2))
 
 gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks12)
 gd2013 <- format_dist_data_by_round(birds13, 2013, dist.breaks)
@@ -172,7 +172,7 @@ for(i in 1:3){
 sora12 <- do.call(rbind, s12)
 
 s13 <- list()
-for(i in 1:4){
+for(i in 2:4){
   bird <- list2013[[i]]
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
@@ -182,7 +182,7 @@ for(i in 1:4){
 sora13 <- do.call(rbind, s13)
 
 s14 <- list()
-for(i in 1:4){
+for(i in 2:4){
   bird <- list2014[[i]]
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
@@ -190,6 +190,9 @@ for(i in 1:4){
   s14[[i]] <- df[(df$ir %in% intersect(df$ir, veg14$ir)),]
 }
 sora14 <- do.call(rbind, s14)
+
+sora4 <- sora14[ ,2:79]
+sora4 <- ifelse(sora4==0,0,1)
 
 ## Cut down veg files
 
@@ -200,9 +203,9 @@ veg14 <- veg14[(veg14$ir %in% intersect(veg14$ir, sora14$ir)),]
 
 ### create bird input files
 
-write.csv(sora12, "2012_sora.csv", row.names=F)
-write.csv(sora13, "2013_sora.csv", row.names=F)
-write.csv(sora14, "2014_sora.csv", row.names=F)
+write.csv(sora12, "2012_vira_occ.csv", row.names=F)
+write.csv(sora13, "2013_vira_occ.csv", row.names=F)
+write.csv(sora14, "2014_vira_occ.csv", row.names=F)
 
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
