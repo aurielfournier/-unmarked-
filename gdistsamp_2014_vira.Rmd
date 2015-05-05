@@ -1,0 +1,94 @@
+```{r}
+# predictions from GDistsamp 2014
+setwd("~/Documents/data")
+library(unmarked)
+#read in the sora observations
+sora14 <- read.csv('2014_vira.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov14 <- read.csv('2014_cov_vira.csv', header=T)
+#subset covaraites we need
+cov14 <- cov14[,c("region","length","impound","jdate","area", "int","short","averagewater")]
+# #the distance bins
+
+sora14 <- sora14[order(sora14$impound),]
+cov14 <- cov14[order(cov14$impound),]
+
+sora14 <- sora14[,2:79]
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
+#Unmarked Data Frame
+umf14 = unmarkedFrameGDS(y=sora14, 
+                           numPrimary=6,
+                           siteCovs = cov14,
+                           survey="line", 
+                           dist.breaks=cutpt,  
+                           unitsIn="m", 
+                           tlength=cov14$length,
+)
+```
+
+```{r}
+
+model14 <- list()
+model14$null14 = gdistsamp(lambdaformula = ~1, 
+                     phiformula = ~1, 
+                     pformula = ~1,
+                     data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+model14$reg14 = gdistsamp(lambdaformula = ~region-1, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+
+
+model14$reg_w14 =gdistsamp(lambdaformula = ~region+averagewater-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+model14$reg_w_i_14 =gdistsamp(lambdaformula = ~region+averagewater+region*averagewater-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model14$short_r14 =gdistsamp(lambdaformula = ~short+region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+model14$short_r_i_14 =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+
+```{r}
+model14$short14 =gdistsamp(lambdaformula = ~short-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+model14$short_w14 =gdistsamp(lambdaformula = ~short+averagewater-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+model14$short_w_i_14 =gdistsamp(lambdaformula = ~short+averagewater+short*averagewater-1, 
+                       phiformula = ~1, 
+                       pformula = ~ 1,
+                       data = umf14, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model14$global14 =gdistsamp(lambdaformula = ~region+averagewater+short+region*averagewater+region*short-1, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf14, keyfun = "hazard", mixture="P",se = T, output="abund")
+
+```
+```{r}
+
+list14  = fitList(model14)
+model14 = modSel(list14)
+model14
+```

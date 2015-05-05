@@ -171,19 +171,15 @@ for(i in 1:3){
 }
 sora12 <- do.call(rbind, s12)
 
-sora12[ ,2:10] <- ifelse(sora12[ ,2:10]==0,0,1)
-
 s13 <- list()
 for(i in 2:4){
   bird <- list2013[[i]]
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
   df$ir <- paste(df$impound, df$round, sep="_")
-  s13[[i]] <- df[(df$ir %in% intersect(df$ir, veg13$ir)),]
+  s13[[i-1]] <- df[(df$ir %in% intersect(df$ir, veg13$ir)),]
 }
 sora13 <- do.call(rbind, s13)
-
-sora13[ ,2:79] <- ifelse(sora13[ ,2:79]==0,0,1)
 
 s14 <- list()
 for(i in 2:4){
@@ -195,8 +191,6 @@ for(i in 2:4){
 }
 sora14 <- do.call(rbind, s14)
 
-sora14[ ,2:79] <- ifelse(sora14[ ,2:79]==0,0,1)
-
 ## Cut down veg files
 
 veg12 <- veg12[(veg12$ir %in% intersect(veg12$ir, sora12$ir)),]
@@ -207,12 +201,12 @@ veg14 <- veg14[(veg14$ir %in% intersect(veg14$ir, sora14$ir)),]
 ### create bird input files
 
 write.csv(sora12, "2012_vira.csv", row.names=F)
-write.csv(sora13, "2013_vira_occ.csv", row.names=F)
-write.csv(sora14, "2014_vira_occ.csv", row.names=F)
+write.csv(sora13, "2013_vira.csv", row.names=F)
+write.csv(sora14, "2014_vira.csv", row.names=F)
 
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
-write.csv(veg12, "2012_cov.csv", row.names=F)
-write.csv(veg13, "2013_cov.csv", row.names=F)
-write.csv(veg14, "2014_cov.csv", row.names=F)
+write.csv(veg12, "2012_cov_vira.csv", row.names=F)
+write.csv(veg13, "2013_cov_vira.csv", row.names=F)
+write.csv(veg14, "2014_cov_vira.csv", row.names=F)
 
