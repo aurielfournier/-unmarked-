@@ -49,7 +49,7 @@ birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 birds14 <- birds[birds$year==2014,]
 birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
-gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks12)
+gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks)
 gd2013 <- format_dist_data_by_round(birds13, 2013, dist.breaks)
 gd2014 <- format_dist_data_by_round(birds14, 2014, dist.breaks)
 
@@ -114,6 +114,8 @@ vegss <- veg13[,c(13:29,33:35)]
 vegss <- scale(vegss)
 colnames(vegss) <- paste("scale", colnames(vegss), sep = "_")
 veg13 <- cbind(veg13[,c(6,9:29)],vegss[,c(1:4,6:17)])
+#clipping it down to just Moist Soil plots 
+veg13 <- veg13[!(veg13$impound=="boardwalk"|veg13$impound=="ditch"|veg13$impound=="n mallard"|veg13$impound=="nose"|veg13$impound=="r4/5"|veg13$impound=="redhead slough"|veg13$impound=="ts11a"|veg13$impound=="sg "|veg13$impound=="bb2"|veg13$impound=="sgd"),]
 
 melt13 <- melt(veg13, id=c("impound","round","region","area"))
 cast13 <- cast(melt13, impound + region + area + round ~ variable, mean, fill=NA_real_,na.rm=T)

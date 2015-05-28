@@ -1,6 +1,7 @@
 
 ```r
-# predictions from GDistsamp 2013
+# predictions from GDistsamp 2014
+
 library(unmarked)
 ```
 
@@ -13,14 +14,21 @@ library(unmarked)
 
 ```r
 #read in the sora observations
-sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_sora.csv', header=T)
+
+sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2014_sora.csv', header=T)
+
+## removing impoundments which were confounded in the experiment or were not the appropriate habtiat type
 sora <- sora[!(sora$impound=="ccmsu12"|sora$impound=="ccmsu2"|sora$impound=="ccmsu1"|sora$impound=="ts2a"|sora$impound=="ts4a"|sora$impound=="ts6a"|sora$impound=="ts8a"|sora$impound=="kt2"|sora$impound=="kt5"|sora$impound=="kt5"|sora$impound=="kt6"|sora$impound=="kt9"|sora$impound=="pool2"|sora$impound=="pool2w"|sora$impound=="pool3w"|sora$impound=="m10"|sora$impound=="m11"|sora$impound=="m13"),]
+
 #read in the covariate data #organized by impoundment.
-cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv', header=T)
+cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2014_cov.csv', header=T)
+## removing impoundments which were confounded in the experiment or were not the appropriate habtiat type
 cov <- cov[!(cov$impound=="ccmsu12"|cov$impound=="ccmsu2"|cov$impound=="ccmsu1"|cov$impound=="ts2a"|cov$impound=="ts4a"|cov$impound=="ts6a"|cov$impound=="ts8a"|cov$impound=="kt2"|cov$impound=="kt5"|cov$impound=="kt5"|cov$impound=="kt6"|cov$impound=="kt9"|cov$impound=="pool2"|cov$impound=="pool2w"|cov$impound=="pool3w"|cov$impound=="m10"|cov$impound=="m11"|cov$impound=="m13"),]
+
 #subset covaraites we need
-#subset covaraites we need
-cov <- cov[,c("region","length","impound","jdate","area", "int","short","water")]
+
+cov <- cov[,c("region","length","impound","jdate","area", "treat","scale_short","scale_averagewater")]
+
 # #the distance bins
 
 sora <- sora[order(sora$impound),]
@@ -39,7 +47,6 @@ umf = unmarkedFrameGDS(y=sora,
 )
 ```
 
-
 ```r
 model <- list()
 model$null = gdistsamp(lambdaformula = ~1, 
@@ -53,111 +60,127 @@ model$r = gdistsamp(lambdaformula = ~region-1,
                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
-```r
-model$r_w =gdistsamp(lambdaformula = ~region+water-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+## Warning in gdistsamp(lambdaformula = ~region - 1, phiformula = ~1, pformula
+## = ~1, : Hessian is singular. Try using fewer covariates and supplying
+## starting values.
+```
 
-model$r_w_i =gdistsamp(lambdaformula = ~region+water+region*water-1, 
+```r
+model$r_w =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
+```
+## Warning in gdistsamp(lambdaformula = ~region + scale_averagewater - 1,
+## phiformula = ~1, : Hessian is singular. Try using fewer covariates and
+## supplying starting values.
+```
+
 ```r
-model$s_r =gdistsamp(lambdaformula = ~short+region-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-model$s_r_i =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+model$r_w_i =gdistsamp(lambdaformula = ~region+scale_averagewater+region*scale_averagewater-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
+```
+## Warning in gdistsamp(lambdaformula = ~region + scale_averagewater + region
+## * : Hessian is singular. Try using fewer covariates and supplying starting
+## values.
+```
+
 ```r
-model$s =gdistsamp(lambdaformula = ~short-1, 
+model$s_r =gdistsamp(lambdaformula = ~scale_short+region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```
+## Warning in gdistsamp(lambdaformula = ~scale_short + region - 1, phiformula
+## = ~1, : Hessian is singular. Try using fewer covariates and supplying
+## starting values.
+```
+
+```r
+model$s_r_i =gdistsamp(lambdaformula = ~scale_short+region+scale_short*region-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```
+## Warning in gdistsamp(lambdaformula = ~scale_short + region + scale_short
+## * : Hessian is singular. Try using fewer covariates and supplying starting
+## values.
+```
+
+
+```r
+model$s =gdistsamp(lambdaformula = ~scale_short-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model$s_w =gdistsamp(lambdaformula = ~short+water-1, 
+model$s_w =gdistsamp(lambdaformula = ~scale_short+scale_averagewater-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model$s_w_i =gdistsamp(lambdaformula = ~short+water+short*water-1, 
+model$s_w_i =gdistsamp(lambdaformula = ~scale_short+awater+scale_short*awater-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
+```
+## Error in eval(expr, envir, enclos): object 'awater' not found
+```
+
 ```r
-model$global =gdistsamp(lambdaformula = ~region+water+short+region*water+region*short-1, 
-                      phiformula = ~1, 
+model$global=gdistsamp(lambdaformula = ~region+scale_averagewater+scale_short+region*scale_averagewater+region*scale_short-1, phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
-```r
-list  = fitList(model)
 ```
-
-```
-## Warning in fitList(model): If supplying a list of fits, use fits = 'mylist'
-```
-
-```r
-model = modSel(list)
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
+## Warning in gdistsamp(lambdaformula = ~region + scale_averagewater +
+## scale_short + : Hessian is singular. Try using fewer covariates and
+## supplying starting values.
 ```
 
 ```r
-model
+list  = fitList(fits=model)
+(models = modSel(list))
+```
+
+```
+## Hessian is singular.
+## Hessian is singular.
+## Hessian is singular.
+## Hessian is singular.
+## Hessian is singular.
+```
+
+```
+## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
+```
+
+```
+## Hessian is singular.
 ```
 
 ```
 ##        nPars     AIC  delta   AICwt cumltvWt
-## r_w_i     12 3309.19   0.00 9.5e-01     0.95
-## global    16 3315.05   5.86 5.1e-02     1.00
-## s_r_i     12 3325.96  16.76 2.2e-04     1.00
-## r          8 3326.18  16.99 1.9e-04     1.00
-## s_r        9 3326.57  17.38 1.6e-04     1.00
-## r_w        9 3328.21  19.02 7.0e-05     1.00
-## null       5 3330.35  21.16 2.4e-05     1.00
-## s_w_i      7 3367.86  58.67 1.7e-13     1.00
-## s_w        6 3369.39  60.19 8.1e-14     1.00
-## s          5 3411.96 102.77 4.6e-23     1.00
+## r_w        9 2582.40   0.00 8.1e-01     0.81
+## r_w_i     12 2586.97   4.57 8.2e-02     0.89
+## s_r        9 2588.88   6.49 3.2e-02     0.92
+## r          8 2588.89   6.49 3.1e-02     0.95
+## global    16 2589.12   6.72 2.8e-02     0.98
+## s_r_i     12 2589.76   7.36 2.0e-02     1.00
+## null       5 2599.42  17.02 1.6e-04     1.00
+## s_w        6 2781.89 199.49 3.9e-44     1.00
+## s          5 2823.37 240.97 3.8e-53     1.00
 ```

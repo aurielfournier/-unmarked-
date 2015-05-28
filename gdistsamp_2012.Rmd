@@ -1,94 +1,96 @@
 ```{r}
 # predictions from GDistsamp 2012
-setwd("~/Documents/data")
+
 library(unmarked)
+
 #read in the sora observations
-sora12 <- read.csv('2012_sora.csv', header=T)
+sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
-cov12 <- read.csv('2012_cov.csv', header=T)
+cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
 #subset covaraites we need
-cov12 <- cov12[,c("region","length","impound","jdate","area", "int","short","water")]
+cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_short","scale_averagewater")]
 # #the distance bins
 
-sora12 <- sora12[order(sora12$impound),]
-cov12 <- cov12[order(cov12$impound),]
+sora <- sora[order(sora$impound),]
+cov <- cov[order(cov$impound),]
 
-sora12 <- sora12[,2:22]
-cutpt = as.numeric(c(0,2,4,6,8,10,12,14)) 
+sora <- sora[,2:40]
+cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
-umf12 = unmarkedFrameGDS(y=sora12, 
+umf = unmarkedFrameGDS(y=sora, 
                            numPrimary=3,
-                           siteCovs = cov12,
+                           siteCovs = cov,
                            survey="line", 
                            dist.breaks=cutpt,  
                            unitsIn="m", 
-                           tlength=cov12$length,
+                           tlength=cov$length,
 )
 ```
 
 ```{r}
 
-model12 <- list()
-model12$null12 = gdistsamp(lambdaformula = ~1, 
+model <- list()
+model$null = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~1,
-                     data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model12$reg12 = gdistsamp(lambdaformula = ~region-1, 
+model$r = gdistsamp(lambdaformula = ~region-1, 
                     phiformula = ~1, 
                     pformula = ~ 1,
-                    data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 
 
-model12$reg_w12 =gdistsamp(lambdaformula = ~region+water-1, 
+model$r_w =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model12$reg_w_i_12 =gdistsamp(lambdaformula = ~region+water+region*water-1, 
+model$r_w_i =gdistsamp(lambdaformula = ~region+scale_averagewater+region*scale_averagewater-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model12$short_r12 =gdistsamp(lambdaformula = ~short+region-1, 
+model$s_r =gdistsamp(lambdaformula = ~scale_short+region-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
-model12$short_r_i_12 =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+model$s_r_i =gdistsamp(lambdaformula = ~scale_short+region+scale_short*region-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
+```
 
 ```{r}
-model12$short12 =gdistsamp(lambdaformula = ~short-1, 
+model$s =gdistsamp(lambdaformula = ~scale_short-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
-                     data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model12$short_w12 =gdistsamp(lambdaformula = ~short+water-1, 
+model$s_w =gdistsamp(lambdaformula = ~scale_short+scale_averagewater-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
-                       data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model12$short_w_i_12 =gdistsamp(lambdaformula = ~short+water+short*water-1, 
+model$s_w_i =gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_short*scale_averagewater-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
-                       data = umf12, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model12$global12 =gdistsamp(lambdaformula = ~region+water+short+region*water+region*short-1, 
+model$global =gdistsamp(lambdaformula = ~region+scale_averagewater+scale_short+region*scale_averagewater+region*scale_short-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
-                      data = umf12, keyfun = "hazard", mixture="P",se = T, output="abund")
+                      data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
 
 ```
 ```{r}
 
-list12  = fitList(model12)
-model12 = modSel(list12)
-model12
+list  = fitList(model)
+model = modSel(list)
+model
 ```
