@@ -12,7 +12,7 @@ cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_sho
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
 
-sora <- sora[,3:41]
+sora <- sora[,2:40]
 cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
 #Unmarked Data Frame
 umf = unmarkedFrameGDS(y=sora, 
@@ -24,12 +24,13 @@ umf = unmarkedFrameGDS(y=sora,
                          tlength=cov$length,
 )
 
-r_w =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
+r =gdistsamp(lambdaformula = ~region-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                      data = umf, keyfun = "hazard", 
+                      mixture="NB",se = T, output="abund",)
 
-ab12 <- ranef(r_w)
+ab12 <- ranef(r)
 abund12 <- data.frame(matrix(ncol=4, nrow=nrow(cov)))
 abund12$X1 <- bup(ab12, stat="mean")
 abund12$X2 <- bup(ab12, stat="mode")

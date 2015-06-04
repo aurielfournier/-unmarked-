@@ -129,7 +129,7 @@ model$s_w =gdistsamp(lambdaformula = ~scale_short+scale_averagewater-1,
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-model$s_w_i =gdistsamp(lambdaformula = ~scale_short+awater+scale_short*awater-1, 
+model$s_w_i =gdistsamp(lambdaformula = ~scale_short+awater+scale_short*averagewater-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")

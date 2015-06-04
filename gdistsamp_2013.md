@@ -4,23 +4,14 @@
 library(unmarked)
 ```
 
-```
-## Loading required package: methods
-## Loading required package: reshape
-## Loading required package: lattice
-## Loading required package: Rcpp
-```
-
 ```r
 #read in the sora observations
 sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_sora.csv', header=T)
-sora <- sora[!(sora$impound=="ccmsu12"|sora$impound=="ccmsu2"|sora$impound=="ccmsu1"|sora$impound=="ts2a"|sora$impound=="ts4a"|sora$impound=="ts6a"|sora$impound=="ts8a"|sora$impound=="kt2"|sora$impound=="kt5"|sora$impound=="kt5"|sora$impound=="kt6"|sora$impound=="kt9"|sora$impound=="pool2"|sora$impound=="pool2w"|sora$impound=="pool3w"|sora$impound=="m10"|sora$impound=="m11"|sora$impound=="m13"),]
 #read in the covariate data #organized by impoundment.
 cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv', header=T)
-cov <- cov[!(cov$impound=="ccmsu12"|cov$impound=="ccmsu2"|cov$impound=="ccmsu1"|cov$impound=="ts2a"|cov$impound=="ts4a"|cov$impound=="ts6a"|cov$impound=="ts8a"|cov$impound=="kt2"|cov$impound=="kt5"|cov$impound=="kt5"|cov$impound=="kt6"|cov$impound=="kt9"|cov$impound=="pool2"|cov$impound=="pool2w"|cov$impound=="pool3w"|cov$impound=="m10"|cov$impound=="m11"|cov$impound=="m13"),]
 #subset covaraites we need
 #subset covaraites we need
-cov <- cov[,c("region","length","impound","jdate","area", "int","short","water")]
+#cov <- cov[,c("region","length","impound","jdate","area", "int","short","water")]
 # #the distance bins
 
 sora <- sora[order(sora$impound),]
@@ -54,47 +45,53 @@ model$r = gdistsamp(lambdaformula = ~region-1,
 ```
 
 ```r
-model$r_w =gdistsamp(lambdaformula = ~region+water-1, 
+model$r_w =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model$r_w_i =gdistsamp(lambdaformula = ~region+water+region*water-1, 
+model$r_w_i =gdistsamp(lambdaformula = ~region+water+region*scale_averagewater-1, 
+                     phiformula = ~1, 
+                     pformula = ~ 1,
+                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+model$w =gdistsamp(lambdaformula = ~scale_averagewater-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$s_r =gdistsamp(lambdaformula = ~short+region-1, 
+model$s_r =gdistsamp(lambdaformula = ~scale_short+region-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-model$s_r_i =gdistsamp(lambdaformula = ~short+region+short*region-1, 
+model$s_r_i =gdistsamp(lambdaformula = ~scale_short+region+scale_short*region-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
+
 ```r
-model$s =gdistsamp(lambdaformula = ~short-1, 
+model$s =gdistsamp(lambdaformula = ~scale_short-1, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model$s_w =gdistsamp(lambdaformula = ~short+water-1, 
+model$s_w =gdistsamp(lambdaformula = ~scale_short+scale_averagewater-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-model$s_w_i =gdistsamp(lambdaformula = ~short+water+short*water-1, 
+model$s_w_i =gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_short*scale_averagewater-1, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$global =gdistsamp(lambdaformula = ~region+water+short+region*water+region*short-1, 
+model$global =gdistsamp(lambdaformula = ~region+scale_averagewater+scale_short+region*scale_averagewater+region*scale_short+scale_short*scale_averagewater-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
@@ -104,45 +101,12 @@ model$global =gdistsamp(lambdaformula = ~region+water+short+region*water+region*
 list  = fitList(model)
 ```
 
-```
-## Warning in fitList(model): If supplying a list of fits, use fits = 'mylist'
-```
+
 
 ```r
 model = modSel(list)
 ```
 
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
-
-```
-## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced
-```
 
 ```r
 model
@@ -150,14 +114,15 @@ model
 
 ```
 ##        nPars     AIC  delta   AICwt cumltvWt
-## r_w_i     12 3309.19   0.00 9.5e-01     0.95
-## global    16 3315.05   5.86 5.1e-02     1.00
-## s_r_i     12 3325.96  16.76 2.2e-04     1.00
-## r          8 3326.18  16.99 1.9e-04     1.00
-## s_r        9 3326.57  17.38 1.6e-04     1.00
-## r_w        9 3328.21  19.02 7.0e-05     1.00
-## null       5 3330.35  21.16 2.4e-05     1.00
-## s_w_i      7 3367.86  58.67 1.7e-13     1.00
-## s_w        6 3369.39  60.19 8.1e-14     1.00
-## s          5 3411.96 102.77 4.6e-23     1.00
+## r_w_i     13 4302.88   0.00 9.4e-01     0.94
+## global    17 4309.52   6.64 3.4e-02     0.98
+## r_w        9 4310.54   7.66 2.0e-02     1.00
+## r          8 4315.10  12.23 2.1e-03     1.00
+## s_r        9 4316.49  13.61 1.0e-03     1.00
+## s_r_i     12 4319.64  16.76 2.2e-04     1.00
+## null       5 4321.37  18.50 9.1e-05     1.00
+## s_w_i      7 4634.36 331.48 9.9e-73     1.00
+## w          5 4634.62 331.75 8.6e-73     1.00
+## s_w        6 4636.59 333.71 3.2e-73     1.00
+## s          5 4640.25 337.37 5.2e-74     1.00
 ```

@@ -24,12 +24,12 @@ umf = unmarkedFrameGDS(y=sora,
                        tlength=cov$length,
 )
 
-r_w =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
+r_w14 =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
                phiformula = ~1, 
                pformula = ~ 1,
                data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-ab14 <- ranef(r_w)
+ab14 <- ranef(r_w14)
 abund14 <- data.frame(matrix(ncol=4, nrow=nrow(cov)))
 abund14$X1 <- bup(ab14, stat="mean")
 abund14$X2 <- bup(ab14, stat="mode")
@@ -42,9 +42,9 @@ abund14$area <- cov$area
 abund14$year <- 2012
 abund14$round <- cov$round
 abund14$treat <- NA
-colnames(abund14) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat")
+abund14$scale_averagewater <- cov$scale_averagewater
+colnames(abund14) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater")
 
-
-rr <- abund14[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round")]
+rr <- abund14[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater")]
 
 write.csv(rr, "abundances_2014.csv",row.names=F)

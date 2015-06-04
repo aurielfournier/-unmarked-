@@ -42,9 +42,10 @@ abund13$area <- cov$area
 abund13$year <- 2012
 abund13$round <- cov$round
 abund13$treat <- NA
-colnames(abund13) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat")
+abund13$scale_averagewater <- cov$scale_averagewater
+colnames(abund13) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater")
 
 
-rr <- abund13[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round")]
+rr <- abund13[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater")]
 
 write.csv(rr, "abundances_2013.csv",row.names=F)
