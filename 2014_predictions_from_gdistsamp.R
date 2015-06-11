@@ -6,7 +6,7 @@ sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2014_sora.csv', hea
 #read in the covariate data #organized by impoundment.
 cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2014_cov.csv', header=T)
 #subset covaraites we need
-cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_short","scale_averagewater","round")]
+
 # #the distance bins
 
 sora <- sora[order(sora$impound),]
@@ -43,8 +43,9 @@ abund14$year <- 2012
 abund14$round <- cov$round
 abund14$treat <- NA
 abund14$scale_averagewater <- cov$scale_averagewater
-colnames(abund14) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater")
+abund14$averagewater <- cov$averagewater
+colnames(abund14) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater","averagewater")
 
-rr <- abund14[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater")]
+rr <- abund14[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater","averagewater")]
 
-write.csv(rr, "abundances_2014.csv",row.names=F)
+write.csv(rr, "C:/Users/avanderlaar/Documents/GitHub/data/abundances_2014.csv",row.names=F)

@@ -12,7 +12,7 @@ load("C:/Users/avanderlaar/Documents/GitHub/data/grids_13_14.RData")
 
 # 2012
 
-```
+```{r}
 Call:
 gdistsamp(lambdaformula = ~region - 1, phiformula = ~1, pformula = ~1, 
     data = umf, keyfun = "hazard", output = "abund", mixture = "NB", 
@@ -45,7 +45,9 @@ AIC: -495.895
 ```
 
 ```{r, echo=FALSE}
-ggplot()+geom_boxplot(data=a12, aes(x=region, y=mean))+ylab("Predicted")+
+ggplot()+geom_boxplot(data=a12, aes(x=round, y=mode, fill=round, group=round))+
+  facet_wrap(~region)+
+  ylab("Predicted")+
   theme(axis.text.x = element_text(ang=90,color="black", size=15),
         axis.text.y = element_text(ang=90,size=15,color="black"),
         axis.title.x=element_blank(),

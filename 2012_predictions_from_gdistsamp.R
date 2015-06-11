@@ -48,4 +48,4 @@ colnames(abund12) <- c("mean","mode","CI1","CI2","impound","jdate","region","are
 
 rr <- abund12[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round")]
 
-write.csv(rr, "abundances_2012.csv",row.names=F)
+write.csv(rr, "C:/Users/avanderlaar/Documents/GitHub/data/abundances_2012.csv",row.names=F)

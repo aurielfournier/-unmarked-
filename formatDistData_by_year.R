@@ -30,11 +30,10 @@ format_dist_data_by_round <- function(data, year, dist.breaks){
 
 #####---------------------------
 
-#the farthest bird has been seen at 12 meters, so this encompasses that
-dist.breaks12 <- c(0,2,4,6,8,10,12,14) 
+
 dist.breaks <- c(0,1,2,3,4,5,6,7,8,9,10,11,12,13) 
 
-birds <- read.csv("all_birds.csv",header=T) 
+birds <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_birds.csv",header=T) 
 birds <- birds[birds$species=="sora",] 
 birds$jdate <- as.factor(birds$jdate)
 birds$night <- as.factor(birds$night)
@@ -55,7 +54,7 @@ gd2014 <- format_dist_data_by_round(birds14, 2014, dist.breaks)
 
 ####------
 # read in effort data
-surv <- read.csv("all_surveys.csv",header=T)
+surv <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_surveys.csv",header=T)
 surv <- surv[,c("year","night","round","impound","length","jdate")]
 surv$jdate <- as.factor(surv$jdate)
 #####
@@ -74,18 +73,32 @@ for(i in 1:4){
 
 list2014 <- list()
 for(i in 1:4){
-  bird <- gd2013[[i]]
+  bird <- gd2014[[i]]
   list2014[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2014,]$impound),]
 }
 
 ####-----------------------------------------------
 # Input covariates
 ####----------------------------------------------
-veg <- read.csv("all_veg.csv", header=T) 
+veg <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_veg.csv", header=T) 
 
 
 ## 2012 ##
 veg12 <- veg[veg$year==2012,]
+veg122 <- veg12[veg12$round==2,]
+veg122$round <- 1
+veg12 <- rbind(veg122, veg12)
+veg12nv <- veg12[veg12$area=="nvca",]
+veg12nv <- rbind(veg12nv, veg12nv)
+veg12nv[1:84,"round"] <- 1
+veg12nv[85:168,"round"] <- 2
+veg12 <- rbind(veg12nv, veg12)
+veg12sc <- veg12[veg12$area=="scnwr",]
+veg12sc$round <- 3
+veg12 <- rbind(veg12, veg12sc)
+veg12sc <- veg12[veg12$area=="tsca",]
+veg12sc$round <- 3
+veg12 <- rbind(veg12, veg12sc)
 vegss <- veg12[,c(13:29,33:35)]
 vegss <- scale(vegss)
 colnames(vegss) <- paste("scale", colnames(vegss), sep = "_")
@@ -94,21 +107,32 @@ veg12 <- cbind(veg12[,c(6,9:15,18:23,29)],vegss[,c(1:3,6:17)])
 veg12 <- veg12[!(veg12$impound=="boardwalk"|veg12$impound=="ditch"|veg12$impound=="n mallard"|veg12$impound=="nose"|veg12$impound=="r4/5"|veg12$impound=="redhead slough"|veg12$impound=="ts11a"|veg12$impound=="sg "),]
 
 melt12 <- melt(veg12, id=c("impound","round","region","area"))
-cast12 <- cast(melt12, impound + region + area + round ~ variable, mean, fill=NA_real_,na.rm=T)
+melt12$ir <- paste(melt12$impound, melt12$round, sep="_")
+cast12 <- cast(melt12, ir +impound+ area + round + region ~ variable, mean, fill=NA_real_,na.rm=T)
 castr1 <- cast12[cast12$round==2,]
 castr1$round <- 1
 cast12 <- rbind(cast12,castr1 )
-cast12$ir <- paste(cast12$impound, cast12$round, sep="_")
-mlen12 <- melt(surv[surv$year==2012,], id=c("impound","round","night","year"), na.rm=T)
-clen12 <- cast(mlen12, impound + round ~ variable, max, fill=NA_real_,na.rm=T)
+
+
+surv12 <- surv[surv$year==2012,]
+surv12 <- surv12[(surv12$impound %in% intersect(surv12$impound, cast12$impound)),]
+
+mlen12 <- melt(surv12, id=c("impound","round","night","year"), na.rm=T)
+clen12 <- cast(mlen12, impound + round~ variable, max, fill=NA_real_,na.rm=T)
 clen12$ir <- paste(clen12$impound, clen12$round, sep="_")
 
-veg12 <- merge(clen12, cast12, by="ir", all=FALSE)
-veg12 <- veg12[,c(1,4:ncol(veg12))]
-colnames(veg12)[4]<- "impound"
-colnames(veg12)[7]<- "round"
+nclen12 <- clen12[(clen12$ir %in% intersect(clen12$ir, cast12$ir)),]
+ncast12 <- cast12[(cast12$ir %in% intersect(clen12$ir, cast12$ir)),]
 
+
+veg12 <- merge(clen12[,c("ir","length","jdate")], cast12, by="ir")
+
+
+
+#####################################
 ### 2013 ###
+#####################################
+
 veg13 <- veg[veg$year==2013,]
 vegss <- veg13[,c(13:29,33:35)]
 vegss <- scale(vegss)
@@ -166,10 +190,9 @@ s12 <- list()
 for(i in 1:3){
   bird <- list2012[[i]]
   s <- cbind(impound=rownames(bird),bird)
-  df <- s[(s$impound %in% intersect(s$impound, veg12$impound)),]
-  df$round <- i
-  df$ir <- paste(df$impound, df$round, sep="_")
-  s12[[i]] <- df[(df$ir %in% intersect(df$ir, veg12$ir)),]
+  s$round <- i
+  s$ir <- paste(s$impound, s$round, sep="_")
+  s12[[i]] <- s
 }
 sora12 <- do.call(rbind, s12)
 
@@ -179,7 +202,7 @@ for(i in 1:4){
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
   df$ir <- paste(df$impound, df$round, sep="_")
-  s13[[i]] <- df[(df$ir %in% intersect(df$ir, veg13$ir)),]
+  s13[[i]] <- df[(df$ir %in% veg13$ir),]
 }
 sora13 <- do.call(rbind, s13)
 
@@ -189,26 +212,27 @@ for(i in 1:4){
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
   df$ir <- paste(df$impound, df$round, sep="_")
-  s14[[i]] <- df[(df$ir %in% intersect(df$ir, veg14$ir)),]
+  s14[[i]] <- df[(df$ir %in% veg14$ir),]
 }
 sora14 <- do.call(rbind, s14)
 
 ## Cut down veg files
 
 veg12 <- veg12[(veg12$ir %in% intersect(veg12$ir, sora12$ir)),]
-veg13 <- veg13[(veg13$ir %in% intersect(veg13$ir, sora13$ir)),]
-veg14 <- veg14[(veg14$ir %in% intersect(veg14$ir, sora14$ir)),]
+veg12 <- veg12[(veg12$ir %in% unique(veg12$ir))]
+veg13 <- veg13[(veg13$ir %in% sora13$ir),]
+veg14 <- veg14[(veg14$ir %in% sora14$ir),]
 
 
-### create bird input files
+### create bird input files11
 
-write.csv(sora12, "2012_sora.csv", row.names=F)
-write.csv(sora13, "2013_sora.csv", row.names=F)
-write.csv(sora14, "2014_sora.csv", row.names=F)
+write.csv(sora12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv", row.names=F)
+write.csv(sora13, "C:/Users/avanderlaar/Documents/GitHub/data/2013_sora.csv", row.names=F)
+write.csv(sora14, "C:/Users/avanderlaar/Documents/GitHub/data/2014_sora.csv", row.names=F)
 
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
-write.csv(veg12, "2012_cov.csv", row.names=F)
-write.csv(veg13, "2013_cov.csv", row.names=F)
-write.csv(veg14, "2014_cov.csv", row.names=F)
+write.csv(veg12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv", row.names=F)
+write.csv(veg13, "C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv", row.names=F)
+write.csv(veg14, "C:/Users/avanderlaar/Documents/GitHub/data/2014_cov.csv", row.names=F)
 

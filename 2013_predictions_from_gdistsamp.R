@@ -6,7 +6,6 @@ sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_sora.csv', hea
 #read in the covariate data #organized by impoundment.
 cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv', header=T)
 #subset covaraites we need
-cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_short","scale_averagewater","round")]
 # #the distance bins
 
 sora <- sora[order(sora$impound),]
@@ -21,7 +20,7 @@ umf = unmarkedFrameGDS(y=sora,
                        survey="line", 
                        dist.breaks=cutpt,  
                        unitsIn="m", 
-                       tlength=cov$length,
+                       tlength=cov$length
 )
 
 r_w_i =gdistsamp(lambdaformula = ~region+scale_averagewater+region*scale_averagewater-1, 
@@ -43,9 +42,10 @@ abund13$year <- 2012
 abund13$round <- cov$round
 abund13$treat <- NA
 abund13$scale_averagewater <- cov$scale_averagewater
-colnames(abund13) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater")
+abund13$averagewater <- cov$averagewater
+colnames(abund13) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater","averagewater")
 
 
-rr <- abund13[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater")]
+rr <- abund13[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater","averagewater")]
 
-write.csv(rr, "abundances_2013.csv",row.names=F)
+write.csv(rr, "C:/Users/avanderlaar/Documents/GitHub/data/abundances_2013.csv",row.names=F)
