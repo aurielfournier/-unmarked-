@@ -219,10 +219,10 @@ sora14 <- do.call(rbind, s14)
 ## Cut down veg files
 
 veg12 <- veg12[(veg12$ir %in% intersect(veg12$ir, sora12$ir)),]
-veg12 <- veg12[(veg12$ir %in% unique(veg12$ir))]
 veg13 <- veg13[(veg13$ir %in% sora13$ir),]
 veg14 <- veg14[(veg14$ir %in% sora14$ir),]
 
+sora12 <- sora12[(sora12$ir %in% intersect(veg12$ir, sora12$ir)),]
 
 ### create bird input files11
 
