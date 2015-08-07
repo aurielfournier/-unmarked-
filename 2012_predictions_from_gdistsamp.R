@@ -6,14 +6,14 @@ sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', hea
 #read in the covariate data #organized by impoundment.
 cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
 #subset covaraites we need
-cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_short","scale_averagewater","round")]
+cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_short","scale_averagewater","round","averagewater")]
 # #the distance bins
 
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
 
-sora <- sora[,2:40]
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
+sora <- sora[,2:16]
+cutpt = as.numeric(c(0,1,2,3,4,5)) 
 #Unmarked Data Frame
 umf = unmarkedFrameGDS(y=sora, 
                          numPrimary=3,
@@ -21,16 +21,18 @@ umf = unmarkedFrameGDS(y=sora,
                          survey="line", 
                          dist.breaks=cutpt,  
                          unitsIn="m", 
-                         tlength=cov$length,
+                         tlength=cov$length
 )
 
-r =gdistsamp(lambdaformula = ~region-1, 
+r_w12 =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", 
-                      mixture="NB",se = T, output="abund",)
+                      mixture="NB",se = T, output="abund")
 
-ab12 <- ranef(r)
+save(r_w12, file="2012_top_model.Rdata")
+
+ab12 <- ranef(r_w12)
 abund12 <- data.frame(matrix(ncol=4, nrow=nrow(cov)))
 abund12$X1 <- bup(ab12, stat="mean")
 abund12$X2 <- bup(ab12, stat="mode")
@@ -43,9 +45,11 @@ abund12$area <- cov$area
 abund12$year <- 2012
 abund12$round <- cov$round
 abund12$treat <- NA
-colnames(abund12) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat")
+abund12$scale_averagewater <- cov$scale_averagewater
+abund12$averagewater <- cov$averagewater
+colnames(abund12) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater","averagewater")
 
 
-rr <- abund12[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round")]
+rr <- abund12[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater","averagewater")]
 
 write.csv(rr, "C:/Users/avanderlaar/Documents/GitHub/data/abundances_2012.csv",row.names=F)

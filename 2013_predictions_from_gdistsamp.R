@@ -11,8 +11,8 @@ cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv', heade
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
 
-sora <- sora[,3:80]
-cutpt = as.numeric(c(0,1,2,3,4,5,6,7,8,9,10,11,12,13)) 
+sora <- sora[,2:31]
+cutpt = as.numeric(c(0,1,2,3,4,5)) 
 #Unmarked Data Frame
 umf = unmarkedFrameGDS(y=sora, 
                        numPrimary=6,
@@ -27,6 +27,8 @@ r_w_i =gdistsamp(lambdaformula = ~region+scale_averagewater+region*scale_average
                phiformula = ~1, 
                pformula = ~ 1,
                data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+save(r_w_i, file="2013_top_model.Rdata")
 
 ab13 <- ranef(r_w_i)
 abund13 <- data.frame(matrix(ncol=4, nrow=nrow(cov)))

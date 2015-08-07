@@ -31,10 +31,14 @@ format_dist_data_by_round <- function(data, year, dist.breaks){
 #####---------------------------
 
 
-dist.breaks <- c(0,1,2,3,4,5,6,7,8,9,10,11,12,13) 
+dist.breaks <- c(0,1,2,3,4,5) 
 
 birds <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_birds.csv",header=T) 
-birds <- birds[birds$species=="sora",] 
+birds <- birds[birds$species=="sora",]
+birds <- birds[birds$distance<=5,] # removing the few detections we have that are over 5 meters away from the line
+birds <- birds[!is.na(birds$round),]
+birds <- birds[!is.na(birds$distance),]
+
 birds$jdate <- as.factor(birds$jdate)
 birds$night <- as.factor(birds$night)
 birds <- birds[!(birds$night==4.2|birds$night==4.1),]
@@ -109,10 +113,10 @@ veg12 <- veg12[!(veg12$impound=="boardwalk"|veg12$impound=="ditch"|veg12$impound
 melt12 <- melt(veg12, id=c("impound","round","region","area"))
 melt12$ir <- paste(melt12$impound, melt12$round, sep="_")
 cast12 <- cast(melt12, ir +impound+ area + round + region ~ variable, mean, fill=NA_real_,na.rm=T)
-castr1 <- cast12[cast12$round==2,]
-castr1$round <- 1
-cast12 <- rbind(cast12,castr1 )
 
+#castr1 <- cast12[cast12$round==2,]
+#castr1$round <- 1
+#cast12 <- rbind(cast12,castr1 )
 
 surv12 <- surv[surv$year==2012,]
 surv12 <- surv12[(surv12$impound %in% intersect(surv12$impound, cast12$impound)),]
@@ -218,11 +222,11 @@ sora14 <- do.call(rbind, s14)
 
 ## Cut down veg files
 
-veg12 <- veg12[(veg12$ir %in% intersect(veg12$ir, sora12$ir)),]
+veg12 <- veg12[(veg12$ir %in% sora12$ir),]
 veg13 <- veg13[(veg13$ir %in% sora13$ir),]
 veg14 <- veg14[(veg14$ir %in% sora14$ir),]
 
-sora12 <- sora12[(sora12$ir %in% intersect(veg12$ir, sora12$ir)),]
+sora12 <- sora12[(sora12$ir %in% veg12$ir),]
 
 ### create bird input files11
 
