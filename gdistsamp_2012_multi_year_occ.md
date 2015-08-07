@@ -80,10 +80,10 @@ model$int = gdistsamp(lambdaformula = ~scale_int,
 ```
 
 ```r
-model$fedstate = gdistsamp(lambdaformula = ~fs, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fedstate = gdistsamp(lambdaformula = ~fs, 
+#                     phiformula = ~1, 
+#                     pformula = ~ 1,
+#                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
@@ -108,17 +108,16 @@ model$openwater = gdistsamp(lambdaformula = ~scale_water,
 ```
 
 ```r
-model$openwater = gdistsamp(lambdaformula = ~scale_millet_, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-```
-
-```r
-model$openwater = gdistsamp(lambdaformula = ~scale_smartweed_, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$openwater = gdistsamp(lambdaformula = ~scale_millet_, 
+#                     phiformula = ~1, 
+#                     pformula = ~ 1,
+#                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# ```
+# ```{r}
+# model$openwater = gdistsamp(lambdaformula = ~scale_smartweed_, 
+#                     phiformula = ~1, 
+#                     pformula = ~ 1,
+#                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
@@ -136,10 +135,10 @@ model$region_int =gdistsamp(lambdaformula = ~region+scale_int,
 ```
 
 ```r
-model$region_fedstate =gdistsamp(lambdaformula = ~region+fs-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$region_fedstate =gdistsamp(lambdaformula = ~region+fs-1, 
+#                      phiformula = ~1, 
+#                      pformula = ~ 1,
+#                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
@@ -171,10 +170,10 @@ model$averagewater_int =gdistsamp(lambdaformula = ~scale_averagewater+scale_int,
 ```
 
 ```r
-model$averagewater_fedstate =gdistsamp(lambdaformula = ~scale_averagewater+fs, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$averagewater_fedstate =gdistsamp(lambdaformula = ~scale_averagewater+fs, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
@@ -234,865 +233,17 @@ model$int_openwater =gdistsamp(lambdaformula = ~scale_int+scale_water,
 ```
 
 ```r
-model$fedstate_short =gdistsamp(lambdaformula = ~fs+scale_short, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
-```
-
-```
-## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced
+# model$fedstate_short =gdistsamp(lambdaformula = ~fs+scale_short, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$fedstate_openwater =gdistsamp(lambdaformula = ~fs+scale_water, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fedstate_openwater =gdistsamp(lambdaformula = ~fs+scale_water, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
@@ -1117,77 +268,73 @@ model$short_openwater =gdistsamp(lambdaformula = ~scale_short+scale_water,
 ```
 
 ```r
-model$region_millet =gdistsamp(lambdaformula = ~region+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$region_millet =gdistsamp(lambdaformula = ~region+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$region_smart =gdistsamp(lambdaformula = ~region+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$region_smart =gdistsamp(lambdaformula = ~region+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$int_millet =gdistsamp(lambdaformula = ~scale_int+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$int_millet =gdistsamp(lambdaformula = ~scale_int+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$int_smart =gdistsamp(lambdaformula = ~scale_int+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$int_smart =gdistsamp(lambdaformula = ~scale_int+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$openwater_millet =gdistsamp(lambdaformula = ~scale_water+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$openwater_millet =gdistsamp(lambdaformula = ~scale_water+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$openwater_smart =gdistsamp(lambdaformula = ~scale_water+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$openwater_smart =gdistsamp(lambdaformula = ~scale_water+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$averagewater_millet =gdistsamp(lambdaformula = ~scale_averagewater+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$averagewater_millet =gdistsamp(lambdaformula = ~scale_averagewater+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$averagewater_smart =gdistsamp(lambdaformula = ~scale_averagewater+scale_smart_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'scale_smart_' not found
+# model$averagewater_smart =gdistsamp(lambdaformula = ~scale_averagewater+scale_smart_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$short_millet =gdistsamp(lambdaformula = ~scale_short+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$short_millet =gdistsamp(lambdaformula = ~scale_short+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$short_smart =gdistsamp(lambdaformula = ~scale_short+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$short_smart =gdistsamp(lambdaformula = ~scale_short+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
@@ -1205,28 +352,28 @@ model$short_smart =gdistsamp(lambdaformula = ~scale_short+scale_smartweed_,
 ```
 
 ```r
-model$fs_millet =gdistsamp(lambdaformula = ~fs+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fs_millet =gdistsamp(lambdaformula = ~fs+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$fs_smart =gdistsamp(lambdaformula = ~fs+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fs_smart =gdistsamp(lambdaformula = ~fs+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$millet_smart =gdistsamp(lambdaformula = ~scale_millet_+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$millet_smart =gdistsamp(lambdaformula = ~scale_millet_+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 
 ```r
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+fs+region+scale_int+scale_millet_+scale_smartweed_, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
@@ -1247,40 +394,23 @@ model
 ```
 
 ```
-##                        nPars    AIC delta   AICwt cumltvWt
-## int_millet                 7 158.91  0.00 0.12494     0.12
-## openwater_millet           7 159.61  0.70 0.08808     0.21
-## region_millet              9 159.90  0.99 0.07618     0.29
-## fs_millet                  7 160.68  1.77 0.05167     0.34
-## region                     8 160.76  1.86 0.04942     0.39
-## short_millet               7 160.78  1.88 0.04892     0.44
-## millet_smart               7 161.06  2.15 0.04264     0.48
-## region_short               9 161.12  2.21 0.04132     0.52
-## short                      6 161.36  2.45 0.03675     0.56
-## short_smart                7 161.43  2.52 0.03551     0.60
-## int_short                  7 161.43  2.52 0.03543     0.63
-## region_smart               9 161.54  2.63 0.03346     0.66
-## averagewater_millet        7 161.68  2.77 0.03124     0.70
-## region_fedstate            9 161.74  2.83 0.03035     0.73
-## fs_smart                   7 161.79  2.88 0.02960     0.76
-## region_averagewater        9 161.80  2.89 0.02946     0.78
-## short_openwater            7 162.09  3.18 0.02554     0.81
-## region_openwater           9 162.39  3.48 0.02188     0.83
-## fedstate                   6 162.43  3.52 0.02146     0.85
-## region_int                 9 162.76  3.85 0.01822     0.87
-## averagewater_short         7 162.96  4.05 0.01647     0.89
-## fedstate_short             7 163.12  4.21 0.01523     0.90
-## int_smart                  7 163.45  4.54 0.01293     0.92
-## int_fedstate               7 163.64  4.73 0.01173     0.93
-## averagewater_int           7 163.73  4.82 0.01121     0.94
-## averagewater_fedstate      7 163.96  5.05 0.01002     0.95
-## openwater                  6 164.07  5.16 0.00945     0.96
-## int                        6 164.20  5.29 0.00886     0.97
-## fedstate_openwater         7 164.22  5.31 0.00879     0.98
-## openwater_smart            7 165.07  6.16 0.00574     0.98
-## averagewater_openwater     7 165.38  6.47 0.00492     0.99
-## null                       5 165.55  6.64 0.00451     0.99
-## averagewater               6 165.81  6.90 0.00396     1.00
-## int_openwater              7 165.87  6.96 0.00385     1.00
-## global                    15 171.15 12.24 0.00027     1.00
+##                        nPars    AIC delta  AICwt cumltvWt
+## region                     8 160.76  0.00 0.1501     0.15
+## region_short               9 161.12  0.36 0.1255     0.28
+## short                      6 161.36  0.59 0.1117     0.39
+## int_short                  7 161.43  0.67 0.1076     0.50
+## region_averagewater        9 161.80  1.03 0.0895     0.58
+## short_openwater            7 162.09  1.32 0.0776     0.66
+## region_openwater           9 162.39  1.63 0.0665     0.73
+## region_int                 9 162.76  2.00 0.0554     0.78
+## averagewater_short         7 162.96  2.20 0.0500     0.83
+## int_fedstate               7 163.64  2.88 0.0356     0.87
+## averagewater_int           7 163.73  2.97 0.0341     0.90
+## int                        6 164.20  3.44 0.0269     0.93
+## averagewater_openwater     7 165.38  4.61 0.0149     0.95
+## null                       5 165.55  4.79 0.0137     0.96
+## averagewater               6 165.81  5.05 0.0120     0.97
+## int_openwater              7 165.87  5.10 0.0117     0.98
+## openwater                  6 166.25  5.48 0.0097     0.99
+## global                    12 166.81  6.05 0.0073     1.00
 ```

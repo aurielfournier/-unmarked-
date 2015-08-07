@@ -66,10 +66,10 @@ model$int = gdistsamp(lambdaformula = ~scale_int,
                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$fedstate = gdistsamp(lambdaformula = ~fs, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fedstate = gdistsamp(lambdaformula = ~fs, 
+#                     phiformula = ~1, 
+#                     pformula = ~ 1,
+#                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 # model$perenialemerg = gdistsamp(lambdaformula = ~scale_pe, 
@@ -90,16 +90,16 @@ model$openwater = gdistsamp(lambdaformula = ~scale_water,
                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$openwater = gdistsamp(lambdaformula = ~scale_millet_, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-```
-```{r}
-model$openwater = gdistsamp(lambdaformula = ~scale_smartweed_, 
-                    phiformula = ~1, 
-                    pformula = ~ 1,
-                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$openwater = gdistsamp(lambdaformula = ~scale_millet_, 
+#                     phiformula = ~1, 
+#                     pformula = ~ 1,
+#                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# ```
+# ```{r}
+# model$openwater = gdistsamp(lambdaformula = ~scale_smartweed_, 
+#                     phiformula = ~1, 
+#                     pformula = ~ 1,
+#                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 
@@ -115,10 +115,10 @@ model$region_int =gdistsamp(lambdaformula = ~region+scale_int,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$region_fedstate =gdistsamp(lambdaformula = ~region+fs-1, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$region_fedstate =gdistsamp(lambdaformula = ~region+fs-1, 
+#                      phiformula = ~1, 
+#                      pformula = ~ 1,
+#                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 # model$region_perennialemerg =gdistsamp(lambdaformula = ~region+scale_pe, 
@@ -145,10 +145,10 @@ model$averagewater_int =gdistsamp(lambdaformula = ~scale_averagewater+scale_int,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$averagewater_fedstate =gdistsamp(lambdaformula = ~scale_averagewater+fs, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$averagewater_fedstate =gdistsamp(lambdaformula = ~scale_averagewater+fs, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 # model$averagewater_perennialemerg =gdistsamp(lambdaformula = ~scale_averagewater+scale_pe, 
@@ -202,16 +202,16 @@ model$int_openwater =gdistsamp(lambdaformula = ~scale_int+scale_water,
 #                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$fedstate_short =gdistsamp(lambdaformula = ~fs+scale_short, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fedstate_short =gdistsamp(lambdaformula = ~fs+scale_short, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$fedstate_openwater =gdistsamp(lambdaformula = ~fs+scale_water, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fedstate_openwater =gdistsamp(lambdaformula = ~fs+scale_water, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 # model$perennialemerg_short =gdistsamp(lambdaformula = ~scale_pe+scale_short, 
@@ -232,64 +232,64 @@ model$short_openwater =gdistsamp(lambdaformula = ~scale_short+scale_water,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$region_millet =gdistsamp(lambdaformula = ~region+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$region_millet =gdistsamp(lambdaformula = ~region+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$region_smart =gdistsamp(lambdaformula = ~region+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$region_smart =gdistsamp(lambdaformula = ~region+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$int_millet =gdistsamp(lambdaformula = ~scale_int+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$int_millet =gdistsamp(lambdaformula = ~scale_int+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$int_smart =gdistsamp(lambdaformula = ~scale_int+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$int_smart =gdistsamp(lambdaformula = ~scale_int+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$openwater_millet =gdistsamp(lambdaformula = ~scale_water+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$openwater_millet =gdistsamp(lambdaformula = ~scale_water+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$openwater_smart =gdistsamp(lambdaformula = ~scale_water+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$openwater_smart =gdistsamp(lambdaformula = ~scale_water+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$averagewater_millet =gdistsamp(lambdaformula = ~scale_averagewater+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$averagewater_millet =gdistsamp(lambdaformula = ~scale_averagewater+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$averagewater_smart =gdistsamp(lambdaformula = ~scale_averagewater+scale_smart_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$averagewater_smart =gdistsamp(lambdaformula = ~scale_averagewater+scale_smart_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$short_millet =gdistsamp(lambdaformula = ~scale_short+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$short_millet =gdistsamp(lambdaformula = ~scale_short+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$short_smart =gdistsamp(lambdaformula = ~scale_short+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$short_smart =gdistsamp(lambdaformula = ~scale_short+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 # model$pe_millet =gdistsamp(lambdaformula = ~scale_pe+scale_millet_, 
@@ -304,25 +304,25 @@ model$short_smart =gdistsamp(lambdaformula = ~scale_short+scale_smartweed_,
 #                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$fs_millet =gdistsamp(lambdaformula = ~fs+scale_millet_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fs_millet =gdistsamp(lambdaformula = ~fs+scale_millet_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$fs_smart =gdistsamp(lambdaformula = ~fs+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$fs_smart =gdistsamp(lambdaformula = ~fs+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$millet_smart =gdistsamp(lambdaformula = ~scale_millet_+scale_smartweed_, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+# model$millet_smart =gdistsamp(lambdaformula = ~scale_millet_+scale_smartweed_, 
+#                       phiformula = ~1, 
+#                       pformula = ~ 1,
+#                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+fs+region+scale_int+scale_millet_+scale_smartweed_, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")

@@ -1,14 +1,16 @@
-
+library(tidyr)
+library(dplyr)
+library(reshape)
 ## top three plant stuffs
 
 
 veg <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_veg.csv", header=T) 
 veg <- veg[veg$spp=="sora"|is.na(veg$spp),]
-veg <- veg[,c("plant1","plant2","plant3","impound","year","bv")]
+veg <- veg[,c("point","plant1","plant2","plant3","impound","year","bv")]
 veg <- veg[!is.na(veg$plant1),]
 veg <- veg[veg$bv!="day",]
 
-mveg <- melt(data=veg, id=c("impound",'year',"bv"))
+mveg <- melt(data=veg, id=c("point","impound",'year',"bv"))
 mveg <- mveg[!is.na(mveg$value),]
 mveg$value <- as.character(mveg$value)
 mveg[mveg$value=="japanese millett",]$value <- "japanese_millet"
@@ -91,14 +93,34 @@ mmveg12$num <- 1
 tab12 <- cast(data=mmveg12[grepl("scale",mmveg12$variable),], variable ~ num, value="value",  fun.aggregate=mean)
 var_names12 <- tab12[tab12$"1">=.05,]$variable
 
+mmveg12 <- mmveg12[mmveg12$variable %in% var_names12,]
+
+chi12 <- cast(data=mmveg12, impound ~ variable + bv)
+
+chi12list <- list()
+cols <- seq(2,(ncol(chi12)-1),by=2)
+for(i in cols){
+    d <- chi12[,(i:(i+1))]
+    chi12list[[colnames(d)[1]]]<-chisq.test(table(d))
+}
+
 
 mmveg13 <- melt(veg13, id=c("impound","year"))
 mmveg13 <- mmveg13 %>% separate(variable, into=c("variable","bv"), -2)
 mmveg13$num <- 1
 tab13 <- cast(data=mmveg13[grepl("scale",mmveg13$variable),], variable ~ num, value="value",  fun.aggregate=mean)
 var_names13 <- tab13[tab13$"1">=.05,]$variable
-var_names13[length(var_names13)+1] <- "scale_annual_smartweed_"
 
+mmveg13 <- mmveg13[mmveg13$variable %in% var_names13,]
+
+chi13 <- cast(data=mmveg13, impound ~ variable + bv)
+
+chi13list <- list()
+cols <- seq(2,(ncol(chi13)-1),by=2)
+for(i in cols){
+  d <- chi13[,(i:(i+1))]
+  chi13list[[colnames(d)[1]]]<-chisq.test(table(d))
+}
 
 mmveg14 <- melt(veg14, id=c("impound","year"))
 mmveg14 <- mmveg14 %>% separate(variable, into=c("variable","bv"), -2)
@@ -106,22 +128,44 @@ mmveg14$num <- 1
 tab14 <- cast(data=mmveg14[grepl("scale",mmveg14$variable),], variable ~ num, value="value",  fun.aggregate=mean)
 var_names14 <- tab14[tab14$"1">=.05,]$variable
 
-library(ggplot2)
+mmveg14 <- mmveg14[mmveg14$variable %in% var_names14,]
 
-a12 <- ggplot(data=subset(mmveg12, variable %in% var_names), aes(x=variable, y=value, fill=bv))+geom_boxplot()+theme(axis.text=element_text(ang=90))
+chi14 <- cast(data=mmveg14, impound ~ variable + bv)
 
-a13 <- ggplot(data=subset(mmveg13, variable %in% var_names), aes(x=variable, y=value, fill=bv))+geom_boxplot()+theme(axis.text=element_text(ang=90))
+chi14list <- list()
+cols <- seq(2,(ncol(chi14)-1),by=2)
+for(i in cols){
+  d <- chi14[,(i:(i+1))]
+  chi14list[[colnames(d)[1]]]<-chisq.test(table(d))
+}
 
-a14 <- ggplot(data=subset(mmveg14, variable %in% var_names), aes(x=variable, y=value, fill=bv))+geom_boxplot()+theme(axis.text=element_text(ang=90))
+
+t12list <- list()
+cols <- seq(2,(ncol(chi12)-1),by=2)
+for(i in cols){
+  d <- chi12[,(i:(i+1))]
+  t12list[[colnames(d)[1]]]<-t.test(d)
+}
+
+t13list <- list()
+cols <- seq(2,(ncol(chi13)-1),by=2)
+for(i in cols){
+  d <- chi13[,(i:(i+1))]
+  t13list[[colnames(d)[1]]]<-t.test(d)
+}
+
+t14list <- list()
+cols <- seq(2,(ncol(chi14)-1),by=2)
+for(i in cols){
+  d <- chi14[,(i:(i+1))]
+  t14list[[colnames(d)[1]]]<-t.test(d)
+}
+
+
+a12 <- ggplot(data=mmveg12, aes(x=variable, y=value, fill=bv))+geom_boxplot()+theme_krementz()
+
+a13 <- ggplot(data=mmveg13, aes(x=variable, y=value, fill=bv))+geom_boxplot()+theme_krementz()
+
+a14 <- ggplot(data=mmveg14, aes(x=variable, y=value, fill=bv))+geom_boxplot()+theme_krementz()
 
 grid.arrange(a12, a13, a14, ncol=1)
-
-
-plant12 <- cast(data=subset(mmveg12, variable %in% var_names12), impound ~ variable, value="value", fun.aggregate = mean)
-plant13 <- cast(data=subset(mmveg13, variable %in% var_names13), impound ~ variable, value="value", fun.aggregate = mean)
-plant14 <- cast(data=subset(mmveg14, variable %in% var_names14), impound ~ variable, value="value", fun.aggregate = mean)
-
-
-write.csv(plant12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_plants.csv", row.names=FALSE)
-write.csv(plant13, "C:/Users/avanderlaar/Documents/GitHub/data/2013_plants.csv", row.names=FALSE)
-write.csv(plant14, "C:/Users/avanderlaar/Documents/GitHub/data/2014_plants.csv", row.names=FALSE)
