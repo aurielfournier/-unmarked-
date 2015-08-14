@@ -33,7 +33,8 @@ format_dist_data_by_round <- function(data, year, dist.breaks){
 
 dist.breaks <- c(0,1,2,3,4,5) 
 
-birds <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_birds.csv",header=T) 
+#birds <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_birds.csv",header=T) 
+birds <- read.csv("~/Documents/data/all_birds.csv",header=T) 
 birds <- birds[birds$species=="sora",]
 birds <- birds[birds$distance<=5,] # removing the few detections we have that are over 5 meters away from the line
 birds <- birds[!is.na(birds$round),]
@@ -58,7 +59,8 @@ gd2014 <- format_dist_data_by_round(birds14, 2014, dist.breaks)
 
 ####------
 # read in effort data
-surv <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_surveys.csv",header=T)
+#surv <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_surveys.csv",header=T)
+surv <- read.csv("~/Documents/data/all_surveys.csv",header=T)
 surv <- surv[,c("year","night","round","impound","length","jdate")]
 surv$jdate <- as.factor(surv$jdate)
 #####
@@ -84,7 +86,8 @@ for(i in 1:4){
 ####-----------------------------------------------
 # Input covariates
 ####----------------------------------------------
-veg <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_veg.csv", header=T) 
+#veg <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_veg.csv", header=T) 
+veg <- read.csv("~/Documents/data/all_veg.csv", header=T) 
 
 
 ## 2012 ##
@@ -230,13 +233,21 @@ sora12 <- sora12[(sora12$ir %in% veg12$ir),]
 
 ### create bird input files11
 
-write.csv(sora12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv", row.names=F)
-write.csv(sora13, "C:/Users/avanderlaar/Documents/GitHub/data/2013_sora.csv", row.names=F)
-write.csv(sora14, "C:/Users/avanderlaar/Documents/GitHub/data/2014_sora.csv", row.names=F)
+# write.csv(sora12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv", row.names=F)
+# write.csv(sora13, "C:/Users/avanderlaar/Documents/GitHub/data/2013_sora.csv", row.names=F)
+# write.csv(sora14, "C:/Users/avanderlaar/Documents/GitHub/data/2014_sora.csv", row.names=F)
+
+write.csv(sora12, "~/Documents/data/2012_sora.csv", row.names=F)
+write.csv(sora13, "~/Documents/data/2013_sora.csv", row.names=F)
+write.csv(sora14, "~/Documents/data/2014_sora.csv", row.names=F)
 
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
-write.csv(veg12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv", row.names=F)
-write.csv(veg13, "C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv", row.names=F)
-write.csv(veg14, "C:/Users/avanderlaar/Documents/GitHub/data/2014_cov.csv", row.names=F)
+# write.csv(veg12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv", row.names=F)
+# write.csv(veg13, "C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv", row.names=F)
+# write.csv(veg14, "C:/Users/avanderlaar/Documents/GitHub/data/2014_cov.csv", row.names=F)
+
+write.csv(veg12, "~/Documents/data/2012_cov.csv", row.names=F)
+write.csv(veg13, "~/Documents/data/2013_cov.csv", row.names=F)
+write.csv(veg14, "~/Documents/data/2014_cov.csv", row.names=F)
 

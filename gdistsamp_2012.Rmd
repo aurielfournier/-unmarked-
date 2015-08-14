@@ -4,12 +4,11 @@
 library(unmarked)
 
 #read in the sora observations
-sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
+#sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
+sora <- read.csv('~/Documents/data/2012_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
-cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
-#subset covaraites we need
-cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_short","scale_averagewater")]
-# #the distance bins
+#cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
+cov <- read.csv('~/Documents/data/2012_cov.csv', header=T)
 
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
@@ -23,70 +22,131 @@ umf = unmarkedFrameGDS(y=sora,
                            survey="line", 
                            dist.breaks=cutpt,  
                            unitsIn="m", 
-                           tlength=cov$length,
+                           tlength=cov$length
 )
 ```
 
 ```{r}
 
 model <- list()
+
 model$null = gdistsamp(lambdaformula = ~1, 
                      phiformula = ~1, 
                      pformula = ~1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
 
-model$r = gdistsamp(lambdaformula = ~region, 
+```{r}
+model$region = gdistsamp(lambdaformula = ~region, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
+model$averagewater = gdistsamp(lambdaformula = ~scale_averagewater, 
+                    phiformula = ~1, 
+                    pformula = ~1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$int = gdistsamp(lambdaformula = ~scale_int, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
 
+```{r}
+model$short = gdistsamp(lambdaformula = ~scale_short, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$openwater = gdistsamp(lambdaformula = ~scale_water, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
 
-model$r_w =gdistsamp(lambdaformula = ~region+scale_averagewater, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```{r}
 
-model$r_w_i =gdistsamp(lambdaformula = ~region+scale_averagewater+region*scale_averagewater, 
+model$region_averagewater =gdistsamp(lambdaformula = ~region+scale_averagewater, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-model$s_r =gdistsamp(lambdaformula = ~scale_short+region-1, 
+model$region_int =gdistsamp(lambdaformula = ~region+scale_int, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-model$s_r_i =gdistsamp(lambdaformula = ~scale_short+region+scale_short*region, 
-                     phiformula = ~1, 
-                     pformula = ~ 1,
-                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
 ```
 
 ```{r}
-model$s =gdistsamp(lambdaformula = ~scale_short, 
+model$region_short =gdistsamp(lambdaformula = ~region+scale_short, 
                      phiformula = ~1, 
                      pformula = ~ 1,
                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model$s_w =gdistsamp(lambdaformula = ~scale_short+scale_averagewater, 
+```
+```{r}
+model$region_openwater =gdistsamp(lambdaformula = ~region+scale_water, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-model$s_w_i =gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_short*scale_averagewater, 
+```
+```{r}
+model$averagewater_int =gdistsamp(lambdaformula = ~scale_averagewater+scale_int, 
                        phiformula = ~1, 
                        pformula = ~ 1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
+
 ```{r}
-model$global =gdistsamp(lambdaformula = ~region+scale_averagewater+scale_short+region*scale_averagewater+region*scale_short, 
+model$averagewater_short =gdistsamp(lambdaformula = ~scale_averagewater+scale_short, 
                       phiformula = ~1, 
                       pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
+                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$averagewater_openwater =gdistsamp(lambdaformula = ~scale_averagewater+scale_water, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$int_fedstate =gdistsamp(lambdaformula = ~scale_int+fs, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
 
+```{r}
+model$int_short =gdistsamp(lambdaformula = ~scale_int+scale_short, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+```
+```{r}
+model$int_openwater =gdistsamp(lambdaformula = ~scale_int+scale_water, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+```
+
+```{r}
+model$short_openwater =gdistsamp(lambdaformula = ~scale_short+scale_water, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```{r}
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int, 
+                      phiformula = ~1, 
+                      pformula = ~ 1,
+                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
 save(model, file="2012_models.Rdata")

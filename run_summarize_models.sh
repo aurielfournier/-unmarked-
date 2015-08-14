@@ -2,7 +2,7 @@ clear
 
 echo "running 2012"
 
-Rscript -e "library(knitr); knit('gdistsamp_2012_multi_year_occ.rmd')"
+Rscript -e "library(knitr); knit('gdistsamp_2012.rmd')"
 
 tail -20 gdistsamp_2012.md
 
