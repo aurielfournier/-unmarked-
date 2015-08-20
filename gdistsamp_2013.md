@@ -8,13 +8,6 @@ library(unmarked)
 ```
 ## Loading required package: methods
 ## Loading required package: reshape
-```
-
-```
-## Warning: package 'reshape' was built under R version 3.1.2
-```
-
-```
 ## Loading required package: lattice
 ## Loading required package: Rcpp
 ```
@@ -56,6 +49,48 @@ model$null = gdistsamp(lambdaformula = ~1,
 
 ```r
 model$region = gdistsamp(lambdaformula = ~region, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```r
+model$pe_short = gdistsamp(lambdaformula = ~scale_pe+scale_short, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```r
+model$pe_openwater = gdistsamp(lambdaformula = ~scale_pe+scale_water, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```r
+model$pe_averagewater = gdistsamp(lambdaformula = ~scale_pe+scale_averagewater, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```r
+model$pe_int = gdistsamp(lambdaformula = ~scale_pe+scale_int, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```r
+model$pe_region = gdistsamp(lambdaformula = ~scale_pe+region, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+
+```r
+model$pe = gdistsamp(lambdaformula = ~scale_pe, 
                     phiformula = ~1, 
                     pformula = ~ 1,
                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
@@ -150,7 +185,7 @@ model$int_fedstate =gdistsamp(lambdaformula = ~scale_int+fs,
 ```
 
 ```
-## Error: object 'fs' not found
+## Error in eval(expr, envir, enclos): object 'fs' not found
 ```
 
 
@@ -178,7 +213,7 @@ model$short_openwater =gdistsamp(lambdaformula = ~scale_short+scale_water,
 
 
 ```r
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int+scale_pe, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
@@ -190,7 +225,7 @@ list  = fitList(model)
 ```
 
 ```
-## Warning: If supplying a list of fits, use fits = 'mylist'
+## Warning in fitList(model): If supplying a list of fits, use fits = 'mylist'
 ```
 
 ```r
@@ -200,21 +235,27 @@ model
 
 ```
 ##                        nPars    AIC delta  AICwt cumltvWt
-## averagewater_int           7 529.12 0.000 0.2585     0.26
-## int                        6 529.17 0.051 0.2520     0.51
-## int_openwater              7 531.16 2.040 0.0932     0.60
-## int_short                  7 531.16 2.047 0.0929     0.70
-## region_int                 9 532.32 3.207 0.0520     0.75
-## global                    12 532.40 3.282 0.0501     0.80
-## averagewater               6 532.88 3.763 0.0394     0.84
-## region_averagewater        9 533.07 3.950 0.0359     0.87
-## averagewater_openwater     7 533.46 4.343 0.0295     0.90
-## region                     8 533.82 4.702 0.0246     0.93
-## null                       5 534.53 5.413 0.0173     0.95
-## averagewater_short         7 534.72 5.607 0.0157     0.96
-## region_short               9 535.21 6.097 0.0123     0.97
-## region_openwater           9 535.30 6.178 0.0118     0.98
-## short                      6 536.50 7.388 0.0064     0.99
-## openwater                  6 536.53 7.413 0.0063     1.00
-## short_openwater            7 538.49 9.378 0.0024     1.00
+## averagewater_int           7 529.12 0.000 0.2024     0.20
+## int                        6 529.17 0.051 0.1973     0.40
+## pe_int                     7 529.77 0.653 0.1460     0.55
+## global                    13 531.05 1.938 0.0768     0.62
+## int_openwater              7 531.16 2.040 0.0730     0.70
+## int_short                  7 531.16 2.047 0.0727     0.77
+## region_int                 9 532.32 3.207 0.0407     0.81
+## averagewater               6 532.88 3.763 0.0308     0.84
+## region_averagewater        9 533.07 3.950 0.0281     0.87
+## averagewater_openwater     7 533.46 4.343 0.0231     0.89
+## region                     8 533.82 4.702 0.0193     0.91
+## null                       5 534.53 5.413 0.0135     0.92
+## pe_region                  9 534.59 5.471 0.0131     0.94
+## averagewater_short         7 534.72 5.607 0.0123     0.95
+## pe_averagewater            7 534.88 5.762 0.0113     0.96
+## region_short               9 535.21 6.097 0.0096     0.97
+## region_openwater           9 535.30 6.178 0.0092     0.98
+## short                      6 536.50 7.388 0.0050     0.98
+## pe                         6 536.50 7.388 0.0050     0.99
+## openwater                  6 536.53 7.413 0.0050     0.99
+## pe_short                   7 538.47 9.356 0.0019     1.00
+## short_openwater            7 538.49 9.378 0.0019     1.00
+## pe_openwater               7 538.50 9.386 0.0019     1.00
 ```

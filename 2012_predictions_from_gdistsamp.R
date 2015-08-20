@@ -2,37 +2,11 @@
 #setwd("~/Documents/data")
 library(unmarked)
 #read in the sora observations
-sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
-#read in the covariate data #organized by impoundment.
-cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
-#subset covaraites we need
-cov <- cov[,c("region","length","impound","jdate","area", "scale_int","scale_short","scale_averagewater","round","averagewater")]
-# #the distance bins
 
-sora <- sora[order(sora$impound),]
-cov <- cov[order(cov$impound),]
+load("2012_models.Rdata")
+cov <- read.csv('~/Documents/data/2012_cov.csv', header=T)
 
-sora <- sora[,2:16]
-cutpt = as.numeric(c(0,1,2,3,4,5)) 
-#Unmarked Data Frame
-umf = unmarkedFrameGDS(y=sora, 
-                         numPrimary=3,
-                         siteCovs = cov,
-                         survey="line", 
-                         dist.breaks=cutpt,  
-                         unitsIn="m", 
-                         tlength=cov$length
-)
-
-r_w12 =gdistsamp(lambdaformula = ~region+scale_averagewater-1, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", 
-                      mixture="NB",se = T, output="abund")
-
-save(r_w12, file="2012_top_model.Rdata")
-
-ab12 <- ranef(r_w12)
+ab12 <- ranef(model$averagewater_short)
 abund12 <- data.frame(matrix(ncol=4, nrow=nrow(cov)))
 abund12$X1 <- bup(ab12, stat="mean")
 abund12$X2 <- bup(ab12, stat="mode")
@@ -52,4 +26,4 @@ colnames(abund12) <- c("mean","mode","CI1","CI2","impound","jdate","region","are
 
 rr <- abund12[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater","averagewater")]
 
-write.csv(rr, "C:/Users/avanderlaar/Documents/GitHub/data/abundances_2012.csv",row.names=F)
+write.csv(rr, "~/Documents/data/abundances_2012.csv",row.names=F)

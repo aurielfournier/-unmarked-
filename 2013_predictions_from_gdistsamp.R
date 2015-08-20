@@ -1,36 +1,12 @@
 # predictions from GDistsamp 2012
 #setwd("~/GitHub/data")
 library(unmarked)
-#read in the sora observations
-sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_sora.csv', header=T)
-#read in the covariate data #organized by impoundment.
-cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2013_cov.csv', header=T)
-#subset covaraites we need
-# #the distance bins
 
-sora <- sora[order(sora$impound),]
-cov <- cov[order(cov$impound),]
 
-sora <- sora[,2:31]
-cutpt = as.numeric(c(0,1,2,3,4,5)) 
-#Unmarked Data Frame
-umf = unmarkedFrameGDS(y=sora, 
-                       numPrimary=6,
-                       siteCovs = cov,
-                       survey="line", 
-                       dist.breaks=cutpt,  
-                       unitsIn="m", 
-                       tlength=cov$length
-)
+load("2013_models.Rdata")
+cov <- read.csv('~/Documents/data/2013_cov.csv', header=T)
 
-r_w_i =gdistsamp(lambdaformula = ~region+scale_averagewater+region*scale_averagewater-1, 
-               phiformula = ~1, 
-               pformula = ~ 1,
-               data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-save(r_w_i, file="2013_top_model.Rdata")
-
-ab13 <- ranef(r_w_i)
+ab13 <- ranef(model$region_averagewater)
 abund13 <- data.frame(matrix(ncol=4, nrow=nrow(cov)))
 abund13$X1 <- bup(ab13, stat="mean")
 abund13$X2 <- bup(ab13, stat="mode")
@@ -50,4 +26,4 @@ colnames(abund13) <- c("mean","mode","CI1","CI2","impound","jdate","region","are
 
 rr <- abund13[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater","averagewater")]
 
-write.csv(rr, "C:/Users/avanderlaar/Documents/GitHub/data/abundances_2013.csv",row.names=F)
+write.csv(rr, "~/Documents/data/abundances_2013.csv",row.names=F)

@@ -1,14 +1,14 @@
 ```{r}
-# predictions from GDistsamp 2012
+# predictions from GDistsamp 2015
 
 library(unmarked)
 
 #read in the sora observations
 #sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
-sora <- read.csv('~/Documents/data/2014_sora.csv', header=T)
+sora <- read.csv('~/Documents/data/2015_sora.csv', header=T)
 #read in the covariate data #organized by impoundment.
 #cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
-cov <- read.csv('~/Documents/data/2014_cov.csv', header=T)
+cov <- read.csv('~/Documents/data/2015_cov.csv', header=T)
 
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
@@ -25,6 +25,10 @@ umf = unmarkedFrameGDS(y=sora,
                            tlength=cov$length
 )
 ```
+
+covariates being used
+
+scale_short+scale_water+scale_averagewater+region+scale_int+scale_pe
 
 ```{r}
 
@@ -185,7 +189,7 @@ model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_average
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
-save(model, file="2014_models.Rdata")
+save(model, file="2015_models.Rdata")
 list  = fitList(model)
 model = modSel(list)
 model

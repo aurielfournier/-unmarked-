@@ -53,10 +53,13 @@ birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 birds14 <- birds[birds$year==2014,]
 birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
+birds15 <- birds[birds$year==2015,]
+birds15$night <- factor(birds15$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
+
 gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks)
 gd2013 <- format_dist_data_by_round(birds13, 2013, dist.breaks)
 gd2014 <- format_dist_data_by_round(birds14, 2014, dist.breaks)
-
+gd2015 <- format_dist_data_by_round(birds15, 2015, dist.breaks)
 ####------
 # read in effort data
 #surv <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_surveys.csv",header=T)
@@ -83,12 +86,17 @@ for(i in 1:4){
   list2014[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2014,]$impound),]
 }
 
+list2015 <- list()
+for(i in 1:4){
+  bird <- gd2015[[i]]
+  list2015[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2015,]$impound),]
+}
+
 ####-----------------------------------------------
 # Input covariates
 ####----------------------------------------------
 #veg <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_veg.csv", header=T) 
 veg <- read.csv("~/Documents/data/all_veg.csv", header=T) 
-
 
 ## 2012 ##
 veg12 <- veg[veg$year==2012,]
@@ -189,6 +197,40 @@ clen14$ir <- paste(clen14$impound, clen14$round, sep="_")
 veg14 <- merge(clen14, castveg14, by="ir", all=FALSE)
 veg14 <- veg14[,c(1:5,7:13,15:ncol(veg14))]
 
+
+##### 2015
+
+
+### 2015 ###
+v15 <- veg[veg$year==2015&veg$averagewater<900,]
+v15$treat[v15$impound=="sanctuary"|v15$impound=="scmsu2"|v15$impound=="pool2w"|v15$impound=="m10"|v15$impound=="ts2a"|v15$impound=="ts4a"|v15$impound=="ccmsu12"|v15$impound=="kt9"|v15$impound=="dc22"|v15$impound=="os23"|v15$impound=="pool i"|v15$impound=="pooli"|v15$impound=="ash"|v15$impound=="sgb"|v15$impound=="scmsu3"|v15$impound=="m11"|v15$impound=="kt2"|v15$impound=="kt6"|v15$impound=="r7"|v15$impound=="poolc"|v15$impound=="pool c"]<-"L"
+v15$treat[v15$impound=="sgd"|v15$impound=="rail"|v15$impound=="pool2"|v15$impound=="m13"|v15$impound=="ts6a"|v15$impound=="kt5"|v15$impound=="dc15"|v15$impound=="os21"|v15$impound=="pool e"|v15$impound=="poole"|v15$impound=="r3"|v15$impound=="dc20"|v15$impound=="dc18"|v15$impound=="ccmsu2"|v15$impound=="ccmsu1"|v15$impound=="ts8a"|v15$impound=="pool3w"]<-"E"
+v15$woodp = ifelse(v15$wood>0,1,0)
+v15$waterp = ifelse(v15$averagewater>0,1,0)
+meltv15v = melt(v15[,c( "region","round","impound", "area", "int", "treat", "short","pe", "wood")],id=c("impound","round","treat","region","area"), na.rm=T)
+castveg15v = cast(meltv15v, impound + area+  treat + region ~ variable, mean, fill=NA_real_,na.rm=T)
+castr <- rbind(castveg15v,castveg15v,castveg15v,castveg15v)
+castr$round <- rep(c(1,2,3,4),each=35)
+castr$ir <- paste(castr$impound, castr$round, sep="_")
+
+meltv15w = melt(na.omit(v15[,c( "impound","round", "averagewater")]),id=c("impound","round"), na.rm=T)
+castveg15w = cast(meltv15w, impound + round~ variable  ,na.rm=T, mean, fill=NA_real_)
+castveg15w$ir <- paste(castveg15w$impound, castveg15w$round, sep="_")
+castveg15_all <- merge(castr, castveg15w, by="ir")
+
+castss <- scale(castveg15_all[,c(6:9,13)])
+colnames(castss) <- paste("scale", colnames(castss), sep = "_")
+castveg15 <- cbind(castveg15_all, castss)
+castveg15 <- castveg15[,c(1:10,13:ncol(castveg15))]
+
+mlen15 <- melt(surv[surv$year==2015,], id=c("impound","round","night","year"),na.rm=T)
+clen15 <- cast(mlen15, impound + round ~ variable, max, fill=NA_real_)
+clen15$ir <- paste(clen15$impound, clen15$round, sep="_")
+
+veg15 <- merge(clen15, castveg15, by="ir", all=FALSE)
+veg15 <- veg15[,c(1:5,7:13,15:ncol(veg15))]
+
+
 ######---------------------------
 # Create the Sora Input Files 
 ######---------------------------
@@ -223,11 +265,23 @@ for(i in 1:4){
 }
 sora14 <- do.call(rbind, s14)
 
+
+s15 <- list()
+for(i in 1:4){
+  bird <- list2015[[i]]
+  df <- cbind(impound=rownames(bird),bird)
+  df$round <- i
+  df$ir <- paste(df$impound, df$round, sep="_")
+  s15[[i]] <- df[(df$ir %in% veg15$ir),]
+}
+sora15 <- do.call(rbind, s15)
+
 ## Cut down veg files
 
 veg12 <- veg12[(veg12$ir %in% sora12$ir),]
 veg13 <- veg13[(veg13$ir %in% sora13$ir),]
 veg14 <- veg14[(veg14$ir %in% sora14$ir),]
+veg15 <- veg15[(veg15$ir %in% sora15$ir),]
 
 sora12 <- sora12[(sora12$ir %in% veg12$ir),]
 
@@ -240,7 +294,7 @@ sora12 <- sora12[(sora12$ir %in% veg12$ir),]
 write.csv(sora12, "~/Documents/data/2012_sora.csv", row.names=F)
 write.csv(sora13, "~/Documents/data/2013_sora.csv", row.names=F)
 write.csv(sora14, "~/Documents/data/2014_sora.csv", row.names=F)
-
+write.csv(sora15, "~/Documents/data/2015_sora.csv", row.names=F)
 # Create Covariate Files ----------------------------------------------------------------------------------------
 
 # write.csv(veg12, "C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv", row.names=F)
@@ -250,4 +304,4 @@ write.csv(sora14, "~/Documents/data/2014_sora.csv", row.names=F)
 write.csv(veg12, "~/Documents/data/2012_cov.csv", row.names=F)
 write.csv(veg13, "~/Documents/data/2013_cov.csv", row.names=F)
 write.csv(veg14, "~/Documents/data/2014_cov.csv", row.names=F)
-
+write.csv(veg15, "~/Documents/data/2015_cov.csv", row.names=F)

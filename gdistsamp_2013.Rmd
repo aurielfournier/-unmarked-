@@ -43,6 +43,42 @@ model$region = gdistsamp(lambdaformula = ~region,
                     data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
 ```{r}
+model$pe_short = gdistsamp(lambdaformula = ~scale_pe+scale_short, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$pe_openwater = gdistsamp(lambdaformula = ~scale_pe+scale_water, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$pe_averagewater = gdistsamp(lambdaformula = ~scale_pe+scale_averagewater, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$pe_int = gdistsamp(lambdaformula = ~scale_pe+scale_int, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$pe_region = gdistsamp(lambdaformula = ~scale_pe+region, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
+model$pe = gdistsamp(lambdaformula = ~scale_pe, 
+                    phiformula = ~1, 
+                    pformula = ~ 1,
+                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+```
+```{r}
 model$averagewater = gdistsamp(lambdaformula = ~scale_averagewater, 
                     phiformula = ~1, 
                     pformula = ~1,
@@ -143,7 +179,7 @@ model$short_openwater =gdistsamp(lambdaformula = ~scale_short+scale_water,
 ```
 
 ```{r}
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int+scale_pe, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
