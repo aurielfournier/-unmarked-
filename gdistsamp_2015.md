@@ -1,4 +1,5 @@
-```{r}
+
+```r
 m <- c("region","scale_averagewater","scale_pe","scale_short")
 
 tab <- table(m,m)
@@ -26,7 +27,16 @@ for(i in 1 : nrow(index)){
 # predictions from GDistsamp 2015
 
 library(unmarked)
+```
 
+```
+## Loading required package: methods
+## Loading required package: reshape
+## Loading required package: lattice
+## Loading required package: Rcpp
+```
+
+```r
 #read in the sora observations
 #sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
 sora <- read.csv('~/Documents/data/2015_sora.csv', header=T)
@@ -54,8 +64,8 @@ covariates being used
 
 scale_short+scale_water+scale_averagewater+region+scale_int+scale_pe
 
-```{r}
 
+```r
 model <- list()
 
 modelsnames <- names(models)
@@ -66,18 +76,42 @@ model[[modelsnames[[i]]]] = gdistsamp(lambdaformula = models[[i]],
                        pformula = ~1,
                        data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 }
-
 ```
 
-```{r}
+
+```r
 model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region+scale_pe, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 ```
-```{r}
+
+```r
 save(model, file="2015_models.Rdata")
 list  = fitList(model)
+```
+
+```
+## Warning in fitList(model): If supplying a list of fits, use fits = 'mylist'
+```
+
+```r
 model = modSel(list)
 model
+```
+
+```
+##                                nPars    AIC delta AICwt cumltvWt
+## ~1                                 5 161.17 0.000 0.202     0.20
+## scale_short                        6 161.25 0.083 0.194     0.40
+## region                             6 162.77 1.604 0.091     0.49
+## scale_averagewater                 6 162.80 1.631 0.089     0.58
+## scale_short+scale_averagewater     7 163.10 1.932 0.077     0.65
+## scale_short+region                 7 163.14 1.969 0.076     0.73
+## scale_pe                           6 163.16 1.994 0.075     0.80
+## scale_short+scale_pe               7 163.22 2.053 0.072     0.88
+## scale_pe+region                    7 164.42 3.249 0.040     0.92
+## scale_pe+scale_averagewater        7 164.63 3.459 0.036     0.95
+## scale_averagewater+region          7 164.69 3.521 0.035     0.99
+## global                             9 166.53 5.358 0.014     1.00
 ```

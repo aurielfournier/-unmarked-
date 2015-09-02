@@ -53,7 +53,8 @@ birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 birds14 <- birds[birds$year==2014,]
 birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
-birds15 <- birds[birds$year==2015,]
+birds15 <- read.csv("2015_birds_master.csv")
+birds15 <- birds15[birds15$distance<=5,]
 birds15$night <- factor(birds15$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
 gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks)
@@ -86,8 +87,13 @@ for(i in 1:4){
   list2014[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2014,]$impound),]
 }
 
+
+surv <- read.csv("~/Documents/data/2015_surveys.csv",header=T)
+surv <- surv[,c("year","night","round","impound","length","jdate")]
+surv$jdate <- as.factor(surv$jdate)
+
 list2015 <- list()
-for(i in 1:4){
+for(i in 1:1){
   bird <- gd2015[[i]]
   list2015[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2015,]$impound),]
 }
@@ -200,7 +206,7 @@ veg14 <- veg14[,c(1:5,7:13,15:ncol(veg14))]
 
 ##### 2015
 
-
+veg <- read.csv("2015_veg_master.csv")
 ### 2015 ###
 v15 <- veg[veg$year==2015&veg$averagewater<900,]
 v15$treat[v15$impound=="sanctuary"|v15$impound=="scmsu2"|v15$impound=="pool2w"|v15$impound=="m10"|v15$impound=="ts2a"|v15$impound=="ts4a"|v15$impound=="ccmsu12"|v15$impound=="kt9"|v15$impound=="dc22"|v15$impound=="os23"|v15$impound=="pool i"|v15$impound=="pooli"|v15$impound=="ash"|v15$impound=="sgb"|v15$impound=="scmsu3"|v15$impound=="m11"|v15$impound=="kt2"|v15$impound=="kt6"|v15$impound=="r7"|v15$impound=="poolc"|v15$impound=="pool c"]<-"L"
@@ -210,7 +216,7 @@ v15$waterp = ifelse(v15$averagewater>0,1,0)
 meltv15v = melt(v15[,c( "region","round","impound", "area", "int", "treat", "short","pe", "wood")],id=c("impound","round","treat","region","area"), na.rm=T)
 castveg15v = cast(meltv15v, impound + area+  treat + region ~ variable, mean, fill=NA_real_,na.rm=T)
 castr <- rbind(castveg15v,castveg15v,castveg15v,castveg15v)
-castr$round <- rep(c(1,2,3,4),each=35)
+castr$round <- rep(c(1,2,3,4),each=nrow(castveg15v))
 castr$ir <- paste(castr$impound, castr$round, sep="_")
 
 meltv15w = melt(na.omit(v15[,c( "impound","round", "averagewater")]),id=c("impound","round"), na.rm=T)
@@ -267,7 +273,7 @@ sora14 <- do.call(rbind, s14)
 
 
 s15 <- list()
-for(i in 1:4){
+for(i in 1:1){
   bird <- list2015[[i]]
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
