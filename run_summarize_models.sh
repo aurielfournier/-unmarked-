@@ -2,19 +2,19 @@ clear
 
 echo "running 2012"
 
-Rscript -e "library(knitr); knit('gdistsamp_2012.rmd')"
+Rscript -e "install.packages(knitr); library(knitr); knit('gdistsamp_2012.rmd')"
 
 tail -20 gdistsamp_2012.md
 
 echo "running 2013"
 
-Rscript -e "library(knitr); knit('gdistsamp_2013.rmd')"
+Rscript -e "install.packages("knitr"); library(knitr); knit('gdistsamp_2013.rmd')"
 
 tail -20 gdistsamp_2013.md
 
 echo "running 2014"
 
-Rscript -e "library(knitr); knit('gdistsamp_2014.rmd')"
+Rscript -e "install.packages("knitr"); library(knitr); knit('gdistsamp_2014.rmd')"
 
 tail -20 gdistsamp_2014.md
 
