@@ -35,7 +35,7 @@ dist.breaks <- c(0,1,2,3,4,5)
 
 #birds <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_birds.csv",header=T) 
 birds <- read.csv("~/data/all_birds.csv",header=T) 
-birds <- birds[birds$species=="sora",]
+birds <- birds[birds$species=="sora"|birds$species=="s",]
 birds <- birds[birds$distance<=5,] # removing the few detections we have that are over 5 meters away from the line
 birds <- birds[!is.na(birds$round),]
 birds <- birds[!is.na(birds$distance),]
@@ -53,11 +53,10 @@ birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 birds14 <- birds[birds$year==2014,]
 birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
-birds15 <- read.csv("~/data/2015_birds_master.csv")
-birds15 <- birds15[birds15$distance<=5,]
+birds15 <- birds[birds$year==2015,]
 birds15[birds15$impound=="sanctuarysouth",]$impound <- "sanctuary"
 birds15[birds15$impound=="sanctuarynorth",]$impound <- "sanctuary"
-levels(birds15$impound) <- c("rail","sanctuary","ash","scmsu2","scmsu3","sgd","sgb","pool2","pool2w","pool3w","m11","m10","m13","ts2a","ts4a","ts6a","ts8a","kt9","kt2","kt5","kt6","ccmsu1","ccmsu2","ccmsu12","dc14","dc18","dc20","dc22","os21","os23","pooli","poole","poolc")
+#levels(birds15$impound) <- c("rail","sanctuary","ash","scmsu2","scmsu3","sgd","sgb","pool2","pool2w","pool3w","m11","m10","m13","ts2a","ts4a","ts6a","ts8a","kt9","kt2","kt5","kt6","ccmsu1","ccmsu2","ccmsu12","dc14","dc18","dc20","dc22","os21","os23","pooli","poole","poolc")
 birds15$night <- factor(birds15$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
 gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks)
@@ -91,12 +90,8 @@ for(i in 1:4){
 }
 
 
-surv <- read.csv("~/data/2015_surveys.csv",header=T)
-surv <- surv[,c("year","night","round","impound","length","jdate")]
-surv$jdate <- as.factor(surv$jdate)
-
 list2015 <- list()
-for(i in 1:1){
+for(i in 1:4){
   bird <- gd2015[[i]]
   list2015[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2015,]$impound),]
 }
@@ -207,9 +202,6 @@ veg14 <- merge(clen14, castveg14, by="ir", all=FALSE)
 veg14 <- veg14[,c(1:5,7:13,15:ncol(veg14))]
 
 
-##### 2015
-
-veg <- read.csv("~/data/2015_veg_master.csv")
 ### 2015 ###
 v15 <- veg[veg$year==2015&veg$averagewater<900,]
 v15$treat[v15$impound=="sanctuary"|v15$impound=="scmsu2"|v15$impound=="pool2w"|v15$impound=="m10"|v15$impound=="ts2a"|v15$impound=="ts4a"|v15$impound=="ccmsu12"|v15$impound=="kt9"|v15$impound=="dc22"|v15$impound=="os23"|v15$impound=="pool i"|v15$impound=="pooli"|v15$impound=="ash"|v15$impound=="sgb"|v15$impound=="scmsu3"|v15$impound=="m11"|v15$impound=="kt2"|v15$impound=="kt6"|v15$impound=="r7"|v15$impound=="poolc"|v15$impound=="pool c"]<-"L"
