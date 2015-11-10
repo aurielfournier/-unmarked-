@@ -61,17 +61,18 @@ img {
 
 
 
-<pre class="r"><code>models &lt;- c(&quot;~1&quot;,&quot;~region&quot;,&quot;~scale_averagewater&quot;,&quot;~scale_averagewater+scale_averagewater2&quot;,&quot;~scale_short&quot;,&quot;~scale_short+scale_short2&quot;,&quot;~scale_int&quot;,&quot;~scale_int+scale_int2&quot;,&quot;~region+scale_averagewater-1&quot;,&quot;~region+scale_short&quot;,&quot;~region+scale_int&quot;,&quot;~scale_averagewater+scale_short&quot;,&quot;~scale_averagewater+scale_averagewater2+scale_short&quot;,&quot;~scale_averagewater+scale_short+scale_short2&quot;,&quot;~scale_averagewater+scale_int&quot;,&quot;~scale_averagewater+scale_averagewater2+scale_int&quot;,&quot;~scale_averagewater+scale_int+scale_int2&quot;,&quot;~scale_short+scale_int&quot;,&quot;~scale_short+scale_short2+scale_int&quot;,&quot;~scale_short+scale_int+scale_int2&quot;)
+<pre class="r"><code>models &lt;- c(&quot;~1&quot;,&quot;~region&quot;,&quot;~scale_averagewater&quot;,&quot;~scale_averagewater+scale_averagewater2&quot;,&quot;~scale_short&quot;,&quot;~scale_short+scale_short2&quot;,&quot;~scale_int&quot;,&quot;~scale_int+scale_int2&quot;,&quot;~region+scale_averagewater-1&quot;,&quot;~region+scale_short&quot;,&quot;~region+scale_int&quot;,&quot;~scale_averagewater+scale_short&quot;,&quot;~scale_averagewater+scale_averagewater2+scale_short&quot;,&quot;~scale_averagewater+scale_short+scale_short2&quot;,&quot;~scale_averagewater+scale_int&quot;,&quot;~scale_averagewater+scale_averagewater2+scale_int&quot;,&quot;~scale_averagewater+scale_int+scale_int2&quot;,&quot;~scale_short+scale_int&quot;,&quot;~scale_short+scale_short2+scale_int&quot;,&quot;~scale_short+scale_int+scale_int2&quot;,&quot;~region+scale_averagewater+scale_short+scale_int+scale_short2+scale_int2+scale_averagewater2-1&quot;)
 
 
 library(unmarked)</code></pre>
 <pre><code>## Loading required package: reshape
 ## Loading required package: lattice
 ## Loading required package: Rcpp</code></pre>
-<pre class="r"><code>sora &lt;- read.csv('~/data/2015_sora.csv', header=T)
+<pre class="r"><code>#sora &lt;- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
+sora &lt;- read.csv('~/data/2014_sora.csv', header=T)
 
-cov &lt;- read.csv('~/data/2015_cov.csv', header=T)
-
+#cov &lt;- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
+cov &lt;- read.csv('~/data/2014_cov.csv', header=T)
 sora &lt;- sora[order(sora$impound),]
 cov &lt;- cov[order(cov$impound),]
 
@@ -100,380 +101,143 @@ model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]),
                        pformula = ~1,
                        data = umf, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)
 }</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
-<pre><code>## Warning in dnbinom(x, mu = lambda, size = exp(pars[nP])): NaNs produced</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = as.formula(models[i]), phiformula
+## = ~1, : Hessian is singular. Try using fewer covariates and supplying
+## starting values.</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = as.formula(models[i]), phiformula
+## = ~1, : Hessian is singular. Try using fewer covariates and supplying
+## starting values.</code></pre>
+<pre><code>## Warning in gdistsamp(lambdaformula = as.formula(models[i]), phiformula
+## = ~1, : Hessian is singular. Try using fewer covariates and supplying
+## starting values.</code></pre>
 <pre class="r"><code>model$global &lt;- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region+scale_int+scale_pe, 
                       phiformula = ~1, 
                       pformula = ~ 1,
                       data = umf, keyfun = &quot;hazard&quot;, mixture=&quot;NB&quot;,se = T, output=&quot;abund&quot;)</code></pre>
-<pre class="r"><code>save(model, file=&quot;~/unmarked/2015_models.Rdata&quot;)
+<pre class="r"><code>save(model, file=&quot;2014_models.Rdata&quot;)
 list  = fitList(model)</code></pre>
 <pre><code>## Warning in fitList(model): If supplying a list of fits, use fits = 'mylist'</code></pre>
 <pre class="r"><code>model = modSel(list)</code></pre>
+<pre><code>## Hessian is singular.
+## Hessian is singular.
+## Hessian is singular.</code></pre>
 <pre><code>## Warning in sqrt(diag(vcov(x, altNames = TRUE))): NaNs produced</code></pre>
 <pre class="r"><code>model</code></pre>
-<pre><code>##                                                     nPars    AIC delta
-## global                                                 12  87.62  0.00
-## ~scale_averagewater+scale_averagewater2+scale_short     8  99.96 12.35
-## ~scale_averagewater+scale_int+scale_int2                8 109.56 21.95
-## ~region+scale_averagewater-1                            9 111.35 23.73
-## ~scale_averagewater+scale_short                         7 111.55 23.93
-## ~scale_averagewater+scale_averagewater2                 7 113.24 25.63
-## ~scale_averagewater+scale_short+scale_short2            8 113.51 25.89
-## ~scale_averagewater+scale_averagewater2+scale_int       8 114.91 27.29
-## ~scale_averagewater                                     6 121.00 33.38
-## ~scale_averagewater+scale_int                           7 122.05 34.43
-## ~scale_short+scale_int+scale_int2                       8 126.87 39.26
-## ~region+scale_short                                     9 128.08 40.46
-## ~scale_short+scale_int                                  7 132.93 45.31
-## ~scale_short+scale_short2+scale_int                     8 133.01 45.40
-## ~scale_short+scale_short2                               7 134.38 46.77
-## ~scale_int+scale_int2                                   7 134.93 47.32
-## ~region                                                 8 138.73 51.12
-## ~region+scale_int                                       9 139.76 52.15
-## ~1                                                      5 142.51 54.90
-## ~scale_int                                              6 144.48 56.86
-## ~scale_short                                            6 153.86 66.24
-##                                                       AICwt cumltvWt
-## global                                              1.0e+00     1.00
-## ~scale_averagewater+scale_averagewater2+scale_short 2.1e-03     1.00
-## ~scale_averagewater+scale_int+scale_int2            1.7e-05     1.00
-## ~region+scale_averagewater-1                        7.0e-06     1.00
-## ~scale_averagewater+scale_short                     6.4e-06     1.00
-## ~scale_averagewater+scale_averagewater2             2.7e-06     1.00
-## ~scale_averagewater+scale_short+scale_short2        2.4e-06     1.00
-## ~scale_averagewater+scale_averagewater2+scale_int   1.2e-06     1.00
-## ~scale_averagewater                                 5.6e-08     1.00
-## ~scale_averagewater+scale_int                       3.3e-08     1.00
-## ~scale_short+scale_int+scale_int2                   3.0e-09     1.00
-## ~region+scale_short                                 1.6e-09     1.00
-## ~scale_short+scale_int                              1.4e-10     1.00
-## ~scale_short+scale_short2+scale_int                 1.4e-10     1.00
-## ~scale_short+scale_short2                           7.0e-11     1.00
-## ~scale_int+scale_int2                               5.3e-11     1.00
-## ~region                                             7.9e-12     1.00
-## ~region+scale_int                                   4.7e-12     1.00
-## ~1                                                  1.2e-12     1.00
-## ~scale_int                                          4.5e-13     1.00
-## ~scale_short                                        4.1e-15     1.00</code></pre>
+<pre><code>##                                                                                                nPars
+## ~region+scale_averagewater+scale_short+scale_int+scale_short2+scale_int2+scale_averagewater2-1    14
+## ~scale_averagewater+scale_averagewater2+scale_int                                                  8
+## ~scale_averagewater+scale_averagewater2                                                            7
+## ~scale_averagewater+scale_averagewater2+scale_short                                                8
+## ~scale_averagewater                                                                                6
+## ~scale_averagewater+scale_int                                                                      7
+## ~scale_averagewater+scale_int+scale_int2                                                           8
+## ~region+scale_averagewater-1                                                                       9
+## ~scale_averagewater+scale_short                                                                    7
+## ~scale_averagewater+scale_short+scale_short2                                                       8
+## global                                                                                            12
+## ~1                                                                                                 5
+## ~scale_short                                                                                       6
+## ~scale_int                                                                                         6
+## ~scale_int+scale_int2                                                                              7
+## ~scale_short+scale_short2                                                                          7
+## ~region                                                                                            8
+## ~scale_short+scale_int+scale_int2                                                                  8
+## ~scale_short+scale_int                                                                             7
+## ~scale_short+scale_short2+scale_int                                                                8
+## ~region+scale_short                                                                                9
+## ~region+scale_int                                                                                  9
+##                                                                                                     AIC
+## ~region+scale_averagewater+scale_short+scale_int+scale_short2+scale_int2+scale_averagewater2-1 -1616.09
+## ~scale_averagewater+scale_averagewater2+scale_int                                              -1615.92
+## ~scale_averagewater+scale_averagewater2                                                        -1612.69
+## ~scale_averagewater+scale_averagewater2+scale_short                                            -1612.59
+## ~scale_averagewater                                                                            -1603.36
+## ~scale_averagewater+scale_int                                                                  -1603.20
+## ~scale_averagewater+scale_int+scale_int2                                                       -1602.45
+## ~region+scale_averagewater-1                                                                   -1602.05
+## ~scale_averagewater+scale_short                                                                -1602.03
+## ~scale_averagewater+scale_short+scale_short2                                                   -1600.76
+## global                                                                                         -1598.34
+## ~1                                                                                             -1594.05
+## ~scale_short                                                                                   -1592.54
+## ~scale_int                                                                                     -1592.23
+## ~scale_int+scale_int2                                                                          -1592.13
+## ~scale_short+scale_short2                                                                      -1592.10
+## ~region                                                                                        -1590.96
+## ~scale_short+scale_int+scale_int2                                                              -1590.68
+## ~scale_short+scale_int                                                                         -1590.68
+## ~scale_short+scale_short2+scale_int                                                            -1590.38
+## ~region+scale_short                                                                            -1589.39
+## ~region+scale_int                                                                              -1589.07
+##                                                                                                delta
+## ~region+scale_averagewater+scale_short+scale_int+scale_short2+scale_int2+scale_averagewater2-1  0.00
+## ~scale_averagewater+scale_averagewater2+scale_int                                               0.17
+## ~scale_averagewater+scale_averagewater2                                                         3.40
+## ~scale_averagewater+scale_averagewater2+scale_short                                             3.50
+## ~scale_averagewater                                                                            12.73
+## ~scale_averagewater+scale_int                                                                  12.88
+## ~scale_averagewater+scale_int+scale_int2                                                       13.63
+## ~region+scale_averagewater-1                                                                   14.04
+## ~scale_averagewater+scale_short                                                                14.06
+## ~scale_averagewater+scale_short+scale_short2                                                   15.32
+## global                                                                                         17.74
+## ~1                                                                                             22.03
+## ~scale_short                                                                                   23.55
+## ~scale_int                                                                                     23.86
+## ~scale_int+scale_int2                                                                          23.96
+## ~scale_short+scale_short2                                                                      23.98
+## ~region                                                                                        25.12
+## ~scale_short+scale_int+scale_int2                                                              25.40
+## ~scale_short+scale_int                                                                         25.41
+## ~scale_short+scale_short2+scale_int                                                            25.71
+## ~region+scale_short                                                                            26.69
+## ~region+scale_int                                                                              27.02
+##                                                                                                  AICwt
+## ~region+scale_averagewater+scale_short+scale_int+scale_short2+scale_int2+scale_averagewater2-1 4.4e-01
+## ~scale_averagewater+scale_averagewater2+scale_int                                              4.0e-01
+## ~scale_averagewater+scale_averagewater2                                                        8.0e-02
+## ~scale_averagewater+scale_averagewater2+scale_short                                            7.6e-02
+## ~scale_averagewater                                                                            7.5e-04
+## ~scale_averagewater+scale_int                                                                  7.0e-04
+## ~scale_averagewater+scale_int+scale_int2                                                       4.8e-04
+## ~region+scale_averagewater-1                                                                   3.9e-04
+## ~scale_averagewater+scale_short                                                                3.9e-04
+## ~scale_averagewater+scale_short+scale_short2                                                   2.1e-04
+## global                                                                                         6.2e-05
+## ~1                                                                                             7.2e-06
+## ~scale_short                                                                                   3.4e-06
+## ~scale_int                                                                                     2.9e-06
+## ~scale_int+scale_int2                                                                          2.8e-06
+## ~scale_short+scale_short2                                                                      2.7e-06
+## ~region                                                                                        1.5e-06
+## ~scale_short+scale_int+scale_int2                                                              1.3e-06
+## ~scale_short+scale_int                                                                         1.3e-06
+## ~scale_short+scale_short2+scale_int                                                            1.1e-06
+## ~region+scale_short                                                                            7.0e-07
+## ~region+scale_int                                                                              5.9e-07
+##                                                                                                cumltvWt
+## ~region+scale_averagewater+scale_short+scale_int+scale_short2+scale_int2+scale_averagewater2-1     0.44
+## ~scale_averagewater+scale_averagewater2+scale_int                                                  0.84
+## ~scale_averagewater+scale_averagewater2                                                            0.92
+## ~scale_averagewater+scale_averagewater2+scale_short                                                1.00
+## ~scale_averagewater                                                                                1.00
+## ~scale_averagewater+scale_int                                                                      1.00
+## ~scale_averagewater+scale_int+scale_int2                                                           1.00
+## ~region+scale_averagewater-1                                                                       1.00
+## ~scale_averagewater+scale_short                                                                    1.00
+## ~scale_averagewater+scale_short+scale_short2                                                       1.00
+## global                                                                                             1.00
+## ~1                                                                                                 1.00
+## ~scale_short                                                                                       1.00
+## ~scale_int                                                                                         1.00
+## ~scale_int+scale_int2                                                                              1.00
+## ~scale_short+scale_short2                                                                          1.00
+## ~region                                                                                            1.00
+## ~scale_short+scale_int+scale_int2                                                                  1.00
+## ~scale_short+scale_int                                                                             1.00
+## ~scale_short+scale_short2+scale_int                                                                1.00
+## ~region+scale_short                                                                                1.00
+## ~region+scale_int                                                                                  1.00</code></pre>
 
 
 </div>

@@ -1,24 +1,4 @@
 ```{r}
-# m <- c("region","scale_averagewater","scale_pe","scale_short","scale_int")
-# 
-# tab <- table(m,m)
-# 
-# for(i in 1:length(m)){
-#   tab[(1:which(tab[,i]==1)),i] <- 1
-# }
-# 
-# models <- list()
-# models[[paste0("~",1)]] <- as.formula(paste0("~",1))
-# 
-# for(i in 1:length(m)){
-#   models[[paste0(m[i])]] <- as.formula(paste0("~",m[i]))
-# }
-# 
-# index <- which(tab==0, arr.ind=TRUE)
-# 
-# for(i in 1 : nrow(index)){
-#   models[[paste0(rownames(tab)[index[i,1]],"+",colnames(tab)[index[i,2]])]] <- as.formula(paste0("~",rownames(tab)[index[i,1]],"+",colnames(tab)[index[i,2]]))
-#   }
 
 models <- c("~1","~region","~scale_averagewater","~scale_averagewater+scale_averagewater2","~scale_short","~scale_short+scale_short2","~scale_int","~scale_int+scale_int2","~region+scale_averagewater-1","~region+scale_short","~region+scale_int","~scale_averagewater+scale_short","~scale_averagewater+scale_averagewater2+scale_short","~scale_averagewater+scale_short+scale_short2","~scale_averagewater+scale_int","~scale_averagewater+scale_averagewater2+scale_int","~scale_averagewater+scale_int+scale_int2","~scale_short+scale_int","~scale_short+scale_short2+scale_int","~scale_short+scale_int+scale_int2","~region+scale_averagewater+scale_short+scale_int+scale_scale2+scale_int2+scale_averagewater2-1")
 
@@ -26,10 +6,7 @@ models <- c("~1","~region","~scale_averagewater","~scale_averagewater+scale_aver
 library(unmarked)
 
 
-#sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
 sora <- read.csv('~/data/2012_sora.csv', header=T)
-
-#cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
 cov <- read.csv('~/data/2012_cov.csv', header=T)
 
 sora <- sora[order(sora$impound),]
@@ -59,6 +36,7 @@ model <- list()
 
 
 for(i in 1:length(models)){
+  print(i)
 model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]), 
                        phiformula = ~1, 
                        pformula = ~1,

@@ -6,15 +6,17 @@ models <- c("~1",
             "~scale_int",
             "~region+scale_averagewater-1",
             "~scale_short+scale_int",
-            "~scale_short+region-1",
-            "~scale_pe")
+            "~scale_short+region-1")
+
+
+
 
 library(unmarked)
 
 
-sora <- read.csv('~/data/2014_sora.csv', header=T)
+sora <- read.csv('~/data/2012_sora.csv', header=T)
+cov <- read.csv('~/data/2012_cov.csv', header=T)
 
-cov <- read.csv('~/data/2014_cov.csv', header=T)
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
 
@@ -22,18 +24,17 @@ cov$scale_short2 <- cov$scale_short^2
 cov$scale_int2 <- cov$scale_int^2
 cov$scale_averagewater2 <- cov$scale_averagewater^2
 
-sora <- sora[,2:11]
+sora <- sora[,2:16]
 cutpt = as.numeric(c(0,1,2,3,4,5)) 
 
 umf = unmarkedFrameGDS(y=sora, 
-                       numPrimary=2,
+                       numPrimary=3,
                        siteCovs = cov,
                        survey="line", 
                        dist.breaks=cutpt,  
                        unitsIn="m", 
                        tlength=cov$length
 )
-
 
 model <- list()
 
@@ -47,13 +48,11 @@ for(i in 1:length(models)){
                                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 }
 
-
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region+scale_int+scale_pe, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region+scale_int, 
                           phiformula = ~1, 
                           pformula = ~ 1,
                           data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-
-save(model, file="~/unmarked/2014_models.Rdata")
+save(model, file="~/unmarked/2012_models.Rdata")
 list  = fitList(model)
 model = modSel(list)
 model

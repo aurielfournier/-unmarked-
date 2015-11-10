@@ -1,3 +1,4 @@
+
 models <- c("~1",
             "~region-1",
             "~scale_averagewater",
@@ -9,12 +10,14 @@ models <- c("~1",
             "~scale_short+region-1",
             "~scale_pe")
 
+
 library(unmarked)
 
 
-sora <- read.csv('~/data/2014_sora.csv', header=T)
+sora <- read.csv('~/data/2015_sora.csv', header=T)
 
-cov <- read.csv('~/data/2014_cov.csv', header=T)
+cov <- read.csv('~/data/2015_cov.csv', header=T)
+
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
 
@@ -53,7 +56,7 @@ model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region
                           pformula = ~ 1,
                           data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-save(model, file="~/unmarked/2014_models.Rdata")
+save(model, file="~/unmarked/2015_models.Rdata")
 list  = fitList(model)
 model = modSel(list)
 model

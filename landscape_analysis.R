@@ -72,20 +72,29 @@ mdatsum <- mdatsum[mdatsum$nlcdvariable %in% keep,]
 
 ggplot()+geom_point(data=mdatsum, aes(x=variable, y=value))+facet_wrap(~nlcdvariable)+theme(axis.text.x=element_text(ang=90))
 
-dsn <- "C:/Users/avanderlaar/Documents/data/gis/landfire/Grid2/us_130evt/z001001.adf"
 
 file_names <- list.files("C:/Users/avanderlaar/Documents/data/gis/landfire/Grid2/us_130evt/", patter=".adf")
 
 landfire <- list()
 
 for(i in 1:length(file_names)){
-x <- new("GDALReadOnlyDataset",paste0("C:/Users/avanderlaar/Documents/data/gis/landfire/Grid2/us_130evt/","",file_names[i]))
-getDriver(x)
-getDriverLongName(getDriver(x))
-landfire[[i]] <- asSGDF_GROD(x, output.dim=c(200,200))
+  landfire[[i]] <- raster(paste0("C:/Users/avanderlaar/Documents/data/gis/landfire/Grid2/us_130evt/","",file_names[i]))
 }
+
+dsn <- "C:/Users/avanderlaar/Documents/data/gis"
+
+mo <- readOGR(dsn=dsn, layer="MO_Counties")
+mo <- spTransform(mo, CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"))
+
+
+lfclip <- list()
+for(i in 1:length(file_names)){
+  print(i)
+lfclip[[i]] <- crop(landfire[[i]],mo)
+  }
 
 
 for(i in 1:length(file_names)){
-spplot(landfire[[i]], "band1")
+  print(i)
+  writeRaster(lfclip[[i]], file=paste0("C:/Users/avanderlaar/Documents/data/gis/landfire/clipped/","raster",i,".grd"), overwrite=TRUE)
 }
