@@ -40,7 +40,7 @@ for(i in 1:length(models)){
 model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]), 
                        phiformula = ~1, 
                        pformula = ~1,
-                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                       data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
 }
 
 ```
@@ -48,7 +48,7 @@ model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]),
 model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int, 
                       phiformula = ~1, 
                       pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                      data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
 ```
 ```{r}
 save(model, file="2012_models.Rdata")

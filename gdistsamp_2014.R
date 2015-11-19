@@ -11,10 +11,8 @@ models <- c("~1",
 
 library(unmarked)
 
-
-sora <- read.csv('~/data/2014_sora.csv', header=T)
-
-cov <- read.csv('~/data/2014_cov.csv', header=T)
+sora <- read.csv('C:/Users/avanderlaar/Documents/data/2014_sora.csv', header=T)
+cov <- read.csv('C:/Users/avanderlaar/Documents/data/2014_cov.csv', header=T)
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
 
@@ -44,16 +42,16 @@ for(i in 1:length(models)){
   model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]), 
                                    phiformula = ~1, 
                                    pformula = ~1,
-                                   data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                                   data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
 }
 
 
 model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region+scale_int+scale_pe, 
                           phiformula = ~1, 
                           pformula = ~ 1,
-                          data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+                          data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
 
-save(model, file="~/unmarked/2014_models.Rdata")
+save(model, file="C:/Users/avanderlaar/Documents/unmarked/2014_p_models.Rdata")
 list  = fitList(model)
 model = modSel(list)
 model
