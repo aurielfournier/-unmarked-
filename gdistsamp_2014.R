@@ -1,12 +1,9 @@
 models <- c("~1",
-            "~region-1",
             "~scale_averagewater",
             "~scale_averagewater+scale_averagewater2",
             "~scale_short",
             "~scale_int",
-            "~region+scale_averagewater-1",
             "~scale_short+scale_int",
-            "~scale_short+region-1",
             "~scale_pe")
 
 library(unmarked)
@@ -42,14 +39,14 @@ for(i in 1:length(models)){
   model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]), 
                                    phiformula = ~1, 
                                    pformula = ~1,
-                                   data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
+                                   data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 }
 
 
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region+scale_int+scale_pe, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_int+scale_pe, 
                           phiformula = ~1, 
                           pformula = ~ 1,
-                          data = umf, keyfun = "hazard", mixture="P",se = T, output="abund")
+                          data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
 save(model, file="C:/Users/avanderlaar/Documents/unmarked/2014_p_models.Rdata")
 list  = fitList(model)

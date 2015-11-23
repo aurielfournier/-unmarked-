@@ -1,10 +1,11 @@
 
-dat <- read.csv("2014_waterfowl_tidy_hec.csv")
+dat <- read.csv("~/data/2014_waterfowl_tidy_hec.csv")
 #dat <- dat[dat$region!="ne",]
 library(gridExtra)
 library(ggplot2)
 dat <- dat[dat$variable=="waterfowl",]
 cb2 <- c("#018571","#a6611a")
+dat <- dat[dat$area!="ccnwr",]
 
 a <-ggplot()+
   geom_boxplot(data=dat, aes(region, birds_ha, fill=treat))+
