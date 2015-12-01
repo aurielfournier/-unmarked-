@@ -4,7 +4,14 @@ models <- c("~1",
             "~scale_short",
             "~scale_int",
             "~scale_short+scale_int",
-            "~scale_pe")
+            "~scale_pe",
+            "~round",
+            "~scale_averagewater+round",
+            "~scale_averagewater+scale_averagewater2+round",
+            "~scale_short+round",
+            "~scale_int+round",
+            "~scale_short+scale_int+round",
+            "~scale_pe+round")
 
 
 library(unmarked)
@@ -44,7 +51,7 @@ for(i in 1:length(models)){
                                    data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 }
 
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_int+scale_pe, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_int+round, 
                           phiformula = ~1, 
                           pformula = ~ 1,
                           data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")

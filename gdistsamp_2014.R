@@ -43,7 +43,7 @@ for(i in 1:length(models)){
 }
 
 
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_int+scale_pe, 
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_int, 
                           phiformula = ~1, 
                           pformula = ~ 1,
                           data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
