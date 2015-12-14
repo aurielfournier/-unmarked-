@@ -1,14 +1,19 @@
-models <- c("~1","~region","~scale_averagewater","~scale_averagewater+scale_averagewater2","~scale_short","~scale_short+scale_short2","~scale_int","~scale_int+scale_int2","~region+scale_averagewater-1","~region+scale_short","~region+scale_int","~scale_averagewater+scale_short","~scale_averagewater+scale_averagewater2+scale_short","~scale_averagewater+scale_short+scale_short2","~scale_averagewater+scale_int","~scale_averagewater+scale_averagewater2+scale_int","~scale_averagewater+scale_int+scale_int2","~scale_short+scale_int","~scale_short+scale_short2+scale_int","~scale_short+scale_int+scale_int2")
+
+models <- c("~1",
+            "~scale_averagewater",
+            "~scale_averagewater+scale_averagewater2",
+            "~scale_short",
+            "~scale_int",
+            "~scale_short+scale_int")
+
+
 
 
 library(unmarked)
 
 
-#sora <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_sora.csv', header=T)
-sora <- read.csv('~/data/2012_sora.csv', header=T)
-
-#cov <- read.csv('C:/Users/avanderlaar/Documents/GitHub/data/2012_cov.csv', header=T)
-cov <- read.csv('~/data/2012_cov.csv', header=T)
+sora <- read.csv('C:/Users/avanderlaar/Documents/data/2012_sora.csv', header=T)
+cov <- read.csv('C:/Users/avanderlaar/Documents/data/2012_cov.csv', header=T)
 
 sora <- sora[order(sora$impound),]
 cov <- cov[order(cov$impound),]
@@ -34,17 +39,19 @@ model <- list()
 
 
 for(i in 1:length(models)){
-model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]), 
-                       phiformula = ~1, 
-                       pformula = ~1,
-                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+  print(i)
+  model[[models[[i]]]] = gdistsamp(lambdaformula = as.formula(models[i]), 
+                                   phiformula = ~1, 
+                                   pformula = ~1,
+                                   data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 }
 
-model$global <- gdistsamp(lambdaformula = ~scale_short+scale_water+scale_averagewater+region+scale_int, 
-                      phiformula = ~1, 
-                      pformula = ~ 1,
-                      data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
-save(model, file="~/data/2012_models.Rdata")
+model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+scale_int, 
+                          phiformula = ~1, 
+                          pformula = ~ 1,
+                          data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
+
+save(model, file="C:/Users/avanderlaar/Documents/unmarked/2012_models.Rdata")
 list  = fitList(model)
-model12 = modSel(list)
-model12
+model = modSel(list)
+model

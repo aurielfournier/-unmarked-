@@ -35,7 +35,7 @@ dist.breaks <- c(0,1,2,3,4,5)
 
 #birds <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_birds.csv",header=T) 
 birds <- read.csv("~/data/all_birds.csv",header=T) 
-birds <- birds[birds$species=="sora",]
+birds <- birds[birds$species=="sora"|birds$species=="s",]
 birds <- birds[birds$distance<=5,] # removing the few detections we have that are over 5 meters away from the line
 birds <- birds[!is.na(birds$round),]
 birds <- birds[!is.na(birds$distance),]
@@ -51,14 +51,25 @@ birds13 <- birds[birds$year==2013,]
 birds13$night <- factor(birds13$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
 birds14 <- birds[birds$year==2014,]
-birds14$night <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
+birds14$night2 <- NA
+birds14$night2 <- factor(birds14$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
 
-birds15 <- read.csv("~/data/2015_birds_master.csv")
-birds15 <- birds15[birds15$distance<=5,]
+birds14[birds14$night2==1.1|birds14$night2==2.1|birds14$night2==3.1,]$night <- 1
+birds14[birds14$night2==1.2|birds14$night2==2.2|birds14$night2==3.2,]$night <- 2
+birds14$night <- factor(birds14$night, labels=c(1,2))
+
+birds15 <- birds[birds$year==2015,]
 birds15[birds15$impound=="sanctuarysouth",]$impound <- "sanctuary"
 birds15[birds15$impound=="sanctuarynorth",]$impound <- "sanctuary"
-levels(birds15$impound) <- c("rail","sanctuary","ash","scmsu2","scmsu3","sgd","sgb","pool2","pool2w","pool3w","m11","m10","m13","ts2a","ts4a","ts6a","ts8a","kt9","kt2","kt5","kt6","ccmsu1","ccmsu2","ccmsu12","dc14","dc18","dc20","dc22","os21","os23","pooli","poole","poolc")
-birds15$night <- factor(birds15$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
+#levels(birds15$impound) <- c("rail","sanctuary","ash","scmsu2","scmsu3","sgd","sgb","pool2","pool2w","pool3w","m11","m10","m13","ts2a","ts4a","ts6a","ts8a","kt9","kt2","kt5","kt6","ccmsu1","ccmsu2","ccmsu12","dc14","dc18","dc20","dc22","os21","os23","pooli","poole","poolc")
+birds15$night2 <- NA
+birds15$night2 <- factor(birds15$night, labels=c(1.1,1.2,2.1,2.2,3.1,3.2))
+
+birds15[birds15$night2==1.1|birds15$night2==2.1|birds15$night2==3.1,]$night <- 1
+birds15[birds15$night2==1.2|birds15$night2==2.2|birds15$night2==3.2,]$night <- 2
+birds15$night <- factor(birds15$night, labels=c(1,2))
+
+
 
 gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks)
 gd2013 <- format_dist_data_by_round(birds13, 2013, dist.breaks)
@@ -91,12 +102,9 @@ for(i in 1:4){
 }
 
 
-surv <- read.csv("~/data/2015_surveys.csv",header=T)
-surv <- surv[,c("year","night","round","impound","length","jdate")]
-surv$jdate <- as.factor(surv$jdate)
-
 list2015 <- list()
-for(i in 1:2){
+
+for(i in 1:4){
   bird <- gd2015[[i]]
   list2015[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2015,]$impound),]
 }
@@ -123,10 +131,10 @@ veg12 <- rbind(veg12, veg12sc)
 veg12sc <- veg12[veg12$area=="tsca",]
 veg12sc$round <- 3
 veg12 <- rbind(veg12, veg12sc)
-vegss <- veg12[,c(13:29,33:35)]
+vegss <- veg12[,c(14:30,34:36)]
 vegss <- scale(vegss)
 colnames(vegss) <- paste("scale", colnames(vegss), sep = "_")
-veg12 <- cbind(veg12[,c(6,9:15,18:23,29)],vegss[,c(1:3,6:17)])
+veg12 <- cbind(veg12[,c("year","round","region","area",'impound',"int","short","tall","pe","pcgrass","up","bg","water","wood","other","crop","averagewater","waterp","woodp","dead")],vegss[,c(1:3,6:17)])
 #clipping it down to just Moist Soil plots 
 veg12 <- veg12[!(veg12$impound=="boardwalk"|veg12$impound=="ditch"|veg12$impound=="n mallard"|veg12$impound=="nose"|veg12$impound=="r4/5"|veg12$impound=="redhead slough"|veg12$impound=="ts11a"|veg12$impound=="sg "),]
 
@@ -158,10 +166,10 @@ veg12 <- merge(clen12[,c("ir","length","jdate")], cast12, by="ir")
 #####################################
 
 veg13 <- veg[veg$year==2013,]
-vegss <- veg13[,c(13:29,33:35)]
+vegss <- veg13[,c(14:30,34:36)]
 vegss <- scale(vegss)
 colnames(vegss) <- paste("scale", colnames(vegss), sep = "_")
-veg13 <- cbind(veg13[,c(6,9:29)],vegss[,c(1:4,6:17)])
+veg13 <-  cbind(veg13[,c("year","round","region","area",'impound',"int","short","tall","pe","pcgrass","up","bg","water","wood","other","crop","averagewater","waterp","woodp","dead")],vegss[,c(1:4,6:ncol(vegss))])
 #clipping it down to just Moist Soil plots 
 veg13 <- veg13[!(veg13$impound=="boardwalk"|veg13$impound=="ditch"|veg13$impound=="n mallard"|veg13$impound=="nose"|veg13$impound=="r4/5"|veg13$impound=="redhead slough"|veg13$impound=="ts11a"|veg13$impound=="sg "|veg13$impound=="bb2"|veg13$impound=="sgd"),]
 
@@ -207,9 +215,6 @@ veg14 <- merge(clen14, castveg14, by="ir", all=FALSE)
 veg14 <- veg14[,c(1:5,7:13,15:ncol(veg14))]
 
 
-##### 2015
-
-veg <- read.csv("~/data/2015_veg_master.csv")
 ### 2015 ###
 v15 <- veg[veg$year==2015&veg$averagewater<900,]
 v15$treat[v15$impound=="sanctuary"|v15$impound=="scmsu2"|v15$impound=="pool2w"|v15$impound=="m10"|v15$impound=="ts2a"|v15$impound=="ts4a"|v15$impound=="ccmsu12"|v15$impound=="kt9"|v15$impound=="dc22"|v15$impound=="os23"|v15$impound=="pool i"|v15$impound=="pooli"|v15$impound=="ash"|v15$impound=="sgb"|v15$impound=="scmsu3"|v15$impound=="m11"|v15$impound=="kt2"|v15$impound=="kt6"|v15$impound=="r7"|v15$impound=="poolc"|v15$impound=="pool c"]<-"L"
@@ -277,7 +282,8 @@ sora14 <- do.call(rbind, s14)
 
 
 s15 <- list()
-for(i in 1:length(list2015)){
+
+for(i in 1:4){
   bird <- list2015[[i]]
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
