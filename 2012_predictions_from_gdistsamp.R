@@ -23,7 +23,6 @@ abund12$scale_averagewater <- cov$scale_averagewater
 abund12$averagewater <- cov$averagewater
 colnames(abund12) <- c("mean","mode","CI1","CI2","impound","jdate","region","area","year","round","treat","scale_averagewater","averagewater")
 
-
 rr <- abund12[,c("mean","mode","CI1","CI2","impound","jdate","region","treat","area","year","round","scale_averagewater","averagewater")]
 
 write.csv(rr, "~/Documents/data/abundances_2012.csv",row.names=F)

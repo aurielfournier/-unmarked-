@@ -68,8 +68,7 @@ model$global <- gdistsamp(lambdaformula = ~scale_short+scale_averagewater+region
                       pformula = ~ 1,
                       data = umf, keyfun = "hazard", mixture="NB",se = T, output="abund")
 
-save(model, file="2014_models.Rdata")
+save(model, file="~/data/2014_models.Rdata")
 list  = fitList(model)
 model = modSel(list)
 model
-```

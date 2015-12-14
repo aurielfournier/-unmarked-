@@ -96,7 +96,7 @@ surv <- surv[,c("year","night","round","impound","length","jdate")]
 surv$jdate <- as.factor(surv$jdate)
 
 list2015 <- list()
-for(i in 1:1){
+for(i in 1:2){
   bird <- gd2015[[i]]
   list2015[[i]] <- bird[(rownames(bird) %in% surv[surv$round==i&surv$year==2015,]$impound),]
 }
@@ -216,6 +216,7 @@ v15$treat[v15$impound=="sanctuary"|v15$impound=="scmsu2"|v15$impound=="pool2w"|v
 v15$treat[v15$impound=="sgd"|v15$impound=="rail"|v15$impound=="pool2"|v15$impound=="m13"|v15$impound=="ts6a"|v15$impound=="kt5"|v15$impound=="dc15"|v15$impound=="os21"|v15$impound=="pool e"|v15$impound=="poole"|v15$impound=="r3"|v15$impound=="dc20"|v15$impound=="dc18"|v15$impound=="ccmsu2"|v15$impound=="ccmsu1"|v15$impound=="ts8a"|v15$impound=="pool3w"]<-"E"
 v15$woodp = ifelse(v15$wood>0,1,0)
 v15$waterp = ifelse(v15$averagewater>0,1,0)
+v15[v15$impound=="dc14",]$treat <- "E"
 meltv15v = melt(v15[,c( "region","round","impound", "area", "int", "treat", "short","pe", "wood")],id=c("impound","round","treat","region","area"), na.rm=T)
 castveg15v = cast(meltv15v, impound + area+  treat + region ~ variable, mean, fill=NA_real_,na.rm=T)
 castr <- rbind(castveg15v,castveg15v,castveg15v,castveg15v)
@@ -276,7 +277,7 @@ sora14 <- do.call(rbind, s14)
 
 
 s15 <- list()
-for(i in 1:1){
+for(i in 1:length(list2015)){
   bird <- list2015[[i]]
   df <- cbind(impound=rownames(bird),bird)
   df$round <- i
