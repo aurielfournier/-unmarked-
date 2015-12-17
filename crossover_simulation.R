@@ -8,7 +8,7 @@ region <- c("nw","nc","ne","se")
 
 for(i in region){
     lambdae <- runif(min=30, max=70, n=2)
-    lambdal <- runif(min=20, max=50, n=2)
+    lambdal <- rpois(lambda=, n=2)
     dat <- as.data.frame(rnorm(18*2, mean=lambdae[[1]],sd=lambdae[[2]]*.5))  
       dat$region <- i
       dat$treat <- "early"
@@ -44,17 +44,16 @@ for(i in region){
 duckbf <-do.call(rbind,ducklist) 
 
 
-rlm <- lm(count ~ treat+region , data=railbf)
-dlm <- lm(count ~ treat+region , data=duckbf)
+rlm <- lm(count ~ treat, data=railbf)
+dlm <- lm(count ~ treat , data=duckbf)
 
 rl <- ggplot(railbf[railbf$treat=="late",])+
-  geom_histogram(aes(x=count, group=region, fill=region),stat="bin",position="dodge")
+  geom_histogram(aes(x=count),stat="bin",position="dodge")
 re <- ggplot(railbf[railbf$treat=="early",])+
   geom_histogram(aes(x=count, group=region, fill=region),stat="bin",position="dodge")
-
+r <- ggplot(railbf)+geom_histogram(aes(x=count, group=treat, fill=treat), stat="bin",position="dodge")
 d <- ggplot(duckbf)+
   geom_histogram(aes(x=count, group=treat, fill=treat),stat="bin", position="dodge")
-
 
 grid.arrange(re,rl, ncol=1)
 summary(rlm)
