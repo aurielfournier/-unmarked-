@@ -1,0 +1,17 @@
+{
+    "contents" : "library(rgdal)\nlibrary(ggplot2)\nlibrary(maptools)\n\n\n\ndsn <- \"C:/Users/avand/Documents/data/gis\"\n\nmo <- readOGR(dsn=dsn, layer=\"MO_Counties\")\nmo <- spTransform(mo, CRS(\"+proj=longlat +datum=WGS84\"))\n\ncoords <- coordinates(mo)\nID <- cut(coords[,1], quantile(coords[,1]), include.lowest=TRUE)\nmissouri <- unionSpatialPolygons(mo, ID)\n\nss <- readOGR(dsn=dsn, layer=\"2014Sites\")\nlist = c(1.1,20.1,43.1,56.1,57.1\n         ,58.1,81.1,110.1, 102.1,66.1\n)\n\nmo$group2[mo$StudyArea>1]<-\"A\"\nmo$group2[mo$StudyArea<=1]<-\"B\"\n\n#png(filename=\"~/manuscripts/_submitted/Dissertation_Chapter_One_MO_Phenology/figure_1_study_area.png\")\nggplot()+\n  geom_polygon(data=mo, aes(x=long,y=lat, group=group), fill=\"#CCCCCC\", colour=\"#CCCCCC\")+\n  geom_polygon(data=ss, aes(x=long,y=lat, group=group), fill=\"#000000\", colour=\"#000000\", size=2)+\n  scale_fill_manual(values=c(\"#CC9900\", \"#CCCCCC\"))+\n  theme(legend.position = \"none\",\n        plot.background = element_rect(fill = \"#FFFFFF\" ), #plot background color\n        panel.background = element_rect(fill = \"#FFFFFF\"), #panel background color\n        panel.grid.major.y= element_line(colour=\"#FFFFFF\"), #y axis grid line color\n        panel.grid.major.x = element_line(colour=\"#FFFFFF\"), #x axis grid line color\n        panel.grid.minor = element_line(colour=\"#FFFFFF\"),\n        axis.text=element_blank(),\n        axis.ticks=element_blank(),\n        axis.title=element_blank())+\n  annotate(\"rect\", xmin = -91.8, xmax = -94, ymax = 39.2, ymin=38.6, fill=\"white\",colour=\"black\")+\n  annotate(\"text\", label = \"NC Missouri \\nFountain Grove CA  \\nSwan Lake NWR\", x = -92.8, y = 38.9, size=4)+\n  annotate(\"rect\", xmin = -94, xmax = -96.2, ymax = 39.7, ymin=39, fill=\"white\",colour=\"black\")+\n  annotate(\"text\", label = \"NW Missouri \\nNodaway Valley CA  \\nSquaw Creek NWR\", x = -95.1, y = 39.4, size=4)+\n  annotate(\"rect\", xmin = -91.8, xmax = -89.2, ymax = 38.8, ymin=38, fill=\"white\",colour=\"black\")+\n  annotate(\"text\", label = \"NE Missouri \\nTed Shanks CA \\nBK Leach CA \\n Clarence Cannon NWR\", x = -90.5, y = 38.4, size=4)+\n  annotate(\"rect\", xmin = -92.6, xmax = -90.6, ymax = 37.1, ymin=36.2, fill=\"white\",colour=\"black\")+\n  annotate(\"text\", label = \"SE Missouri \\nDuck Creek CA \\nOtter Slough CA  \\nTen Mile Pond CA \\nMingo NWR\", x = -91.6, y = 36.65, size=4)\ndev.off()\n\n",
+    "created" : 1450449423153.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1759249954",
+    "id" : "76CCC69E",
+    "lastKnownWriteTime" : 1449595058,
+    "path" : "C:/Users/avand/Documents/manuscripts/_submitted/Dissertation_Chapter_One_MO_Phenology/figure_1_study_area.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

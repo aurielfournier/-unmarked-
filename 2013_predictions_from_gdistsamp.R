@@ -3,10 +3,10 @@
 library(unmarked)
 
 
-load("2013_models.Rdata")
+load("C:/Users/avand/Documents/data/2013_models.Rdata")
 cov <- read.csv('~/Documents/data/2013_cov.csv', header=T)
 
-ab13 <- ranef(model$region_averagewater)
+ab13 <- ranef(model$`~scale_averagewater-1`)
 abund13 <- data.frame(matrix(ncol=4, nrow=nrow(cov)))
 abund13$X1 <- bup(ab13, stat="mean")
 abund13$X2 <- bup(ab13, stat="mode")
