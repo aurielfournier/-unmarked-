@@ -1,15 +1,51 @@
-
-models <- c("~1",
-            "~scale_averagewater",
-            "~scale_averagewater+scale_averagewater2",
-            "~scale_short",
-            "~scale_int",
-            "~scale_short+scale_int",
-            "~scale_pe")
+#all years together with year covariate
 
 
 library(unmarked)
 
+
+
+sora <- read.csv('C:/Users/avand/Documents/data/2012_sora.csv', header=T)
+cov <- read.csv('C:/Users/avand/Documents/data/2012_cov.csv', header=T)
+
+sora <- sora[order(sora$impound),]
+cov <- cov[order(cov$impound),]
+
+cov$scale_short2 <- cov$scale_short^2
+cov$scale_int2 <- cov$scale_int^2
+cov$scale_averagewater2 <- cov$scale_averagewater^2
+sora <- sora[,2:16]
+
+##
+
+sora <- read.csv('C:/Users/avand/Documents/data/2013_sora.csv', header=T)
+cov <- read.csv('C:/Users/avand/Documents/data/2013_cov.csv', header=T)
+
+sora <- sora[order(sora$impound),]
+cov <- cov[order(cov$impound),]
+
+cov$scale_short2 <- cov$scale_short^2
+cov$scale_int2 <- cov$scale_int^2
+cov$scale_averagewater2 <- cov$scale_averagewater^2
+
+sora <- sora[,2:31]
+
+
+##
+
+sora <- read.csv('C:/Users/avand/Documents/data/2014_sora.csv', header=T)
+cov <- read.csv('C:/Users/avand/Documents/data/2014_cov.csv', header=T)
+sora <- sora[order(sora$impound),]
+cov <- cov[order(cov$impound),]
+
+cov$scale_short2 <- cov$scale_short^2
+cov$scale_int2 <- cov$scale_int^2
+cov$scale_averagewater2 <- cov$scale_averagewater^2
+
+sora <- sora[,2:11]
+cutpt = as.numeric(c(0,1,2,3,4,5)) 
+
+##
 
 sora <- read.csv('C:/Users/avand/Documents/data/2015_sora.csv', header=T)
 
@@ -23,6 +59,16 @@ cov$scale_int2 <- cov$scale_int^2
 cov$scale_averagewater2 <- cov$scale_averagewater^2
 
 sora <- sora[,2:11]
+
+##
+
+
+
+
+
+
+
+
 cutpt = as.numeric(c(0,1,2,3,4,5)) 
 
 umf = unmarkedFrameGDS(y=sora, 
@@ -35,6 +81,16 @@ umf = unmarkedFrameGDS(y=sora,
 )
 
 model <- list()
+
+
+
+models <- c("~1",
+            "~scale_averagewater",
+            "~scale_averagewater+scale_averagewater2",
+            "~scale_short",
+            "~scale_int",
+            "~scale_short+scale_int",
+            "~scale_pe")
 
 
 

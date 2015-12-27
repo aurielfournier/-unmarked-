@@ -19,11 +19,66 @@ completeFun <- function(data, desiredCols) {
   return(data[completeVec, ])
 }
 
-format_dist_data_by_round <- function(data, year, dist.breaks){
+
+formatDistData <- function (distData, distCol, transectNameCol, dist.breaks, occasionCol,effortMatrix) 
+{
+  if (!is.numeric(distData[, distCol])) 
+    stop("The distances must be numeric")
+  transects <- distData[, transectNameCol]
+  if (!is.factor(transects)) {
+    transects <- as.factor(transects)
+    warning("The transects were converted to a factor")
+  }
+  if (missing(occasionCol)) {
+    T <- 1
+    occasions <- factor(rep(1, nrow(distData)))
+  }
+  else {
+    occasions <- distData[, occasionCol]
+    if (!is.factor(occasions)) {
+      occasions <- as.factor(occasions)
+      warning("The occasions were converted to a factor")
+    }
+    T <- nlevels(occasions)
+  }
+  M <- nlevels(transects)
+  J <- length(dist.breaks) - 1
+  dist.classes <- levels(cut(distData[, distCol], dist.breaks, 
+                             include.lowest = TRUE))
+  ya <- array(NA, c(M, J, T), dimnames = list(levels(transects), 
+                                              dist.classes, paste("rep", 1:T, sep = "")))
+  transect.levels <- levels(transects)
+  occasion.levels <- levels(occasions)
+  for (i in 1:M) {
+    for (t in 1:T) {
+      sub <- distData[transects == transect.levels[i] & 
+                        occasions == occasion.levels[t], , drop = FALSE]
+      ya[i, , t] <- table(cut(sub[, distCol], dist.breaks, 
+                              include.lowest = TRUE))
+    }
+  }
+  y <- matrix(ya, nrow = M, ncol = J * T)
+  ee <- array(NA, c(M,length(occasion.levels)*(length(dist.breaks)-1)))
+  for(i in 1:length(occasion.levels)){
+    ee[,((ncol(ee)/length(occasion.levels)*(i-1)+1):(ncol(ee)/length(occasion.levels)*i))] <- matrix(rep(effortMatrix[,i], times=length(dist.breaks)-1), ncol=length(dist.breaks)-1)
+  }
+  ee[ee==0] <- NA
+  y <- y * ee
+  dn <- dimnames(ya)
+  rownames(y) <- dn[[1]]
+  if (T == 1) 
+    colnames(y) <- dn[[2]]
+  else colnames(y) <- paste(rep(dn[[2]], times = T), rep(1:T, each = J), sep = "")
+  return(y)
+}
+
+
+
+format_dist_data_by_round <- function(data, year, dist.breaks,effortMatrix){
   rounds <- unique(data$round)
   lis <- list()
   for(i in rounds){
-    lis[[i]] <- as.data.frame(formatDistData(data[data$round==i,], "distance","impound",dist.breaks,"night"))
+    lis[[i]] <- as.data.frame(formatDistData(data[data$round==i,], "distance","impound",dist.breaks,"night",effortMatrix))
   }
   assign(paste("gd",year,sep=""),lis)
 }
@@ -34,13 +89,14 @@ format_dist_data_by_round <- function(data, year, dist.breaks){
 dist.breaks <- c(0,1,2,3,4,5) 
 
 #birds <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_birds.csv",header=T) 
-birds <- read.csv("~/data/all_birds.csv",header=T) 
+birds <- read.csv("C:/Users/avand/Documents/data/all_birds.csv",header=T) 
 birds <- birds[birds$species=="sora"|birds$species=="s",]
 birds <- birds[birds$distance<=5,] # removing the few detections we have that are over 5 meters away from the line
 birds <- birds[!is.na(birds$round),]
 birds <- birds[!is.na(birds$distance),]
 
-birds$jdate <- as.factor(birds$jdate)
+
+birds$jdate <- as.factor(birds$odate)
 birds$night <- as.factor(birds$night)
 birds <- birds[!(birds$night==4.2|birds$night==4.1),]
 
@@ -69,9 +125,20 @@ birds15[birds15$night2==1.1|birds15$night2==2.1|birds15$night2==3.1,]$night <- 1
 birds15[birds15$night2==1.2|birds15$night2==2.2|birds15$night2==3.2,]$night <- 2
 birds15$night <- factor(birds15$night, labels=c(1,2))
 
+surv <- read.csv("C:/Users/avand/Documents/data/all_surveys.csv",header=T)
+surv$num <- 1
+
+surv12 <- cast(data=surv[surv$year==2012,], impound + round ~ night, value="num")
 
 
-gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks)
+birds12 <- birds12[birds12$impound %in% surv12$impound,]
+surv12 <- surv12[surv12$impound %in% birds12$impound,]
+surv12 <- surv12[,3:5]
+surv12[surv12>=1] <- 1
+
+gd2012 <- format_dist_data_by_round(birds12, 2012, dist.breaks, surv12)
+
+
 gd2013 <- format_dist_data_by_round(birds13, 2013, dist.breaks)
 gd2014 <- format_dist_data_by_round(birds14, 2014, dist.breaks)
 gd2015 <- format_dist_data_by_round(birds15, 2015, dist.breaks)
