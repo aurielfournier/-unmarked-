@@ -10,14 +10,12 @@ library(unmarked)
 
 sora <- read.csv('C:/Users/avand/Documents/data/2014_sora.csv', header=T)
 cov <- read.csv('C:/Users/avand/Documents/data/2014_cov.csv', header=T)
-sora <- sora[order(sora$impound),]
-cov <- cov[order(cov$impound),]
+sora <- sora[order(sora$ir),]
+cov <- cov[order(cov$ir),]
 
-cov$scale_short2 <- cov$scale_short^2
-cov$scale_int2 <- cov$scale_int^2
 cov$scale_averagewater2 <- cov$scale_averagewater^2
 
-sora <- sora[,2:11]
+sora <- sora[,1:10]
 cutpt = as.numeric(c(0,1,2,3,4,5)) 
 
 umf = unmarkedFrameGDS(y=sora, 
