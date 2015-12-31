@@ -5,13 +5,6 @@ models <- c("~1",
             "~scale_int",
             "~scale_short+scale_int",
             "~scale_pe",
-            "~round",
-            "~scale_averagewater+round",
-            "~scale_averagewater+scale_averagewater2+round",
-            "~scale_short+round",
-            "~scale_int+round",
-            "~scale_short+scale_int+round",
-            "~scale_pe+round")
 
 
 library(unmarked)
