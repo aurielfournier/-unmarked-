@@ -1,0 +1,17 @@
+---
+output: html_document
+---
+
+```{r}
+
+load("2012_top_model.Rdata")
+load("2013_top_model.Rdata")
+load("2014_top_model.Rdata")
+
+r
+
+r_w_i
+
+r_w
+
+```

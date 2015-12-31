@@ -1,0 +1,42 @@
+## short_openwater            7 162.09  1.32 0.0776     0.66
+## region_openwater           9 162.39  1.63 0.0665     0.73
+## region_int                 9 162.76  2.00 0.0554     0.78
+## averagewater_short         7 162.96  2.20 0.0500     0.83
+## int_fedstate               7 163.64  2.88 0.0356     0.87
+## averagewater_int           7 163.73  2.97 0.0341     0.90
+## int                        6 164.20  3.44 0.0269     0.93
+## averagewater_openwater     7 165.38  4.61 0.0149     0.95
+## null                       5 165.55  4.79 0.0137     0.96
+## averagewater               6 165.81  5.05 0.0120     0.97
+## int_openwater              7 165.87  5.10 0.0117     0.98
+## openwater                  6 166.25  5.48 0.0097     0.99
+## global                    12 166.81  6.05 0.0073     1.00
+```
+## region_int                      9 1872.50  2.41 0.0399     0.70
+## region_perennialemerg           9 1872.52  2.43 0.0396     0.74
+## region_short                    9 1872.53  2.44 0.0393     0.78
+## int_perennialemerg              7 1872.75  2.66 0.0353     0.82
+## averagewater_perennialemerg     7 1872.95  2.86 0.0319     0.85
+## perennialemerg_openwater        7 1873.05  2.96 0.0303     0.88
+## averagewater_openwater          7 1873.72  3.63 0.0217     0.90
+## short_openwater                 7 1873.86  3.77 0.0203     0.92
+## int_openwater                   7 1873.88  3.79 0.0200     0.94
+## averagewater_short              7 1873.91  3.82 0.0197     0.96
+## int_short                       7 1873.94  3.85 0.0195     0.98
+## averagewater_int                7 1873.98  3.89 0.0191     1.00
+## global                         13 1878.73  8.65 0.0018     1.00
+```
+## averagewater_openwater          7 1481.78  2.36 0.0379     0.74
+## averagewater_int                7 1481.80  2.37 0.0376     0.77
+## int_short                       7 1482.24  2.81 0.0303     0.81
+## perennialemerg_short            7 1482.32  2.89 0.0290     0.83
+## region_averagewater             9 1482.37  2.94 0.0283     0.86
+## short_openwater                 7 1482.37  2.94 0.0283     0.89
+## int_openwater                   7 1483.00  3.57 0.0207     0.91
+## region_int                      9 1483.29  3.86 0.0178     0.93
+## int_perennialemerg              7 1483.47  4.04 0.0163     0.95
+## region_openwater                9 1483.48  4.05 0.0163     0.96
+## region_perennialemerg           9 1483.49  4.06 0.0162     0.98
+## perennialemerg_openwater        7 1483.55  4.12 0.0157     0.99
+## global                         13 1485.37  5.94 0.0063     1.00
+```

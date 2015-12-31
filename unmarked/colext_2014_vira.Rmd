@@ -1,0 +1,64 @@
+```{r}
+# predictions from GDistsamp 2014
+setwd("~/Documents/data")
+library(unmarked)
+#read in the sora observations
+sora14 <- read.csv('2014_vira_occ.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov14 <- read.csv('2014_cov_vira.csv', header=T)
+#subset covaraites we need
+cov14 <- cov14[,c("region","length","impound","jdate","area", "int","short","averagewater")]
+# #the distance bins
+
+sora14 <- sora14[order(sora14$impound),]
+cov14 <- cov14[order(cov14$impound),]
+
+sora14 <- sora14[,2:22]
+cutpt = as.numeric(c(0,2,4,6,8,10,14,14)) 
+#Unmarked Data Frame
+umf14 = unmarkedMultFrame(y=sora14, 
+                           numPrimary=3,
+                           siteCovs = cov14,
+)
+```
+
+```{r}
+
+model14 <- list()
+model14$null14 = colext(psiformula= ~1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+
+model14$reg14 = colext(psiformula= ~region-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+```
+```{r}
+
+
+model14$reg_w14 =colext(psiformula= ~region+averagewater-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+model14$reg_w_i_14 =colext(psiformula= ~region+averagewater+region*averagewater-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+  
+```
+```{r}
+model14$short_r14 =colext(psiformula= ~short+region-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+model14$short_r_i_14 =colext(psiformula= ~short+region+short*region-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+
+```{r}
+model14$short14 =colext(psiformula= ~short-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+model14$short_w14 =colext(psiformula= ~short+averagewater-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+model14$short_w_i_14 =colext(psiformula= ~short+averagewater+short*averagewater-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+```
+```{r}
+model14$global14 =colext(psiformula= ~region+averagewater+short+short*region+region*averagewater-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf14, method="BFGS")
+
+```
+```{r}
+
+list14  = fitList(model14)
+model14 = modSel(list14)
+model14
+```

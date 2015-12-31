@@ -1,0 +1,42 @@
+## scale_short+region                 9 -955.17  2.47 0.0606     0.66
+## scale_int+region                   9 -954.89  2.75 0.0526     0.71
+## scale_water+region                 9 -954.78  2.86 0.0498     0.76
+## scale_short+scale_int              7 -954.67  2.98 0.0470     0.81
+## scale_water+scale_short            7 -954.41  3.24 0.0412     0.85
+## scale_int+scale_averagewater       7 -954.10  3.55 0.0353     0.89
+## global                            12 -954.06  3.58 0.0347     0.92
+## scale_averagewater                 6 -952.92  4.73 0.0196     0.94
+## scale_water+scale_averagewater     7 -952.70  4.94 0.0176     0.96
+## scale_int                          6 -952.22  5.42 0.0139     0.97
+## ~1                                 5 -952.00  5.64 0.0124     0.99
+## scale_water                        6 -951.33  6.32 0.0089     0.99
+## scale_water+scale_int              7 -950.23  7.42 0.0051     1.00
+```
+## scale_int+region                   9 532.32 3.207 0.0490     0.79
+## scale_averagewater                 6 532.88 3.763 0.0371     0.83
+## scale_averagewater+region          9 533.07 3.950 0.0338     0.86
+## global                            12 533.55 4.429 0.0266     0.89
+## region                             8 533.82 4.702 0.0232     0.91
+## ~1                                 5 534.53 5.413 0.0163     0.93
+## scale_pe+region                    9 534.59 5.471 0.0158     0.95
+## scale_short+scale_averagewater     7 534.72 5.607 0.0148     0.96
+## scale_pe+scale_averagewater        7 534.88 5.762 0.0137     0.97
+## scale_short+region                 9 535.21 6.097 0.0115     0.99
+## scale_short                        6 536.50 7.388 0.0061     0.99
+## scale_pe                           6 536.50 7.388 0.0061     1.00
+## scale_short+scale_pe               7 538.47 9.356 0.0023     1.00
+```
+## scale_averagewater+region          9 1153.97  1.48 0.12536     0.97
+## global                            12 1157.70  5.21 0.01937     0.99
+## ~1                                 5 1161.96  9.47 0.00231     0.99
+## scale_short                        6 1163.50 11.01 0.00107     1.00
+## scale_pe                           6 1163.78 11.29 0.00093     1.00
+## scale_int                          6 1163.80 11.31 0.00092     1.00
+## region                             8 1165.33 12.84 0.00043     1.00
+## scale_short+scale_pe               7 1165.36 12.88 0.00042     1.00
+## scale_short+scale_int              7 1165.40 12.91 0.00041     1.00
+## scale_pe+scale_int                 7 1165.53 13.04 0.00039     1.00
+## scale_short+region                 9 1166.92 14.43 0.00019     1.00
+## scale_int+region                   9 1167.23 14.74 0.00017     1.00
+## scale_pe+region                    9 1167.32 14.83 0.00016     1.00
+```
