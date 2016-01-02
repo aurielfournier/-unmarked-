@@ -65,10 +65,10 @@ sora15 <- data.frame(cbind(sora15[,1]+sora15[,6],
 sora <- rbind(sora12, sora13, sora14, sora15)
 
 
-cov <- rbind(cov12[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round")],
-             cov13[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round")],
-             cov14[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round")],
-             cov15[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round")])
+cov <- rbind(cov12[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")],
+             cov13[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")],
+             cov14[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")],
+             cov15[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")])
 
 # define's the distances of the bins
 cutpt = as.numeric(c(0,1,2,3,4,5)) 
@@ -186,46 +186,9 @@ water.pre$averagewater<-water.pre$scale_averagewater*sd(cov$averagewater)+mean(c
 
 (s15 <- ggplot(data=water.pre, aes(x=averagewater, y=Predicted)))+ylab("Sora density (birds/ha)")+xlab("Average water depth (cm)")+
   geom_ribbon(aes(ymin = lower,  ymax = upper), alpha = 0.6) + geom_line( size=1.3) +
-  theme_few(base_size = 16)+
-  ggtitle("2015")  +theme(axis.line = element_line(color = 'black'))+
+  theme_few(base_size = 16)+theme(axis.line = element_line(color = 'black'))+
   theme(plot.background = element_blank()
         ,panel.border = element_blank())+
   guides(fill=FALSE)
 
-########################################
-## Effect of water on detection plot ####
-########################################
-
-scale_water <- data.frame(water=c(min(cov$water), max(cov$water)),
-                          scale_water=c(min(cov$scale_water), max(cov$scale_water)))
-water.predict<-predict(fits.density, type="det", newdata=scale_water)
-
-water.pre <- cbind(scale_water, water.predict)
-
-#plot the function
-pred.l<-gxhn(seq(0, 5, by=0.1), water.pre$Predicted[1])
-pred.h<-gxhn(seq(0, 5, by=0.1),  water.pre$Predicted[2])
-pred.min.l<-gxhn(seq(0, 5, by=0.1), water.pre$lower[1])
-pred.min.h<-gxhn(seq(0, 5, by=0.1), water.pre$upper[1])
-pred.max.l<-gxhn(seq(0, 5, by=0.1), water.pre$lower[2])
-pred.max.h<-gxhn(seq(0, 5, by=0.1), water.pre$upper[2])
-
-water<-data.frame(pred=c(pred.l, pred.h),  low=c(pred.min.l, pred.max.l), x=rep(seq(0, 5, by=0.1), 2),
-                  high=c(pred.min.h,pred.max.h), level=c(rep("Min water", 51),rep("Max water", 51) ))
-
-
-ggplot(water, aes(x=x, y = pred, fill=level, colour=level)) + 
-  geom_ribbon(aes(ymin = low,  ymax = high, fill=level), alpha = 0.6, color=NA) +
-  geom_line(aes(colour=level), size=1.3) +
-  scale_colour_manual(values = c("orange", "darkorange3")) +
-  scale_fill_manual(values = c("orange", "darkorange3"))+
-  xlab(expression("Distance from observer (m)"))+
-  ylab(expression(paste("Detection probability")))+
-  theme_few(base_size = 12)+
-  scale_y_continuous(breaks=seq(0, 1.16, by=0.2), limits=c(0, 1.16))+
-  theme(legend.position=c(0.7, 0.9), legend.title=element_blank())+
-  theme(axis.line = element_line(color = 'black'))+
-  theme(plot.background = element_blank()
-        ,panel.border = element_blank())+
-  guides(fill=FALSE)
-
+save(density.models, file="~/manuscripts/Dissertation_Chapter_1_MO_Phenology/sarah_models.Rdata")
