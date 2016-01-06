@@ -70,15 +70,19 @@ cov <- rbind(cov12[,c("length","scale_averagewater","averagewater","scale_short"
              cov14[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")],
              cov15[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")])
 
+cov$scale_averagewater2 <- cov$scale_averagewater^2
+
 # define's the distances of the bins
 cutpt = as.numeric(c(0,1,2,3,4,5)) 
 
 cov$lengthm <- cov$length*1000*3
 
+cov$year <- as.factor(cov$year)
+
 # brings the two files together into the ummarkedFrameGDS
 umf = unmarkedFrameGDS(y=sora, 
                        numPrimary=1,
-                       siteCovs = cov[,2:6],
+                       siteCovs = cov,
                        survey="line", 
                        dist.breaks=cutpt,  
                        unitsIn="m", 
@@ -92,15 +96,15 @@ umf = unmarkedFrameGDS(y=sora,
 
 basemodels <- list() 
 
-basemodels$NB.hazard <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+basemodels$NB.hazard <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
 
-basemodels$P.hazard <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~1, umf, output="density", keyfun="hazard", mixture="P")
+basemodels$P.hazard <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, output="density", keyfun="hazard", mixture="P")
 
-basemodels$P.half.normal <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~1, umf, starts=as.numeric(coef(basemodels$P.hazard)[1:5]))
+basemodels$P.half.normal <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, starts=as.numeric(coef(basemodels$P.hazard)[1:5]))
 
-basemodels$NB.half.normal <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~1, umf, output="density", rel.tol=0.001, mixture="NB")
+basemodels$NB.half.normal <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, output="density", rel.tol=0.001, mixture="NB")
 
-basemodels$NB.exp <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="exp", mixture="NB")
+basemodels$NB.exp <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="exp", mixture="NB")
 
 basemodels$P.exp <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~scale_wood, umf, output="density",  keyfun="exp", mixture="P")
 
@@ -123,9 +127,9 @@ summary(basemodels$NB.hazard)
 
 detect.models<-list()
 
-detect.models$awater <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~scale_averagewater, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+detect.models$awater <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~scale_averagewater, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
 
-detect.models$null <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+detect.models$null <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
 
 ## Assemble the various model fits into a "fitList" and do model selection
 fits.detect <- fitList(fits=detect.models)
@@ -139,38 +143,39 @@ summary(detect.models$water)
 
 # use best model for detection from above
 
-density.models<-list()
+density.modelsP<-list()
 
-density.models$int_year <- gdistsamp(~scale_int+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$int_year <- gdistsamp(~scale_int+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$int <- gdistsamp(~scale_int, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$int <- gdistsamp(~scale_int, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$short_year <- gdistsamp(~scale_short+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$short_year <- gdistsamp(~scale_short+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$water_year <- gdistsamp(~scale_averagewater+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$water_year <- gdistsamp(~scale_averagewater+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$water2_year <- gdistsamp(~scale_averagewater+I(scale_averagewater^2)+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$water2_year <- gdistsamp(~scale_averagewater+scale_averagewater2+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$water <- gdistsamp(~scale_averagewater, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$water <- gdistsamp(~scale_averagewater, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$water2 <- gdistsamp(~scale_averagewater+I(scale_averagewater^2), ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$water2 <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$global <- gdistsamp(~scale_int+year+round+scale_averagewater+I(scale_averagewater^2)+scale_short, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$global <- gdistsamp(~scale_int+year+scale_averagewater+scale_averagewater2+scale_short, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$null <- gdistsamp(~1, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$null <- gdistsamp(~1, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$short_int <- gdistsamp(~scale_short+scale_int, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$short_int <- gdistsamp(~scale_short+scale_int, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
-density.models$short_int_year <- gdistsamp(~scale_short+scale_int+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+density.modelsP$short_int_year <- gdistsamp(~scale_short+scale_int+year, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="P")
 
 ## Assemble the various model fits into a "fitList" and do model selection
-fits.density <- fitList(fits=density.models)
+fits.density <- fitList(fits=density.modelsP)
 (ms.density <- modSel(fits.density))
 
-par13 <- parboot(density.models$water2, statistic=fitstats, nsim=2)
+save(density.modelsP, file="~/manuscripts/Dissertation_Chapter_2_Habitat_Sora/poisson_models.Rdata")
 
+(par <- parboot(density.modelsP$globalP, statistic=fitstats, nsim=3))
 
-summary(density.models$water2)
+summary(density.modelsP$global)
 
 
 ########################################
@@ -191,4 +196,4 @@ water.pre$averagewater<-water.pre$scale_averagewater*sd(cov$averagewater)+mean(c
         ,panel.border = element_blank())+
   guides(fill=FALSE)
 
-save(density.models, file="~/manuscripts/Dissertation_Chapter_1_MO_Phenology/sarah_models.Rdata")
+save(density.modelsP, file="~/manuscripts/Dissertation_Chapter_1_MO_Phenology/sarah_models.Rdata")
