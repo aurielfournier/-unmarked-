@@ -1,0 +1,64 @@
+```{r}
+# predictions from GDistsamp 2013
+
+library(unmarked)
+#read in the sora observations
+sora13 <- read.csv('./data/2013_vira_occ.csv', header=T)
+#read in the covariate data #organized by impoundment.
+cov13 <- read.csv('./data/2013_cov_vira.csv', header=T)
+#subset covaraites we need
+cov13 <- cov13[,c("region","length","impound","jdate","area", "int","short","water")]
+# #the distance bins
+
+sora13 <- sora13[order(sora13$impound),]
+cov13 <- cov13[order(cov13$impound),]
+
+sora13 <- sora13[,2:22]
+cutpt = as.numeric(c(0,2,4,6,8,10,13,14)) 
+#Unmarked Data Frame
+umf13 = unmarkedMultFrame(y=sora13, 
+                           numPrimary=3,
+                           siteCovs = cov13,
+)
+```
+
+```{r}
+
+model13 <- list()
+model13$null13 = colext(psiformula= ~1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+
+model13$reg13 = colext(psiformula= ~region-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+```
+```{r}
+
+
+model13$reg_w13 =colext(psiformula= ~region+water-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+model13$reg_w_i_13 =colext(psiformula= ~region+water+region*water-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+  
+```
+```{r}
+model13$short_r13 =colext(psiformula= ~short+region-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+model13$short_r_i_13 =colext(psiformula= ~short+region+short*region-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+
+```{r}
+model13$short13 =colext(psiformula= ~short-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+model13$short_w13 =colext(psiformula= ~short+water-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+model13$short_w_i_13 =colext(psiformula= ~short+water+short*water-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+```
+```{r}
+model13$global13 =colext(psiformula= ~region+water+short+short*region+region*water-1, gammaformula = ~ 1, epsilonformula = ~ 1, pformula = ~ 1, data = umf13, method="BFGS")
+
+```
+```{r}
+
+list13  = fitList(model13)
+model13 = modSel(list13)
+model13
+```
