@@ -65,10 +65,10 @@ sora15 <- data.frame(cbind(sora15[,1]+sora15[,6],
 sora <- rbind(sora12, sora13, sora14, sora15)
 
 
-cov <- rbind(cov12[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")],
-             cov13[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")],
-             cov14[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")],
-             cov15[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region")])
+cov <- rbind(cov12[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region","int","short")],
+             cov13[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region","int","short")],
+             cov14[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region","int","short")],
+             cov15[,c("length","scale_averagewater","averagewater","scale_short","scale_int","year","round","jdate","region","int","short")])
 
 cov$scale_averagewater2 <- cov$scale_averagewater^2
 
