@@ -7,19 +7,20 @@
 # Needed Packages ----------------------------------------------------------------------------------------
 ###
 library(unmarked)
-
+library(raildata)
 
 
 dist.breaks <- c(0,1,2,3,4,5) 
 
-birds <- read.csv("./data/all_birds.csv",header=T) 
+data(allbirds)
+birds <- allbirds
 birds <- birds[birds$species=="sora"|birds$species=="s",]
 birds <- birds[birds$distance<=5,] 
 birds <- birds[!is.na(birds$round),]
 birds <- birds[!is.na(birds$distance),]
 
 birds$jdate <- as.factor(birds$odate)
-
+birds$impound <- as.character(birds$impound)
 birds[birds$impound=="sanctuarysouth",]$impound <- "sanctuary"
 birds[birds$impound=="sanctuarynorth",]$impound <- "sanctuary"
 birds[birds$impound=="n mallard",]$impound <- "nmallard"
@@ -40,9 +41,10 @@ gd$iry <- row.names(gd)
 # Input covariates ----------------------------------------------------------------------------------------
 ####----------------------------------------------
 
-veg <- read.csv("./data/all_veg.csv", header=T) 
+data(allveg)
 
-veg <- veg[veg$averagewater!=999,]
+veg <- allveg
+veg <- veg[veg$averagewater<=100,]
 veg <- veg[!is.na(veg$averagewater),]
 
 veg$impound <- as.character(veg$impound)
@@ -63,12 +65,12 @@ castveg <- cast(data=veg, iy ~ variable, median)
 
 all_veg <- merge(castwater, castveg, by="iy", all=FALSE)
 
-surv <- read.csv("./data/all_surveys.csv")
+data(allsurveys)
+surv <- allsurveys
 
 surv$impound <- as.character(surv$impound)
 surv[surv$impound=="n mallard",]$impound <- "nmallard"
 surv[surv$impound=="r4/5",]$impound <- "r45"
-surv[surv$impound=="redhead slough",]$impound <- "redhead"
 
 surv$iry <- paste0(surv$impound,"_",surv$round,"_",surv$year)
 
