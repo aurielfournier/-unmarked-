@@ -4,7 +4,7 @@ library(reshape)
 ## top three plant stuffs
 
 
-veg <- read.csv("C:/Users/avanderlaar/Documents/GitHub/data/all_veg.csv", header=T) 
+veg <- read.csv("./data/all_veg.csv", header=T) 
 veg <- veg[veg$spp=="sora"|is.na(veg$spp),]
 veg <- veg[,c("point","plant1","plant2","plant3","impound","year","bv")]
 veg <- veg[!is.na(veg$plant1),]
