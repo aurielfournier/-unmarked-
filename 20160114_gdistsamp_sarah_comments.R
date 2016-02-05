@@ -5,12 +5,15 @@ library(ggplot2)
 library(ggthemes)
 library(AICcmodavg)
 library(tidyr)
+library(raildata)
 ############
 # Reading in the Data
 ############
 
-sora <- read.csv("./data/sora_DONE.csv")
-cov <- read.csv("./data/veg_DONE.csv")
+data(soraDONE)
+data(vegDONE)
+sora <- soraDONE
+cov <- vegDONE
 
 sora <- sora[order(sora$iry),]
 cov <- cov[order(cov$iry),]
