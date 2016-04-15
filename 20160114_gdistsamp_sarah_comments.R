@@ -10,13 +10,18 @@ library(raildata)
 # Reading in the Data
 ############
 
-data(soraDONE)
-data(vegDONE)
-sora <- soraDONE
-cov <- vegDONE
+#data(soraDONE)
+sora <- read.csv("~/data/sora_DONE.csv")
+cov <- read.csv("~/data/veg_DONE.csv")
 
 sora <- sora[order(sora$iry),]
 cov <- cov[order(cov$iry),]
+
+cov <- cov[!is.na(cov$Exp),]
+
+sora <- sora[sora$iry %in% cov$iry,]
+
+nrow(sora) == nrow(cov)
 
 cutpt = as.numeric(c(0,1,2,3,4,5)) 
 
@@ -72,9 +77,9 @@ summary(basemodels$NB.hazard)
 
 detect.models<-list()
 
-detect.models$awater <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~scale_averagewater, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+detect.models$awater <- gdistsamp(~1, ~1, ~Exp, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
 
-detect.models$null <- gdistsamp(~scale_averagewater+scale_averagewater2, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
+detect.models$null <- gdistsamp(~1, ~1, ~1, umf, output="density", rel.tol=0.001, keyfun="hazard", mixture="NB")
 
 ## Assemble the various model fits into a "fitList" and do model selection
 fits.detect <- fitList(fits=detect.models)
